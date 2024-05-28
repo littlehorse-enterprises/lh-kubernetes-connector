@@ -1,0 +1,19 @@
+# Ignore binary and build stuff
+.gradle
+app/build
+app/bin/
+build
+
+# Ignore IntelliJ Idea stuff
+.idea
+.vscode
+
+# Emacs-related stuff
+*\#
+*~
+
+# Others
+.env
+.DS_Store
+
+## Poetry dist
