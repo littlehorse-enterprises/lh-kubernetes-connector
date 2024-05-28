@@ -2,7 +2,6 @@ package io.littlehorse.agentworker;
 
 import io.littlehorse.agentworker.di.AgentWorkerComponent;
 import io.littlehorse.agentworker.di.DaggerAgentWorkerComponent;
-import io.littlehorse.sdk.common.proto.LittleHorseGrpc;
 import io.littlehorse.sdk.worker.LHTaskWorker;
 import java.io.IOException;
 import java.util.List;
@@ -16,15 +15,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         AgentWorkerComponent agentWorkerComponent = DaggerAgentWorkerComponent.create();
-        LittleHorseGrpc.LittleHorseBlockingStub littleHorseBlockingStub =
-                agentWorkerComponent.getLittleHorseBlockingStub();
-
-        List<LHTaskWorker> lhWorkers = List.of(new LHTaskWorker(
-                agentWorkerComponent.getLhClustersWorker(),
-                "create-cluster-in-fake-org",
-                agentWorkerComponent.getLhConfig()));
-
-        startTaskWorkers(lhWorkers);
     }
 
     private static void startTaskWorkers(List<LHTaskWorker> lhWorkers) throws IOException {

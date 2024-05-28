@@ -2,7 +2,6 @@ package io.littlehorse.agentworker.di;
 
 import dagger.Component;
 import io.littlehorse.agentworker.HealthController;
-import io.littlehorse.agentworker.workers.LHClustersWorker;
 import io.littlehorse.sdk.common.config.LHConfig;
 import io.littlehorse.sdk.common.proto.LittleHorseGrpc;
 import javax.inject.Singleton;
@@ -15,6 +14,4 @@ public interface AgentWorkerComponent {
     LittleHorseGrpc.LittleHorseBlockingStub getLittleHorseBlockingStub();
 
     HealthController getHealthController();
-
-    LHClustersWorker getLhClustersWorker();
 }
