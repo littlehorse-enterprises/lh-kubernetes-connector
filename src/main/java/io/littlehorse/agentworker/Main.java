@@ -14,7 +14,25 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws IOException {
+        String dataPlaneId = System.getenv().get("AW_DATA_PLANE_ID");
+
+        if (dataPlaneId == null || dataPlaneId.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "You must provide the AW_DATA_PLANE_ID environment variable for the Agent Worker to work properly.");
+        }
+
         AgentWorkerComponent agentWorkerComponent = DaggerAgentWorkerComponent.create();
+
+        //        startTaskWorkers(List.of(new LHTaskWorker(
+        //                agentWorkerComponent.getSecretsWorker(),
+        //                "create-introspection-secret-for-cluster-in-dp-${data-plane-id}",
+        //                agentWorkerComponent.getLhConfig(),
+        //                Map.of("data-plane-id", dataPlaneId))));
+
+        startTaskWorkers(List.of(new LHTaskWorker(
+                agentWorkerComponent.getSecretsWorker(),
+                "create-introspection-secret-for-cluster-in-dp-aws-uw1-0",
+                agentWorkerComponent.getLhConfig())));
     }
 
     private static void startTaskWorkers(List<LHTaskWorker> lhWorkers) throws IOException {
