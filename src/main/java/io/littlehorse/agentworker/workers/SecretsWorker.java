@@ -18,10 +18,6 @@ public class SecretsWorker {
 
     @LHTaskMethod("create-introspection-secret-for-cluster-in-dp-aws-uw1-0")
     public void createIntrospectionSecret(String clusterName, String introspectionClientSecretYML) {
-        System.out.println("YML");
-        System.out.println(clusterName);
-        System.out.println(introspectionClientSecretYML);
-
         try {
             logger.info(
                     "Trying to create introspection secret for for LHCluster with name:: {} in Data Plane: aws-uw1-0.",
