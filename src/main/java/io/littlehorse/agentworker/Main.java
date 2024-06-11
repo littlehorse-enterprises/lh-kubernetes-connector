@@ -23,16 +23,19 @@ public class Main {
 
         AgentWorkerComponent agentWorkerComponent = DaggerAgentWorkerComponent.create();
 
-        //        startTaskWorkers(List.of(new LHTaskWorker(
-        //                agentWorkerComponent.getSecretsWorker(),
-        //                "create-introspection-secret-for-cluster-in-dp-${data-plane-id}",
-        //                agentWorkerComponent.getLhConfig(),
-        //                Map.of("data-plane-id", dataPlaneId))));
-
-        startTaskWorkers(List.of(new LHTaskWorker(
-                agentWorkerComponent.getSecretsWorker(),
-                "create-introspection-secret-for-cluster-in-dp-aws-uw1-0",
-                agentWorkerComponent.getLhConfig())));
+        startTaskWorkers(List.of(
+                new LHTaskWorker(
+                        agentWorkerComponent.getSecretsWorker(),
+                        "create-introspection-secret-for-cluster-in-dp-" + dataPlaneId,
+                        agentWorkerComponent.getLhConfig()),
+                new LHTaskWorker(
+                        agentWorkerComponent.getSecretsWorker(),
+                        "create-secret-for-lh-dashboard-in-dp-" + dataPlaneId,
+                        agentWorkerComponent.getLhConfig()),
+                new LHTaskWorker(
+                        agentWorkerComponent.getLHClustersWorker(),
+                        "create-lh-cluster-in-dp-" + dataPlaneId,
+                        agentWorkerComponent.getLhConfig())));
     }
 
     private static void startTaskWorkers(List<LHTaskWorker> lhWorkers) throws IOException {
