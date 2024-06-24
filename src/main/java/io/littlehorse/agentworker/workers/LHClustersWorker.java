@@ -18,7 +18,7 @@ public class LHClustersWorker {
         this.k8sClient = k8sClient;
     }
 
-    @LHTaskMethod("create-lh-cluster-in-dp-aws-uw1-0")
+    @LHTaskMethod("create-lh-cluster-in-dp-${data-plane-id}")
     public ClusterHealthInfo createLHCluster(
             String clusterName, int horsepower, String dataPlaneId, String lhClusterResourcesYml) {
 
