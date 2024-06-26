@@ -49,4 +49,19 @@ public class SecretsWorker {
             throw exn;
         }
     }
+
+    @LHTaskMethod("create-secret-for-lhctl-in-dp-${data-plane-id}")
+    public void createLhctlSecret(String clusterName, String dashboardClientSecretYML) {
+        String dataPlaneId = System.getenv().get("AW_DATA_PLANE_ID");
+        try {
+            logger.info("Trying to create lhctl secret with name:: {} in Data Plane: {}.", clusterName, dataPlaneId);
+            this.k8sClient.resource(dashboardClientSecretYML).create();
+        } catch (KubernetesClientException exn) {
+            logger.error(
+                    "Error while creating lhctl secret for LHCluster with name: {} in Data Plane: {}",
+                    clusterName,
+                    dataPlaneId);
+            throw exn;
+        }
+    }
 }

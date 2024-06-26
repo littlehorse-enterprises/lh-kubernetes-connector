@@ -41,6 +41,11 @@ public class Main {
                         agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(
+                        agentWorkerComponent.getSecretsWorker(),
+                        "create-secret-for-lhctl-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId)),
+                new LHTaskWorker(
                         agentWorkerComponent.getLHClustersWorker(),
                         "create-lh-cluster-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),
