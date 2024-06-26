@@ -5,6 +5,7 @@ import io.littlehorse.agentworker.di.DaggerAgentWorkerComponent;
 import io.littlehorse.sdk.worker.LHTaskWorker;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,16 +27,24 @@ public class Main {
         startTaskWorkers(List.of(
                 new LHTaskWorker(
                         agentWorkerComponent.getSecretsWorker(),
-                        "create-introspection-secret-for-cluster-in-dp-" + dataPlaneId,
-                        agentWorkerComponent.getLhConfig()),
+                        "create-introspection-secret-for-cluster-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId)),
+                new LHTaskWorker(
+                        agentWorkerComponent.getLHPrincipalsWorker(),
+                        "create-human-principal-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(
                         agentWorkerComponent.getSecretsWorker(),
-                        "create-secret-for-lh-dashboard-in-dp-" + dataPlaneId,
-                        agentWorkerComponent.getLhConfig()),
+                        "create-secret-for-lh-dashboard-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(
                         agentWorkerComponent.getLHClustersWorker(),
-                        "create-lh-cluster-in-dp-" + dataPlaneId,
-                        agentWorkerComponent.getLhConfig())));
+                        "create-lh-cluster-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId))));
     }
 
     private static void startTaskWorkers(List<LHTaskWorker> lhWorkers) throws IOException {

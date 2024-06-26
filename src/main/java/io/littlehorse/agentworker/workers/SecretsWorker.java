@@ -16,7 +16,7 @@ public class SecretsWorker {
         this.k8sClient = k8sClient;
     }
 
-    @LHTaskMethod("create-introspection-secret-for-cluster-in-dp-aws-uw1-0")
+    @LHTaskMethod("create-introspection-secret-for-cluster-in-dp-${data-plane-id}")
     public void createIntrospectionSecret(String clusterName, String introspectionClientSecretYML) {
         String dataPlaneId = System.getenv().get("AW_DATA_PLANE_ID");
         try {
@@ -34,7 +34,7 @@ public class SecretsWorker {
         }
     }
 
-    @LHTaskMethod("create-secret-for-lh-dashboard-in-dp-aws-uw1-0")
+    @LHTaskMethod("create-secret-for-lh-dashboard-in-dp-${data-plane-id}")
     public void createLHDashboardSecret(String clusterName, String dashboardClientSecretYML) {
         String dataPlaneId = System.getenv().get("AW_DATA_PLANE_ID");
         try {
