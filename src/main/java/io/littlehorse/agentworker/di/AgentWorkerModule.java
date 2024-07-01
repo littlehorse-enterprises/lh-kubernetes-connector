@@ -7,6 +7,7 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.littlehorse.agentworker.HealthController;
 import io.littlehorse.agentworker.workers.LHClustersWorker;
 import io.littlehorse.agentworker.workers.LHPrincipalsWorker;
+import io.littlehorse.agentworker.workers.LHTenantsWorker;
 import io.littlehorse.agentworker.workers.SecretsWorker;
 import io.littlehorse.sdk.common.config.LHConfig;
 import io.littlehorse.sdk.common.proto.LittleHorseGrpc;
@@ -54,5 +55,11 @@ public class AgentWorkerModule {
     @Singleton
     public LHPrincipalsWorker provideLHPrincipalsWorker(KubernetesClient kubernetesClient) {
         return new LHPrincipalsWorker(kubernetesClient);
+    }
+
+    @Provides
+    @Singleton
+    public LHTenantsWorker provideLHTenantWorker(KubernetesClient kubernetesClient) {
+        return new LHTenantsWorker(kubernetesClient);
     }
 }

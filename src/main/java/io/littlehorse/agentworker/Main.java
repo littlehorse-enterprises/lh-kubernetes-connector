@@ -44,6 +44,11 @@ public class Main {
                         agentWorkerComponent.getLHClustersWorker(),
                         "create-lh-cluster-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId)),
+                new LHTaskWorker(
+                        agentWorkerComponent.getLHTenantsWorker(),
+                        "create-lh-tenant-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId))));
     }
 
