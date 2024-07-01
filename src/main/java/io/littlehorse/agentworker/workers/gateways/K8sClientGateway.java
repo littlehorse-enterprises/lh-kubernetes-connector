@@ -1,8 +1,9 @@
-package io.littlehorse.agentworker.workers;
+package io.littlehorse.agentworker.workers.gateways;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.javalin.http.HttpStatus;
+import io.littlehorse.agentworker.workers.LHResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +15,19 @@ public class K8sClientGateway {
         this.k8sClient = k8sClient;
     }
 
-    public void createOrUpdateResource(String clusterName, String crdName, String resourceName, String crdToBeApplied) {
+    public void createOrUpdateResource(
+            String clusterName, LHResources crdName, String resourceName, String crdToBeApplied) {
         try {
-            logger.info(
-                    "Trying to create/update a new [{}] [{}] within Cluster: [{}]", crdName, resourceName, clusterName);
+
+            if (crdName.equals(LHResources.LH_CLUSTER)) {
+                logger.info("Trying to create/update a new [{}] named [{}].", crdName.getDescription(), resourceName);
+            } else {
+                logger.info(
+                        "Trying to create/update a new [{}] [{}] within Cluster: [{}]",
+                        crdName.getDescription(),
+                        resourceName,
+                        clusterName);
+            }
 
             this.k8sClient.resource(crdToBeApplied).update();
             logger.info("LHTenant updated successfully.");

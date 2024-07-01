@@ -1,5 +1,6 @@
 package io.littlehorse.agentworker.workers;
 
+import io.littlehorse.agentworker.workers.gateways.K8sClientGateway;
 import io.littlehorse.sdk.worker.LHTaskMethod;
 
 public class LHPrincipalsWorker {
@@ -11,6 +12,6 @@ public class LHPrincipalsWorker {
 
     @LHTaskMethod("create-human-principal-in-dp-${data-plane-id}")
     public void createHumanPrincipalInDP(String lhPrincipalYML, String clusterName, String email) {
-        this.k8sClientGateway.createOrUpdateResource(clusterName, "LHPrincipal", email, lhPrincipalYML);
+        this.k8sClientGateway.createOrUpdateResource(clusterName, LHResources.LH_PRINCIPAL, email, lhPrincipalYML);
     }
 }

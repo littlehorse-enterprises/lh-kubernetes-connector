@@ -1,5 +1,6 @@
 package io.littlehorse.agentworker.workers;
 
+import io.littlehorse.agentworker.workers.gateways.K8sClientGateway;
 import io.littlehorse.sdk.worker.LHTaskMethod;
 
 public class LHTenantsWorker {
@@ -11,6 +12,6 @@ public class LHTenantsWorker {
 
     @LHTaskMethod("create-lh-tenant-in-dp-${data-plane-id}")
     public void createLhTenant(String clusterName, String tenantName, String lhTenantYML) {
-        this.k8sClientGateway.createOrUpdateResource(clusterName, "LHTenant", tenantName, lhTenantYML);
+        this.k8sClientGateway.createOrUpdateResource(clusterName, LHResources.LH_TENANT, tenantName, lhTenantYML);
     }
 }
