@@ -4,6 +4,7 @@ import dagger.Component;
 import io.littlehorse.agentworker.HealthController;
 import io.littlehorse.agentworker.workers.LHClustersWorker;
 import io.littlehorse.agentworker.workers.LHPrincipalsWorker;
+import io.littlehorse.agentworker.workers.LHTenantsWorker;
 import io.littlehorse.agentworker.workers.SecretsWorker;
 import io.littlehorse.sdk.common.config.LHConfig;
 import io.littlehorse.sdk.common.proto.LittleHorseGrpc;
@@ -23,4 +24,6 @@ public interface AgentWorkerComponent {
     LHClustersWorker getLHClustersWorker();
 
     LHPrincipalsWorker getLHPrincipalsWorker();
+
+    LHTenantsWorker getLHTenantsWorker();
 }
