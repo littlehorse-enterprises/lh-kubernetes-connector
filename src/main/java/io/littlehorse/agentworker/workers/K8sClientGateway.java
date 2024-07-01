@@ -3,38 +3,35 @@ package io.littlehorse.agentworker.workers;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.javalin.http.HttpStatus;
-import io.littlehorse.agentworker.Main;
-import io.littlehorse.sdk.worker.LHTaskMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LHTenantsWorker {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+public class K8sClientGateway {
+    private static final Logger logger = LoggerFactory.getLogger(K8sClientGateway.class);
     private final KubernetesClient k8sClient;
 
-    public LHTenantsWorker(KubernetesClient k8sClient) {
+    public K8sClientGateway(KubernetesClient k8sClient) {
         this.k8sClient = k8sClient;
     }
 
-    @LHTaskMethod("create-lh-tenant-in-dp-${data-plane-id}")
-    public void createLhTenant(String clusterName, String tenantName, String lhTenantYML) {
-
+    public void createOrUpdateResource(String clusterName, String crdName, String resourceName, String crdToBeApplied) {
         try {
-            logger.info("Trying to create/update a new LHTenant [{}] within Cluster: [{}]", tenantName, clusterName);
+            logger.info(
+                    "Trying to create/update a new [{}] [{}] within Cluster: [{}]", crdName, resourceName, clusterName);
 
-            this.k8sClient.resource(lhTenantYML).update();
+            this.k8sClient.resource(crdToBeApplied).update();
             logger.info("LHTenant updated successfully.");
         } catch (KubernetesClientException exn) {
             if (errorWithoutCode(exn) || !resourceNotFound(exn)) {
-                logger.error("An error occurred while updating LHPrincipal in k8s.", exn);
+                logger.error("An error occurred while updating [{}] in k8s.", crdName, exn);
                 throw exn;
             }
-            logger.info("Trying to create the LHPrincipal.");
+            logger.info("Trying to create the [{}].", crdName);
             try {
-                this.k8sClient.resource(lhTenantYML).create();
-                logger.info("LHPrincipal  created successfully.");
+                this.k8sClient.resource(crdToBeApplied).create();
+                logger.info("[{}]  created successfully.", crdName);
             } catch (KubernetesClientException e) {
-                logger.error("Error while creating LHPrincipal.", e);
+                logger.error("Error while creating [{}].", crdName, e);
                 throw e;
             }
         }

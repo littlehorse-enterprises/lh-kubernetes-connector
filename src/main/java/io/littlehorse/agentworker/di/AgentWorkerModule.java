@@ -5,10 +5,7 @@ import dagger.Provides;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.littlehorse.agentworker.HealthController;
-import io.littlehorse.agentworker.workers.LHClustersWorker;
-import io.littlehorse.agentworker.workers.LHPrincipalsWorker;
-import io.littlehorse.agentworker.workers.LHTenantsWorker;
-import io.littlehorse.agentworker.workers.SecretsWorker;
+import io.littlehorse.agentworker.workers.*;
 import io.littlehorse.sdk.common.config.LHConfig;
 import io.littlehorse.sdk.common.proto.LittleHorseGrpc;
 import javax.inject.Singleton;
@@ -61,5 +58,11 @@ public class AgentWorkerModule {
     @Singleton
     public LHTenantsWorker provideLHTenantWorker(KubernetesClient kubernetesClient) {
         return new LHTenantsWorker(kubernetesClient);
+    }
+
+    @Provides
+    @Singleton
+    public K8sClientGateway provideK8sClientGateway(KubernetesClient kubernetesClient) {
+        return new K8sClientGateway(kubernetesClient);
     }
 }
