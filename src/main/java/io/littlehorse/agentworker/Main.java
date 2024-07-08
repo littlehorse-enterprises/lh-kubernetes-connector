@@ -31,11 +31,6 @@ public class Main {
                         agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(
-                        agentWorkerComponent.getLHPrincipalsWorker(),
-                        "create-human-principal-in-dp-${data-plane-id}",
-                        agentWorkerComponent.getLhConfig(),
-                        Map.of("data-plane-id", dataPlaneId)),
-                new LHTaskWorker(
                         agentWorkerComponent.getSecretsWorker(),
                         "create-secret-for-lh-dashboard-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),
@@ -43,6 +38,11 @@ public class Main {
                 new LHTaskWorker(
                         agentWorkerComponent.getLHClustersWorker(),
                         "create-lh-cluster-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId)),
+                new LHTaskWorker(
+                        agentWorkerComponent.getLHPrincipalsWorker(),
+                        "create-principal-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(

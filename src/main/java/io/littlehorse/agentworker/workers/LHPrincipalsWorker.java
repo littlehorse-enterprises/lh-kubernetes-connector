@@ -10,8 +10,8 @@ public class LHPrincipalsWorker {
         this.k8sClientGateway = k8sClientGateway;
     }
 
-    @LHTaskMethod("create-human-principal-in-dp-${data-plane-id}")
-    public void createHumanPrincipalInDP(String lhPrincipalYML, String clusterName, String email) {
+    @LHTaskMethod("create-principal-in-dp-${data-plane-id}")
+    public void createPrincipalInDP(String lhPrincipalYML, String clusterName, String email) {
         this.k8sClientGateway.createOrUpdateResource(clusterName, LHResources.LH_PRINCIPAL, email, lhPrincipalYML);
     }
 }
