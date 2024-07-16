@@ -5,12 +5,10 @@ import lombok.Getter;
 @Getter
 public class ClusterHealthInfo {
     private ClusterStatus clusterStatus;
-    private int horsePower;
     private String errorDescription;
 
-    public ClusterHealthInfo(ClusterStatus clusterStatus, int horsepower) {
+    public ClusterHealthInfo(ClusterStatus clusterStatus) {
         this.clusterStatus = clusterStatus;
-        this.horsePower = horsepower;
     }
 
     public ClusterHealthInfo(ClusterStatus clusterStatus, String errorDescription) {

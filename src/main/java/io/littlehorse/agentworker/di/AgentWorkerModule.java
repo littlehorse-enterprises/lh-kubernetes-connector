@@ -45,8 +45,9 @@ public class AgentWorkerModule {
 
     @Provides
     @Singleton
-    public LHClustersWorker provideLHClustersWorker(K8sClientGateway k8sClientGateway) {
-        return new LHClustersWorker(k8sClientGateway);
+    public LHClustersWorker provideLHClustersWorker(
+            K8sClientGateway k8sClientGateway, LittleHorseGrpc.LittleHorseBlockingStub lhClient) {
+        return new LHClustersWorker(k8sClientGateway, lhClient);
     }
 
     @Provides
