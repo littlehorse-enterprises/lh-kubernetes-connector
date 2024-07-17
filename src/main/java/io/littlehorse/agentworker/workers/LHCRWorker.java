@@ -12,10 +12,10 @@ public class LHCRWorker {
     }
 
     @LHTaskMethod("create-resource-in-dp-${data-plane-id}")
-    public void createResourceInDP(String resourceType, String lhPrincipalYML, String clusterName, String email) {
+    public void createResourceInDP(String resourceType, String resourceYML, String clusterName, String resourceName) {
         try {
             LHResources lhResource = LHResources.valueOf(resourceType);
-            this.k8sClientGateway.createOrUpdateResource(clusterName, lhResource, email, lhPrincipalYML);
+            this.k8sClientGateway.createOrUpdateResource(clusterName, lhResource, resourceName, resourceYML);
         } catch (IllegalArgumentException e) {
             throw new LHTaskException("INVALID_RESOURCE_TYPE", "Invalid resource type: " + resourceType);
         }

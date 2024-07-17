@@ -52,12 +52,6 @@ public class AgentWorkerModule {
 
     @Provides
     @Singleton
-    public LHTenantsWorker provideLHTenantWorker(K8sClientGateway k8sClientGateway) {
-        return new LHTenantsWorker(k8sClientGateway);
-    }
-
-    @Provides
-    @Singleton
     public LHCRWorker provideLHCRWorker(K8sClientGateway k8sClientGateway) {
         return new LHCRWorker(k8sClientGateway);
     }
