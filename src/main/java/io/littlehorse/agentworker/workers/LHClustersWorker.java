@@ -47,6 +47,7 @@ public class LHClustersWorker {
         if (nonHealthyResources.isEmpty()) {
             return new ClusterHealthInfo(ClusterStatus.RUNNING);
         }
-        return new ClusterHealthInfo(ClusterStatus.UNHEALTHY, "Some of the resources needed for the LH Cluster failed to be deployed.");
+        return new ClusterHealthInfo(
+                ClusterStatus.UNHEALTHY, "Some of the resources needed for the LH Cluster failed to be deployed.");
     }
 }

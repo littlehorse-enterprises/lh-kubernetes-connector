@@ -46,11 +46,6 @@ public class Main {
                         agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(
-                        agentWorkerComponent.getLHPrincipalsWorker(),
-                        "create-principal-in-dp-${data-plane-id}",
-                        agentWorkerComponent.getLhConfig(),
-                        Map.of("data-plane-id", dataPlaneId)),
-                new LHTaskWorker(
                         agentWorkerComponent.getLHTenantsWorker(),
                         "create-lh-tenant-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),

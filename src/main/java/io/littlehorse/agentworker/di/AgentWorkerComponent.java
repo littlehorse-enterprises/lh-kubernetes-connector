@@ -22,7 +22,5 @@ public interface AgentWorkerComponent {
 
     LHClustersWorker getLHClustersWorker();
 
-    LHPrincipalsWorker getLHPrincipalsWorker();
-
     LHTenantsWorker getLHTenantsWorker();
 }
