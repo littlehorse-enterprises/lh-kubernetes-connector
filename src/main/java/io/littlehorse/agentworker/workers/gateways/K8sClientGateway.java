@@ -67,10 +67,6 @@ public class K8sClientGateway {
         return exn.getStatus() != null && exn.getStatus().getCode().equals(HttpStatus.BAD_REQUEST.getCode());
     }
 
-    private static boolean errorWithoutCode(KubernetesClientException exn) {
-        return exn.getCode() == -1;
-    }
-
     private static boolean resourceNotFound(KubernetesClientException exn) {
         return exn.getStatus() != null && exn.getStatus().getCode().equals(HttpStatus.NOT_FOUND.getCode());
     }
