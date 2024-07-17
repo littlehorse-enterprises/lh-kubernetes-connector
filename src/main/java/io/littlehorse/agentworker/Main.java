@@ -31,6 +31,11 @@ public class Main {
                         agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(
+                        agentWorkerComponent.getLHCRWorker(),
+                        "create-resource-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLhConfig(),
+                        Map.of("data-plane-id", dataPlaneId)),
+                new LHTaskWorker(
                         agentWorkerComponent.getSecretsWorker(),
                         "create-secret-for-lh-dashboard-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),
