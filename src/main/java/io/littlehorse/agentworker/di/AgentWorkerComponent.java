@@ -16,8 +16,6 @@ public interface AgentWorkerComponent {
 
     HealthController getHealthController();
 
-    SecretsWorker getSecretsWorker();
-
     LHCRWorker getLHCRWorker();
 
     LHClustersWorker getLHClustersWorker();
