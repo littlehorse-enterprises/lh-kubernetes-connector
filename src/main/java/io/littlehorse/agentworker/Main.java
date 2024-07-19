@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
-    private static final int REST_PORT = 9080;
-
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws IOException {
@@ -26,33 +24,18 @@ public class Main {
 
         startTaskWorkers(List.of(
                 new LHTaskWorker(
-                        agentWorkerComponent.getSecretsWorker(),
-                        "create-introspection-secret-for-cluster-in-dp-${data-plane-id}",
-                        agentWorkerComponent.getLhConfig(),
-                        Map.of("data-plane-id", dataPlaneId)),
-                new LHTaskWorker(
-                        agentWorkerComponent.getSecretsWorker(),
-                        "create-secret-for-lh-dashboard-in-dp-${data-plane-id}",
+                        agentWorkerComponent.getLHCRWorker(),
+                        "create-resource-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId)),
                 new LHTaskWorker(
                         agentWorkerComponent.getLHClustersWorker(),
                         "create-lh-cluster-in-dp-${data-plane-id}",
                         agentWorkerComponent.getLhConfig(),
-                        Map.of("data-plane-id", dataPlaneId)),
-                new LHTaskWorker(
-                        agentWorkerComponent.getLHPrincipalsWorker(),
-                        "create-principal-in-dp-${data-plane-id}",
-                        agentWorkerComponent.getLhConfig(),
-                        Map.of("data-plane-id", dataPlaneId)),
-                new LHTaskWorker(
-                        agentWorkerComponent.getLHTenantsWorker(),
-                        "create-lh-tenant-in-dp-${data-plane-id}",
-                        agentWorkerComponent.getLhConfig(),
                         Map.of("data-plane-id", dataPlaneId))));
     }
 
-    private static void startTaskWorkers(List<LHTaskWorker> lhWorkers) throws IOException {
+    private static void startTaskWorkers(List<LHTaskWorker> lhWorkers) {
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(() -> lhWorkers.forEach(worker -> {
                     logger.debug("Closing {}", worker.getTaskDefName());

@@ -39,26 +39,15 @@ public class AgentWorkerModule {
 
     @Provides
     @Singleton
-    public SecretsWorker provideSecretsWorker(KubernetesClient kubernetesClient) {
-        return new SecretsWorker(kubernetesClient);
+    public LHClustersWorker provideLHClustersWorker(
+            K8sClientGateway k8sClientGateway, LittleHorseGrpc.LittleHorseBlockingStub lhClient) {
+        return new LHClustersWorker(k8sClientGateway, lhClient);
     }
 
     @Provides
     @Singleton
-    public LHClustersWorker provideLHClustersWorker(K8sClientGateway k8sClientGateway) {
-        return new LHClustersWorker(k8sClientGateway);
-    }
-
-    @Provides
-    @Singleton
-    public LHPrincipalsWorker provideLHPrincipalsWorker(K8sClientGateway k8sClientGateway) {
-        return new LHPrincipalsWorker(k8sClientGateway);
-    }
-
-    @Provides
-    @Singleton
-    public LHTenantsWorker provideLHTenantWorker(K8sClientGateway k8sClientGateway) {
-        return new LHTenantsWorker(k8sClientGateway);
+    public LHCRWorker provideLHCRWorker(K8sClientGateway k8sClientGateway) {
+        return new LHCRWorker(k8sClientGateway);
     }
 
     @Provides
