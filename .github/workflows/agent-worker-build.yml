@@ -42,7 +42,7 @@ jobs:
           image-name: agent-worker
           dockerfile: Dockerfile
           registry: ecr
-          context: ./agent-worker
+          context: agent-worker
           tags: |
             type=sha,prefix=,format=short
             type=sha,prefix=,format=long
