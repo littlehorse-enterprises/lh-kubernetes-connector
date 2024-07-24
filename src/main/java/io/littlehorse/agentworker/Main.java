@@ -3,7 +3,6 @@ package io.littlehorse.agentworker;
 import io.littlehorse.agentworker.di.AgentWorkerComponent;
 import io.littlehorse.agentworker.di.DaggerAgentWorkerComponent;
 import io.littlehorse.sdk.worker.LHTaskWorker;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String dataPlaneId = System.getenv().get("AW_DATA_PLANE_ID");
 
         if (dataPlaneId == null || dataPlaneId.isEmpty()) {
