@@ -1,5 +1,6 @@
 package io.littlehorse.agentworker;
 
+import io.javalin.Javalin;
 import io.littlehorse.agentworker.di.AgentWorkerComponent;
 import io.littlehorse.agentworker.di.DaggerAgentWorkerComponent;
 import io.littlehorse.sdk.worker.LHTaskWorker;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final int REST_PORT = 8091;
 
     public static void main(String[] args) {
         String dataPlaneId = System.getenv().get("AW_DATA_PLANE_ID");
@@ -20,6 +22,11 @@ public class Main {
         }
 
         AgentWorkerComponent agentWorkerComponent = DaggerAgentWorkerComponent.create();
+
+        logger.info("Starting Javalin server on port {}", REST_PORT);
+        Javalin.create()
+                .get("/health", agentWorkerComponent.getHealthController()::liveness)
+                .start(REST_PORT);
 
         startTaskWorkers(List.of(
                 new LHTaskWorker(
