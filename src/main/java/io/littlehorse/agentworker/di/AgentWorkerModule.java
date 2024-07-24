@@ -27,8 +27,8 @@ public class AgentWorkerModule {
 
     @Provides
     @Singleton
-    public HealthController provideHealthController() {
-        return new HealthController();
+    public HealthController provideHealthController(LittleHorseGrpc.LittleHorseBlockingStub lhClient) {
+        return new HealthController(lhClient);
     }
 
     @Provides
