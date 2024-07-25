@@ -15,5 +15,5 @@ export AW_DATA_PLANE_ID=${YOUR_DATA_PLANE_ID}
     ```
 2. Run the Agent Worker
     ```shell
-    ./gradlew :agent-worker:run
+    ./gradlew run
     ```
