@@ -4,15 +4,16 @@ import lombok.Getter;
 
 @Getter
 public class ClusterHealthInfo {
-    private ClusterStatus clusterStatus;
-    private String errorDescription;
+    private final ClusterStatus clusterStatus;
+    private final String message;
 
     public ClusterHealthInfo(ClusterStatus clusterStatus) {
         this.clusterStatus = clusterStatus;
+        message = "";
     }
 
-    public ClusterHealthInfo(ClusterStatus clusterStatus, String errorDescription) {
+    public ClusterHealthInfo(ClusterStatus clusterStatus, String message) {
         this.clusterStatus = clusterStatus;
-        this.errorDescription = errorDescription;
+        this.message = message;
     }
 }
