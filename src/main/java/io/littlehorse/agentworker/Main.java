@@ -26,7 +26,7 @@ public class Main {
         logger.info("Starting Javalin server on port {}", REST_PORT);
         Javalin.create()
                 .get("/health", agentWorkerComponent.getHealthController()::liveness)
-                .start(REST_PORT);
+                .start("0.0.0.0", REST_PORT);
 
         startTaskWorkers(List.of(
                 new LHTaskWorker(
