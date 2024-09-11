@@ -29,7 +29,7 @@ public class LHClustersWorker {
                 horsepower,
                 dataPlaneId);
 
-        List<String> allResourcesToApply = Arrays.stream(lhClusterResourcesYml.split("\\-\\-\\-"))
+        List<String> allResourcesToApply = Arrays.stream(lhClusterResourcesYml.split("---"))
                 .filter(r -> !r.isEmpty())
                 .toList();
 
