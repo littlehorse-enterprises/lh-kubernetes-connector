@@ -4,10 +4,4 @@ Its main purpose is to process deployment tasks that are requested by the Dispat
 
 ## Running locally
 
-1. Run the dispatch server at
-   the [control plane repo](https://github.com/littlehorse-enterprises/lh-control-plane?tab=readme-ov-file#running-dispatch-service-locally)
-
-2. Run the Agent Worker
-    ```shell
-    ./localdev/do-agent.sh
-    ```
+Run the dispatch server at the [control plane repo](https://github.com/littlehorse-enterprises/lh-control-plane?tab=readme-ov-file#running-dispatch-service-locally)
