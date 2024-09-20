@@ -1,29 +1,27 @@
 package io.littlehorse.agentworker.workers;
 
 import io.littlehorse.agentworker.workers.gateways.K8sClientGateway;
-import io.littlehorse.sdk.common.proto.LittleHorseGrpc;
 import io.littlehorse.sdk.worker.LHTaskMethod;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class LHClustersWorker {
-    private static final Logger logger = LoggerFactory.getLogger(LHClustersWorker.class);
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class CreateClusterTask {
+    public static final String CREATE_LH_CLUSTER_IN_DP_DATA_PLANE_ID = "create-lh-cluster-in-dp-${data-plane-id}";
     private final K8sClientGateway k8sClientGateway;
-    private final LittleHorseGrpc.LittleHorseBlockingStub lhClient;
 
-    public LHClustersWorker(K8sClientGateway k8sClientGateway, LittleHorseGrpc.LittleHorseBlockingStub lhClient) {
+    public CreateClusterTask(K8sClientGateway k8sClientGateway) {
         this.k8sClientGateway = k8sClientGateway;
-        this.lhClient = lhClient;
     }
 
-    @LHTaskMethod("create-lh-cluster-in-dp-${data-plane-id}")
+    @LHTaskMethod(CREATE_LH_CLUSTER_IN_DP_DATA_PLANE_ID)
     public ClusterHealthInfo createLHCluster(
             String clusterName, int horsepower, String dataPlaneId, String lhClusterResourcesYml) {
 
-        logger.info(
+        log.info(
                 "Trying to create Cluster with name {} with {} HP into DataPlane: {}",
                 clusterName,
                 horsepower,
@@ -36,7 +34,7 @@ public class LHClustersWorker {
         List<ClusterHealthInfo> healthForAllClusterRelatedResources = new ArrayList<>();
 
         for (String resourceYML : allResourcesToApply) {
-            healthForAllClusterRelatedResources.add(this.k8sClientGateway.createOrUpdateResource(
+            healthForAllClusterRelatedResources.add(k8sClientGateway.createOrUpdateResource(
                     clusterName, LHResources.LH_CLUSTER, clusterName, resourceYML));
         }
 
