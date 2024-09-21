@@ -48,7 +48,7 @@ public class Main {
 
     private static void startTaskWorkers(HealthCheck healthCheck, LHTaskWorker... workers) {
         for (LHTaskWorker worker : workers) {
-            ShutdownHook.add("Stopping worker %s".formatted(worker.getTaskDefName()), worker);
+            ShutdownHook.add(worker.getTaskDefName(), worker);
             healthCheck.add(worker);
             worker.registerTaskDef();
             worker.start();
