@@ -1,5 +1,8 @@
 package io.littlehorse.agentworker;
 
+import static io.littlehorse.agentworker.workers.ApplyYamlTask.CREATE_RESOURCE_IN_DP_DATA_PLANE_ID;
+import static io.littlehorse.agentworker.workers.CreateClusterTask.CREATE_LH_CLUSTER_IN_DP_DATA_PLANE_ID;
+
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.littlehorse.agentworker.config.AgentWorkerConfig;
@@ -11,19 +14,14 @@ import io.littlehorse.agentworker.workers.CreateClusterTask;
 import io.littlehorse.agentworker.workers.gateways.K8sClientGateway;
 import io.littlehorse.sdk.common.config.LHConfig;
 import io.littlehorse.sdk.worker.LHTaskWorker;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Map;
-
-import static io.littlehorse.agentworker.workers.ApplyYamlTask.CREATE_RESOURCE_IN_DP_DATA_PLANE_ID;
-import static io.littlehorse.agentworker.workers.CreateClusterTask.CREATE_LH_CLUSTER_IN_DP_DATA_PLANE_ID;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Main {
 
     public static void main(String[] args) {
-        ConfigLoader configLoader = new ConfigLoader();
-        AgentWorkerConfig config = configLoader.getConfig();
+        AgentWorkerConfig config = ConfigLoader.getConfig();
         LHConfig lhConfig = new LHConfig();
         HealthCheck healthCheck = new HealthCheck(config.restPort());
 
@@ -32,10 +30,7 @@ public class Main {
 
         Map<String, String> dataPlaneConfig = Map.of("data-plane-id", config.dataPlaneId());
         LHTaskWorker applyYamlTask = new LHTaskWorker(
-                new ApplyYamlTask(k8sClientGateway),
-                CREATE_RESOURCE_IN_DP_DATA_PLANE_ID,
-                lhConfig,
-                dataPlaneConfig);
+                new ApplyYamlTask(k8sClientGateway), CREATE_RESOURCE_IN_DP_DATA_PLANE_ID, lhConfig, dataPlaneConfig);
 
         LHTaskWorker createClusterTask = new LHTaskWorker(
                 new CreateClusterTask(k8sClientGateway),

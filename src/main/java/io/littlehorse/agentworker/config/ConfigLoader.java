@@ -4,8 +4,7 @@ import io.smallrye.config.SmallRyeConfig;
 import io.smallrye.config.SmallRyeConfigBuilder;
 
 public class ConfigLoader {
-
-    private final SmallRyeConfig config;
+    private ConfigLoader() {}
 
     /**
      * Loads properties in this order:
@@ -13,17 +12,15 @@ public class ConfigLoader {
      * 2. Environment variables
      * 3. System properties
      */
-    public ConfigLoader() {
-        config = new SmallRyeConfigBuilder()
-                .addDefaultInterceptors()
-                .addDefaultSources()
-                .addDiscoveredSources()
-                .addDiscoveredInterceptors()
-                .withMapping(AgentWorkerConfig.class)
-                .build();
-    }
+    public static final SmallRyeConfig CONFIG_ENGINE = new SmallRyeConfigBuilder()
+            .addDefaultInterceptors()
+            .addDefaultSources()
+            .addDiscoveredSources()
+            .addDiscoveredInterceptors()
+            .withMapping(AgentWorkerConfig.class)
+            .build();
 
-    public AgentWorkerConfig getConfig() {
-        return config.getConfigMapping(AgentWorkerConfig.class);
+    public static AgentWorkerConfig getConfig() {
+        return CONFIG_ENGINE.getConfigMapping(AgentWorkerConfig.class);
     }
 }
