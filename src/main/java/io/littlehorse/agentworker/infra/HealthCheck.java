@@ -40,10 +40,6 @@ public class HealthCheck {
 
     public void health(Context context) {
         boolean isHealthy = workers.stream().allMatch(HealthCheck::isHealthy);
-
-        context.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        if (isHealthy) {
-            context.status(HttpStatus.OK);
-        }
+        context.status(isHealthy? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
