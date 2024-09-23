@@ -1,56 +1,52 @@
 package io.littlehorse.agentworker;
 
-import io.javalin.Javalin;
-import io.littlehorse.agentworker.di.AgentWorkerComponent;
-import io.littlehorse.agentworker.di.DaggerAgentWorkerComponent;
-import io.littlehorse.sdk.worker.LHTaskWorker;
-import java.util.List;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static io.littlehorse.agentworker.workers.ApplyYamlTask.CREATE_RESOURCE_IN_DP_DATA_PLANE_ID;
+import static io.littlehorse.agentworker.workers.CreateClusterTask.CREATE_LH_CLUSTER_IN_DP_DATA_PLANE_ID;
 
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.littlehorse.agentworker.config.AgentWorkerConfig;
+import io.littlehorse.agentworker.config.ConfigLoader;
+import io.littlehorse.agentworker.infra.HealthCheck;
+import io.littlehorse.agentworker.infra.ShutdownHook;
+import io.littlehorse.agentworker.workers.ApplyYamlTask;
+import io.littlehorse.agentworker.workers.CreateClusterTask;
+import io.littlehorse.agentworker.workers.gateways.K8sClientGateway;
+import io.littlehorse.sdk.common.config.LHConfig;
+import io.littlehorse.sdk.worker.LHTaskWorker;
+import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final int REST_PORT = 8091;
 
     public static void main(String[] args) {
-        String dataPlaneId = System.getenv().get("AW_DATA_PLANE_ID");
+        AgentWorkerConfig config = ConfigLoader.getConfig();
+        LHConfig lhConfig = new LHConfig();
+        HealthCheck healthCheck = new HealthCheck(config.restPort());
 
-        if (dataPlaneId == null || dataPlaneId.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "You must provide the AW_DATA_PLANE_ID environment variable for the Agent Worker to work properly.");
-        }
+        KubernetesClient kubernetesClient = new KubernetesClientBuilder().build();
+        K8sClientGateway k8sClientGateway = new K8sClientGateway(kubernetesClient);
 
-        AgentWorkerComponent agentWorkerComponent = DaggerAgentWorkerComponent.create();
+        Map<String, String> dataPlaneConfig = Map.of("data-plane-id", config.dataPlaneId());
+        LHTaskWorker applyYamlTask = new LHTaskWorker(
+                new ApplyYamlTask(k8sClientGateway), CREATE_RESOURCE_IN_DP_DATA_PLANE_ID, lhConfig, dataPlaneConfig);
 
-        logger.info("Starting Javalin server on port {}", REST_PORT);
-        Javalin.create()
-                .get("/health", agentWorkerComponent.getHealthController()::liveness)
-                .start("0.0.0.0", REST_PORT);
+        LHTaskWorker createClusterTask = new LHTaskWorker(
+                new CreateClusterTask(k8sClientGateway),
+                CREATE_LH_CLUSTER_IN_DP_DATA_PLANE_ID,
+                lhConfig,
+                dataPlaneConfig);
 
-        startTaskWorkers(List.of(
-                new LHTaskWorker(
-                        agentWorkerComponent.getLHCRWorker(),
-                        "create-resource-in-dp-${data-plane-id}",
-                        agentWorkerComponent.getLhConfig(),
-                        Map.of("data-plane-id", dataPlaneId)),
-                new LHTaskWorker(
-                        agentWorkerComponent.getLHClustersWorker(),
-                        "create-lh-cluster-in-dp-${data-plane-id}",
-                        agentWorkerComponent.getLhConfig(),
-                        Map.of("data-plane-id", dataPlaneId))));
+        startTaskWorkers(healthCheck, applyYamlTask, createClusterTask);
     }
 
-    private static void startTaskWorkers(List<LHTaskWorker> lhWorkers) {
-        Runtime.getRuntime()
-                .addShutdownHook(new Thread(() -> lhWorkers.forEach(worker -> {
-                    logger.debug("Closing {}", worker.getTaskDefName());
-                    worker.close();
-                })));
-
-        for (LHTaskWorker lhWorker : lhWorkers) {
-            lhWorker.registerTaskDef();
-            lhWorker.start();
+    private static void startTaskWorkers(HealthCheck healthCheck, LHTaskWorker... workers) {
+        for (LHTaskWorker worker : workers) {
+            ShutdownHook.add(worker.getTaskDefName(), worker);
+            healthCheck.add(worker);
+            worker.registerTaskDef();
+            worker.start();
         }
     }
 }

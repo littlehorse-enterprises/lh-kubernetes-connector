@@ -1,10 +1,8 @@
 plugins {
     id 'java'
     id 'application'
-    id 'io.freefair.lombok' version '8.6'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'com.diffplug.spotless' version '6.24.0'
-    id 'jacoco'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group 'io.littlehorse'
@@ -29,9 +27,10 @@ shadowJar {
     mergeServiceFiles()
 }
 
-def fabric8Version='6.13.+'
-def log4jVersion='2.23.1'
-def daggerVersion='2.52'
+def fabric8Version='6.13.3'
+def log4jVersion='2.24.0'
+def lombokVersion='1.18.34'
+def smallryeConfigVersion='3.9.1'
 
 dependencies {
     // Javalin
@@ -40,22 +39,28 @@ dependencies {
 
     // Logging
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
-    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:2.22.1"
+    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
 
     // LittleHorse
     implementation 'io.littlehorse:littlehorse-client:0.11.2'
 
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
-    testImplementation 'org.assertj:assertj-core:3.26.+'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
     testImplementation 'org.mockito:mockito-core:5.13.0'
-
-    // Dependency Injection
-    implementation "com.google.dagger:dagger:${daggerVersion}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
 
     // k8s clients
     implementation "io.fabric8:kubernetes-client:${fabric8Version}"
+
+    // Configurations
+    implementation "io.smallrye.config:smallrye-config:${smallryeConfigVersion}"
+    implementation "io.smallrye.config:smallrye-config-source-yaml:${smallryeConfigVersion}"
+
+    // lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
 application {
@@ -67,23 +72,6 @@ test {
     testLogging {
         events 'passed', 'skipped', 'failed'
         exceptionFormat = 'full'
-    }
-    finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
-        csv.required = true
-        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
-    }
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "**/proto/**"
-            ])
-        }))
     }
 }
 
