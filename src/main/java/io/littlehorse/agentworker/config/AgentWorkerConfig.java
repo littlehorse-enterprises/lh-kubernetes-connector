@@ -6,7 +6,7 @@ import io.smallrye.config.WithDefault;
 @ConfigMapping(prefix = "aw")
 public interface AgentWorkerConfig {
 
-    String dataPlaneId();
+    String clusterId();
 
     @WithDefault("8091")
     int restPort();

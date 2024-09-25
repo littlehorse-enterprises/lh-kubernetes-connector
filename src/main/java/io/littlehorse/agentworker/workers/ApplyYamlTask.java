@@ -1,24 +1,39 @@
 package io.littlehorse.agentworker.workers;
 
-import io.littlehorse.agentworker.workers.gateways.K8sClientGateway;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.littlehorse.sdk.common.exception.LHTaskException;
 import io.littlehorse.sdk.worker.LHTaskMethod;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ApplyYamlTask {
-    public static final String CREATE_RESOURCE_IN_DP_DATA_PLANE_ID = "create-resource-in-dp-${data-plane-id}";
-    private final K8sClientGateway k8sClientGateway;
+    public static final String CREATE_RESOURCE = "create-resource-${cluster-id}";
+    private final KubernetesClient kubernetesClient;
+    private static final String K8S_ALREADY_EXISTS_ERROR_CODE = "AlreadyExists";
 
-    public ApplyYamlTask(K8sClientGateway k8sClientGateway) {
-        this.k8sClientGateway = k8sClientGateway;
+    public ApplyYamlTask(KubernetesClient kubernetesClient) {
+        this.kubernetesClient = kubernetesClient;
     }
 
-    @LHTaskMethod(CREATE_RESOURCE_IN_DP_DATA_PLANE_ID)
-    public void createResourceInDP(String resourceType, String resourceYML, String clusterName, String resourceName) {
+    @LHTaskMethod(CREATE_RESOURCE)
+    public void createOrUpdateResource(String resourceYaml) {
         try {
-            LHResources lhResource = LHResources.valueOf(resourceType);
-            k8sClientGateway.createOrUpdateResource(clusterName, lhResource, resourceName, resourceYML);
-        } catch (IllegalArgumentException e) {
-            throw new LHTaskException("INVALID_RESOURCE_TYPE", "Invalid resource type: " + resourceType);
+            HasMetadata createdResource = kubernetesClient.resource(resourceYaml).create();
+            log.info("Resource {} successfully created.", createdResource.getMetadata().getName());
+        } catch (KubernetesClientException e) {
+            log.warn("K8s Exception caught: {}", e.getMessage());
+
+            if (e.getStatus().getReason().equalsIgnoreCase(K8S_ALREADY_EXISTS_ERROR_CODE)) {
+                HasMetadata updatedResource = kubernetesClient.resource(resourceYaml).update();
+
+                log.info("Resource {} successfully updated.", updatedResource.getMetadata().getName());
+            } else {
+                throw new LHTaskException("K8s Exception", e.getMessage());
+            }
+        } catch (Exception e) {
+            throw new LHTaskException("Unknown Exception in Agent", e.getMessage());
         }
     }
 }
