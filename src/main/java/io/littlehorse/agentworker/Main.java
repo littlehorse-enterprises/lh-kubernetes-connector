@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
-import static io.littlehorse.agentworker.workers.ApplyYamlTask.CREATE_RESOURCE;
+import static io.littlehorse.agentworker.workers.ApplyYamlTask.CREATE_OR_UPDATE_RESOURCE;
 
 @Slf4j
 public class Main {
@@ -24,7 +24,7 @@ public class Main {
         HealthCheck healthCheck = new HealthCheck(config.restPort());
         KubernetesClient kubernetesClient = new KubernetesClientBuilder().build();
 
-        LHTaskWorker applyYamlTask = new LHTaskWorker(new ApplyYamlTask(kubernetesClient), CREATE_RESOURCE, lhConfig,
+        LHTaskWorker applyYamlTask = new LHTaskWorker(new ApplyYamlTask(kubernetesClient), CREATE_OR_UPDATE_RESOURCE, lhConfig,
                 Map.of("cluster-id", config.clusterId()));
 
         startTaskWorkers(healthCheck, applyYamlTask);
