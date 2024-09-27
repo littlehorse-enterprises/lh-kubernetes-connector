@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ApplyYamlTask {
-    public static final String CREATE_OR_UPDATE_RESOURCE = "create-or-update-resource-${cluster-id}";
+    public static final String CREATE_OR_UPDATE_RESOURCE = "create-or-update-resource-${k8s-cluster-id}";
     private final KubernetesClient kubernetesClient;
     private static final String K8S_ALREADY_EXISTS_ERROR_CODE = "AlreadyExists";
 

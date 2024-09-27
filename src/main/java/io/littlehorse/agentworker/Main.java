@@ -25,7 +25,7 @@ public class Main {
         KubernetesClient kubernetesClient = new KubernetesClientBuilder().build();
 
         LHTaskWorker applyYamlTask = new LHTaskWorker(new ApplyYamlTask(kubernetesClient), CREATE_OR_UPDATE_RESOURCE, lhConfig,
-                Map.of("cluster-id", config.clusterId()));
+                Map.of("k8s-cluster-id", config.k8sClusterId()));
 
         startTaskWorkers(healthCheck, applyYamlTask);
     }
