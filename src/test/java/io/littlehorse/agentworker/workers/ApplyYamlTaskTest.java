@@ -1,5 +1,14 @@
 package io.littlehorse.agentworker.workers;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -17,15 +26,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings({"unchecked", "rawtypes"})
 class ApplyYamlTaskTest {
@@ -36,7 +36,7 @@ class ApplyYamlTaskTest {
 
     @BeforeEach
     void init() {
-        subject  = new ApplyYamlTask(kubernetesClient);
+        subject = new ApplyYamlTask(kubernetesClient);
     }
 
     @Test
@@ -44,7 +44,8 @@ class ApplyYamlTaskTest {
         HasMetadata somePod = new Pod();
         somePod.setMetadata(new ObjectMeta());
         NamespaceableResourceAdapter resourceAdapter = mock(NamespaceableResourceAdapter.class);
-        String resourceYaml = """
+        String resourceYaml =
+                """
                 apiVersion: v1
                 kind: Pod
                 metadata:
@@ -72,7 +73,8 @@ class ApplyYamlTaskTest {
         HasMetadata someDeployment = new Deployment();
         someDeployment.setMetadata(new ObjectMeta());
         NamespaceableResourceAdapter resourceAdapter = mock(NamespaceableResourceAdapter.class);
-        String resourceYaml = """
+        String resourceYaml =
+                """
                 apiVersion: apps/v1
                 kind: Deployment
                 metadata:
@@ -98,8 +100,8 @@ class ApplyYamlTaskTest {
                               path: /health
                               port: 8091
                 """;
-        Status exceptionStatus = new Status("v1", 409, new StatusDetails(), "Pod",
-                "some-error-message", new ListMeta(), "AlreadyExists", "409");
+        Status exceptionStatus = new Status(
+                "v1", 409, new StatusDetails(), "Pod", "some-error-message", new ListMeta(), "AlreadyExists", "409");
 
         when(kubernetesClient.resource(resourceYaml)).thenReturn(resourceAdapter);
         when(resourceAdapter.create()).thenThrow(new KubernetesClientException(exceptionStatus));
@@ -117,7 +119,8 @@ class ApplyYamlTaskTest {
         HasMetadata somePod = new Pod();
         somePod.setMetadata(new ObjectMeta());
         NamespaceableResourceAdapter resourceAdapter = mock(NamespaceableResourceAdapter.class);
-        String resourceYaml = """
+        String resourceYaml =
+                """
                 apiVersion: v1
                 kind: Pod
                 metadata:
@@ -129,14 +132,14 @@ class ApplyYamlTaskTest {
                       command: ["/bin/sh", "-c"]
                       args: ["tail -f /dev/null"]
                 """;
-        Status exceptionStatus = new Status("v1", 409, new StatusDetails(), "Pod",
-                "some-error-message", new ListMeta(), "UnknownField", "409");
-
+        Status exceptionStatus = new Status(
+                "v1", 409, new StatusDetails(), "Pod", "some-error-message", new ListMeta(), "UnknownField", "409");
 
         when(kubernetesClient.resource(resourceYaml)).thenReturn(resourceAdapter);
         when(resourceAdapter.create()).thenThrow(new KubernetesClientException(exceptionStatus));
 
-        LHTaskException thrownException = assertThrows(LHTaskException.class, () -> subject.createOrUpdateResource(resourceYaml));
+        LHTaskException thrownException =
+                assertThrows(LHTaskException.class, () -> subject.createOrUpdateResource(resourceYaml));
 
         String expectedK8sExceptionName = "K8s Exception";
 
@@ -152,7 +155,8 @@ class ApplyYamlTaskTest {
         HasMetadata somePod = new Pod();
         somePod.setMetadata(new ObjectMeta());
         NamespaceableResourceAdapter resourceAdapter = mock(NamespaceableResourceAdapter.class);
-        String resourceYaml = """
+        String resourceYaml =
+                """
                 apiVersion: v1
                 kind: Pod
                 metadata:
@@ -168,7 +172,8 @@ class ApplyYamlTaskTest {
         when(kubernetesClient.resource(resourceYaml)).thenReturn(resourceAdapter);
         when(resourceAdapter.create()).thenThrow(new RuntimeException());
 
-        LHTaskException thrownException = assertThrows(LHTaskException.class, () -> subject.createOrUpdateResource(resourceYaml));
+        LHTaskException thrownException =
+                assertThrows(LHTaskException.class, () -> subject.createOrUpdateResource(resourceYaml));
 
         String expectedK8sExceptionName = "Unknown Exception in Agent";
 
@@ -178,5 +183,4 @@ class ApplyYamlTaskTest {
         verify(resourceAdapter).create();
         verify(resourceAdapter, never()).update();
     }
-
 }

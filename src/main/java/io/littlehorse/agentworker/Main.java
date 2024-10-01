@@ -1,5 +1,7 @@
 package io.littlehorse.agentworker;
 
+import static io.littlehorse.agentworker.workers.ApplyYamlTask.CREATE_OR_UPDATE_RESOURCE;
+
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.littlehorse.agentworker.config.AgentWorkerConfig;
@@ -9,11 +11,8 @@ import io.littlehorse.agentworker.infra.ShutdownHook;
 import io.littlehorse.agentworker.workers.ApplyYamlTask;
 import io.littlehorse.sdk.common.config.LHConfig;
 import io.littlehorse.sdk.worker.LHTaskWorker;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Map;
-
-import static io.littlehorse.agentworker.workers.ApplyYamlTask.CREATE_OR_UPDATE_RESOURCE;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Main {
@@ -24,7 +23,10 @@ public class Main {
         HealthCheck healthCheck = new HealthCheck(config.restPort());
         KubernetesClient kubernetesClient = new KubernetesClientBuilder().build();
 
-        LHTaskWorker applyYamlTask = new LHTaskWorker(new ApplyYamlTask(kubernetesClient), CREATE_OR_UPDATE_RESOURCE, lhConfig,
+        LHTaskWorker applyYamlTask = new LHTaskWorker(
+                new ApplyYamlTask(kubernetesClient),
+                CREATE_OR_UPDATE_RESOURCE,
+                lhConfig,
                 Map.of("k8s-cluster-id", config.k8sClusterId()));
 
         startTaskWorkers(healthCheck, applyYamlTask);
