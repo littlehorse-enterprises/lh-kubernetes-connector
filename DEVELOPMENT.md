@@ -5,12 +5,24 @@
 <!-- TOC -->
 * [Development](#development)
   * [Table of Content](#table-of-content)
+  * [Commands](#commands)
   * [Setup](#setup)
-  * [Run](#run)
+  * [Run Connector](#run-connector)
   * [Unit Tests](#unit-tests)
   * [Apply Code Style](#apply-code-style)
   * [Interesting Links](#interesting-links)
 <!-- TOC -->
+
+## Commands
+
+- Kubernetes:
+  - [kind](https://kind.sigs.k8s.io/)
+  - [kubectl](https://kubernetes.io/docs/reference/kubectl/)
+  - [kubectx](https://kubectx.org/)
+- Java:
+  - [java](https://sdkman.io/jdks/amzn/)
+  - [sdk](https://sdkman.io/)
+  - [quarkus](https://sdkman.io/sdks/quarkus/)
 
 ## Setup
 
@@ -20,10 +32,72 @@ Install pre-commit hooks:
 pre-commit install
 ```
 
-## Run
+Run local env with Kind and LittleHorse server:
 
 ```shell
-./gradlew quarkusDev
+./local-dev/setup.sh
+```
+
+> Clean `./local-dev/setup.sh --clean`
+
+## Run Connector
+
+Run connector in `dev` profile:
+
+```shell
+quarkus dev
+```
+
+> `quarkus run` for `prod` profile
+
+Check workflow:
+
+```shell
+lhctl search wfSpec
+```
+
+Check connector task:
+
+```shell
+lhctl search taskDef
+```
+
+Run example workflow:
+
+```shell
+lhctl run kubernetes-connector-example inputYaml "
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+"
+```
+
+List deployments:
+
+```shell
+kubectl get deployments
+```
+
+List pods
+
+```shell
+kubectl get pods
 ```
 
 ## Unit Tests

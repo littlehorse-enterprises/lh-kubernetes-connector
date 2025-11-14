@@ -127,7 +127,7 @@ Optional version identifier. Intended to be informative. Useful when you're runn
 
 ## LittleHorse Kubernetes Connector
 
-``littlehorse.kubernetes.connector.name``
+``littlehorse.connector.kubernetes.task.name``
 Defines the name of the connector task at LittleHorse Server.
 
 * Type: string

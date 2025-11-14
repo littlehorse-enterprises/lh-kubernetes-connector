@@ -61,3 +61,9 @@ spotless {
         palantirJavaFormat().style("AOSP")
     }
 }
+
+checkstyle {
+    configFile = file("${rootDir}/checkstyle.xml")
+    checkstyleTest.enabled = false
+    checkstyleIntegrationTest.enabled = false
+}

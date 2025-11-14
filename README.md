@@ -22,7 +22,7 @@ For development instructions go to [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Configurations
 
-For the configurations list go to [CONFIGURATIONS.md](CONFIGURATIONS.md).
+For the list of configurations go to [CONFIGURATIONS.md](CONFIGURATIONS.md).
 
 ## License
 
