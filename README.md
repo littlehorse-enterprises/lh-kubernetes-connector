@@ -12,12 +12,17 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
 * [LittleHorse Kubernetes Connector](#littlehorse-kubernetes-connector)
   * [Table of Content](#table-of-content)
   * [Development](#development)
+  * [Configurations](#configurations)
   * [License](#license)
 <!-- TOC -->
 
 ## Development
 
 For development instructions go to [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Configurations
+
+For the configurations list go to [CONFIGURATIONS.md](CONFIGURATIONS.md).
 
 ## License
 

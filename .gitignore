@@ -1,19 +1,42 @@
-# Ignore binary and build stuff
-.gradle
-app/build
-app/bin/
-build
+# Gradle
+.gradle/
+build/
 
-# Ignore IntelliJ Idea stuff
-.idea
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# NetBeans
+nb-configuration.xml
+
+# Visual Studio Code
 .vscode
+.factorypath
 
-# Emacs-related stuff
-*\#
-*~
-
-# Others
-.env
+# OSX
 .DS_Store
 
-## Poetry dist
+# Vim
+*.swp
+*.swo
+
+# patch
+*.orig
+*.rej
+
+# Local environment
+.env
+
+# Plugin directory
+.quarkus/
+
+# TLS Certificates
+.certs/
