@@ -2,10 +2,10 @@ package io.littlehorse.connector.task;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.littlehorse.connector.config.ConnectorConfig;
+import io.littlehorse.connector.exception.BadRequestException;
 import io.littlehorse.connector.service.KubernetesService;
 import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 import io.littlehorse.quarkus.task.LHTask;
-import io.littlehorse.sdk.common.exception.LHTaskException;
 import io.littlehorse.sdk.worker.LHTaskMethod;
 import io.littlehorse.sdk.worker.WorkerContext;
 import io.quarkus.arc.properties.IfBuildProperty;
@@ -25,7 +25,7 @@ public class ApplyTask {
             service.apply(yaml);
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isBadRequestException(e)) {
-                throw new LHTaskException("bad-request", e.getMessage());
+                throw new BadRequestException(e);
             }
             throw e;
         }
