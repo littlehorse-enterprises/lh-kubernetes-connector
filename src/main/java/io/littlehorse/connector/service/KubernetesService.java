@@ -5,7 +5,6 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.littlehorse.connector.task.ApplyTask;
 
@@ -26,62 +25,6 @@ public class KubernetesService {
         this.client = client;
     }
 
-    //
-    //    public Boolean isReady(){
-    //        return
-    // client.genericKubernetesResources("","").inNamespace("").withName("").isReady();
-    //    }
-    //
-    //    public Stream<PodStatus> getPodListStatus(){
-    //        return client.pods().inNamespace("")
-    //                .withLabelSelector("").list()
-    //                .getItems().stream().map(Pod::getStatus);
-    //    }
-    //
-    //    public PodStatus getPodStatus(){
-    //        return client.pods().inNamespace("")
-    //                .withName("")
-    //                .get().getStatus();
-    //    }
-    /**
-     * Save (create/update) a secret.
-     *
-     * @param secret Secret to be saved.
-     */
-    public void save(final Secret secret) {
-        final Resource<Secret> resource = client.secrets().resource(secret);
-
-        try {
-            logSuccess(resource.create());
-        } catch (final KubernetesClientException e) {
-            if (isAlreadyExistsException(e)) {
-                logSuccess(resource.update());
-                return;
-            }
-            throw e;
-        }
-    }
-
-    /**
-     * Manifest to be applied.
-     * If the manifest does not provide a namespace the service will use the default one.
-     *
-     * @param yaml Manifest yaml file.
-     */
-    public void apply(final String yaml) {
-        final NamespaceableResource<HasMetadata> resource = client.resource(yaml);
-
-        try {
-            logSuccess(resource.create());
-        } catch (final KubernetesClientException e) {
-            if (isAlreadyExistsException(e)) {
-                logSuccess(resource.update());
-                return;
-            }
-            throw e;
-        }
-    }
-
     private static boolean isAlreadyExistsException(final KubernetesClientException e) {
         return Optional.ofNullable(e.getStatus())
                 .map(Status::getReason)
@@ -95,5 +38,41 @@ public class KubernetesService {
                 resource.getKind(),
                 resource.getMetadata().getName(),
                 resource.getMetadata().getNamespace());
+    }
+
+    /**
+     * Save (create/update) a secret.
+     *
+     * @param secret Secret to be saved.
+     */
+    public void save(final Secret secret) {
+        apply(client.secrets().resource(secret));
+    }
+
+    /**
+     * Manifest to be applied.
+     * If the manifest does not provide a namespace the service will use the default one.
+     *
+     * @param yaml Manifest yaml file.
+     */
+    public void apply(final String yaml) {
+        apply(client.resource(yaml));
+    }
+
+    /**
+     * Resource to be applied.
+     *
+     * @param resource Any resource.
+     */
+    public void apply(final Resource<? extends HasMetadata> resource) {
+        try {
+            logSuccess(resource.create());
+        } catch (final KubernetesClientException e) {
+            if (isAlreadyExistsException(e)) {
+                logSuccess(resource.update());
+                return;
+            }
+            throw e;
+        }
     }
 }
