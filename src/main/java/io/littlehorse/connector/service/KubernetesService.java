@@ -4,12 +4,11 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.littlehorse.connector.config.ConnectorConfig;
-import io.littlehorse.connector.task.ConnectorTask;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
+import io.littlehorse.connector.task.ApplyTask;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,16 +17,11 @@ import java.util.Optional;
 @ApplicationScoped
 public class KubernetesService {
     private static final String ALREADY_EXISTS_ERROR_CODE = "AlreadyExists";
-    private static Logger log = LoggerFactory.getLogger(ConnectorTask.class);
+    private static Logger log = LoggerFactory.getLogger(ApplyTask.class);
     private final KubernetesClient client;
-    private final String defaultNamespace;
 
-    public KubernetesService(
-            final KubernetesClient client,
-            @ConfigProperty(name = ConnectorConfig.DEFAULT_NAMESPACE)
-                    final String defaultNamespace) {
+    public KubernetesService(final KubernetesClient client) {
         this.client = client;
-        this.defaultNamespace = defaultNamespace;
     }
 
     //    public void createSecret(Secret secret){
@@ -53,32 +47,40 @@ public class KubernetesService {
     //                .get().getStatus();
     //    }
 
+    /**
+     * Manifest to be applied.
+     * If the manifest does not provide a namespace the service will use the default one.
+     *
+     * @param yaml Manifest yaml file.
+     */
     public void apply(final String yaml) {
-        apply(defaultNamespace, yaml);
-    }
+        final NamespaceableResource<HasMetadata> resource = client.resource(yaml);
 
-    public void apply(final String namespace, final String yaml) {
         try {
-            final HasMetadata metadata =
-                    client.resource(yaml).inNamespace(namespace).create();
+            final HasMetadata createdResource = resource.create();
             log.info(
-                    "Resource '{}/{}' successfully created",
-                    metadata.getKind(),
-                    metadata.getMetadata().getName());
+                    "Resource '{}/{}' successfully created in namespace '{}'",
+                    createdResource.getKind(),
+                    createdResource.getMetadata().getName(),
+                    createdResource.getMetadata().getNamespace());
         } catch (final KubernetesClientException e) {
-            if (Optional.ofNullable(e.getStatus())
-                    .map(Status::getReason)
-                    .orElseThrow(() -> e)
-                    .equals(ALREADY_EXISTS_ERROR_CODE)) {
-                final HasMetadata updatedResource =
-                        client.resource(yaml).inNamespace(namespace).update();
+            if (isAlreadyExistsException(e)) {
+                final HasMetadata updatedResource = resource.update();
                 log.info(
-                        "Resource '{}/{}' successfully updated",
+                        "Resource '{}/{}' successfully updated namespace '{}'",
                         updatedResource.getKind(),
-                        updatedResource.getMetadata().getName());
+                        updatedResource.getMetadata().getName(),
+                        updatedResource.getMetadata().getNamespace());
                 return;
             }
             throw e;
         }
+    }
+
+    private static boolean isAlreadyExistsException(final KubernetesClientException e) {
+        return Optional.ofNullable(e.getStatus())
+                .map(Status::getReason)
+                .map(reason -> reason.equals(ALREADY_EXISTS_ERROR_CODE))
+                .orElse(false);
     }
 }

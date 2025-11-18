@@ -13,12 +13,12 @@ import org.slf4j.LoggerFactory;
 
 @LHTask
 @IfBuildProperty(name = ConnectorConfig.TASK_APPLY_ENABLED, stringValue = "true")
-public class ConnectorTask {
-    private static Logger log = LoggerFactory.getLogger(ConnectorTask.class);
+public class ApplyTask {
+    private static Logger log = LoggerFactory.getLogger(ApplyTask.class);
     private final String connectorTaskName;
     private final KubernetesService service;
 
-    public ConnectorTask(
+    public ApplyTask(
             @ConfigProperty(name = ConnectorConfig.TASK_APPLY_NAME) final String connectorTaskName,
             final KubernetesService service) {
         this.connectorTaskName = connectorTaskName;
