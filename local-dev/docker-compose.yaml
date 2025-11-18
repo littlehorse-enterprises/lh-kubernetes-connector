@@ -6,6 +6,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    restart: unless-stopped
     ports:
       - "2023:2023" # LittleHorse Port
       - "8080:8080" # LittleHorse Dashboard Port

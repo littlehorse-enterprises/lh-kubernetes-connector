@@ -15,7 +15,8 @@ public class ExampleWorkflow implements LHWorkflowDefinition {
     private final String connectorTaskName;
 
     public ExampleWorkflow(
-            @ConfigProperty(name = ConnectorConfig.TASK_NAME) final String connectorTaskName) {
+            @ConfigProperty(name = ConnectorConfig.TASK_APPLY_NAME)
+                    final String connectorTaskName) {
         this.connectorTaskName = connectorTaskName;
     }
 

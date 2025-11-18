@@ -127,11 +127,25 @@ Optional version identifier. Intended to be informative. Useful when you're runn
 
 ## LittleHorse Kubernetes Connector
 
-``littlehorse.connector.kubernetes.task.name``
-Defines the name of the connector task at LittleHorse Server.
+``littlehorse.connector.kubernetes.default.namespace``
+Default namespace. Used when a namespace is not passed to a connector task.
 
 * Type: string
-* Default: lh-kubernetes-connector
+* Default: default
+* Importance: high
+
+``littlehorse.connector.kubernetes.task.apply.name``
+Defines the name of the task apply in LittleHorse.
+
+* Type: string
+* Default: lh-kubernetes-connector-apply
+* Importance: high
+
+``littlehorse.connector.kubernetes.task.apply.enabled``
+Enables task apply.
+
+* Type: boolean
+* Default: true
 * Importance: medium
 
 ## Quarkus Kubernetes Client

@@ -91,13 +91,13 @@ spec:
 List deployments:
 
 ```shell
-kubectl get deployments
+kubectl get deployments -w
 ```
 
 List pods
 
 ```shell
-kubectl get pods
+kubectl get pods -w
 ```
 
 ## Unit Tests
