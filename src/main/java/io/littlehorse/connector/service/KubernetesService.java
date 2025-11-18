@@ -1,10 +1,12 @@
 package io.littlehorse.connector.service;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.littlehorse.connector.task.ApplyTask;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,11 +26,6 @@ public class KubernetesService {
         this.client = client;
     }
 
-    //    public void createSecret(Secret secret){
-    //        // TODO: labels?
-    //        // TODO: masked
-    //        client.secrets().inNamespace("").resource(secret).create();
-    //  }
     //
     //    public Boolean isReady(){
     //        return
@@ -46,6 +43,24 @@ public class KubernetesService {
     //                .withName("")
     //                .get().getStatus();
     //    }
+    /**
+     * Save (create/update) a secret.
+     *
+     * @param secret Secret to be saved.
+     */
+    public void save(final Secret secret) {
+        final Resource<Secret> resource = client.secrets().resource(secret);
+
+        try {
+            logSuccess(resource.create());
+        } catch (final KubernetesClientException e) {
+            if (isAlreadyExistsException(e)) {
+                logSuccess(resource.update());
+                return;
+            }
+            throw e;
+        }
+    }
 
     /**
      * Manifest to be applied.
@@ -57,20 +72,10 @@ public class KubernetesService {
         final NamespaceableResource<HasMetadata> resource = client.resource(yaml);
 
         try {
-            final HasMetadata createdResource = resource.create();
-            log.info(
-                    "Resource '{}/{}' successfully created in namespace '{}'",
-                    createdResource.getKind(),
-                    createdResource.getMetadata().getName(),
-                    createdResource.getMetadata().getNamespace());
+            logSuccess(resource.create());
         } catch (final KubernetesClientException e) {
             if (isAlreadyExistsException(e)) {
-                final HasMetadata updatedResource = resource.update();
-                log.info(
-                        "Resource '{}/{}' successfully updated namespace '{}'",
-                        updatedResource.getKind(),
-                        updatedResource.getMetadata().getName(),
-                        updatedResource.getMetadata().getNamespace());
+                logSuccess(resource.update());
                 return;
             }
             throw e;
@@ -82,5 +87,13 @@ public class KubernetesService {
                 .map(Status::getReason)
                 .map(reason -> reason.equals(ALREADY_EXISTS_ERROR_CODE))
                 .orElse(false);
+    }
+
+    private static void logSuccess(final HasMetadata resource) {
+        log.info(
+                "Resource '{}/{}' successfully updated in namespace '{}'",
+                resource.getKind(),
+                resource.getMetadata().getName(),
+                resource.getMetadata().getNamespace());
     }
 }

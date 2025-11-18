@@ -15,22 +15,21 @@ import org.slf4j.LoggerFactory;
 @IfBuildProperty(name = ConnectorConfig.TASK_APPLY_ENABLED, stringValue = "true")
 public class ApplyTask {
     private static Logger log = LoggerFactory.getLogger(ApplyTask.class);
-    private final String connectorTaskName;
+    private final String taskName;
     private final KubernetesService service;
 
     public ApplyTask(
-            @ConfigProperty(name = ConnectorConfig.TASK_APPLY_NAME) final String connectorTaskName,
+            @ConfigProperty(name = ConnectorConfig.TASK_APPLY_NAME) final String taskName,
             final KubernetesService service) {
-        this.connectorTaskName = connectorTaskName;
+        this.taskName = taskName;
         this.service = service;
     }
 
-    // TODO: define retriable and not retryable exceptions
     @LHTaskMethod(ConnectorConfig.TASK_APPLY_NAME_EXPRESSION)
-    public void applyManifest(final String yaml, final WorkerContext context) {
+    public void apply(final String yaml, final WorkerContext context) {
         log.info(
                 "Executing task '{}' with idempotency key '{}'",
-                connectorTaskName,
+                taskName,
                 context.getIdempotencyKey());
         service.apply(yaml);
     }

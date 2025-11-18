@@ -62,43 +62,7 @@ Check connector task:
 lhctl search taskDef
 ```
 
-Run example workflow:
-
-```shell
-lhctl run kubernetes-connector-example inputYaml "
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deployment
-spec:
-  selector:
-    matchLabels:
-      app: nginx
-  replicas: 3
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:latest
-        ports:
-        - containerPort: 80
-"
-```
-
-List deployments:
-
-```shell
-kubectl get deployments -w
-```
-
-List pods
-
-```shell
-kubectl get pods -w
-```
+Check our workflow examples in [src/main/java/io/littlehorse/connector/dev/workflow](src/main/java/io/littlehorse/connector/dev/workflow).
 
 ## Unit Tests
 

@@ -148,6 +148,20 @@ Enables task apply.
 * Default: true
 * Importance: medium
 
+``littlehorse.connector.kubernetes.task.secret.name``
+Defines the name of the task secret in LittleHorse.
+
+* Type: string
+* Default: lh-kubernetes-connector-secret
+* Importance: high
+
+``littlehorse.connector.kubernetes.task.secret.enabled``
+Enables task secret.
+
+* Type: boolean
+* Default: false
+* Importance: medium
+
 ## Quarkus Kubernetes Client
 
 This connector uses [Quarkus](https://quarkus.io/) as a framework.
