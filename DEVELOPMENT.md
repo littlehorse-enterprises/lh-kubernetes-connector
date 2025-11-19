@@ -16,6 +16,7 @@
 ## Commands
 
 - Kubernetes:
+  - [docker](https://docs.docker.com/engine/install/)
   - [kind](https://kind.sigs.k8s.io/)
   - [kubectl](https://kubernetes.io/docs/reference/kubectl/)
   - [kubectx](https://kubectx.org/)
@@ -23,6 +24,9 @@
   - [java](https://sdkman.io/jdks/amzn/)
   - [sdk](https://sdkman.io/)
   - [quarkus](https://sdkman.io/sdks/quarkus/)
+- Tools:
+  - [pre-commit](https://pre-commit.com/)
+  - [lhctl](https://littlehorse.io/docs/server/developer-guide/install)
 
 ## Setup
 
