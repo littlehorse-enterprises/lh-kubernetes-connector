@@ -1,4 +1,4 @@
-name: publish-image
+name: publish
 run-name: Publishing version "${{ github.head_ref }}"
 on:
   workflow_call:
