@@ -5,7 +5,6 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.littlehorse.connector.task.ApplyTask;
 import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class KubernetesService {
-    private static Logger log = LoggerFactory.getLogger(ApplyTask.class);
+    private static Logger log = LoggerFactory.getLogger(KubernetesService.class);
     private final KubernetesClient client;
 
     public KubernetesService(final KubernetesClient client) {
