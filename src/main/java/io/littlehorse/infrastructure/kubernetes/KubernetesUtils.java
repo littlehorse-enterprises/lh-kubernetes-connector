@@ -20,10 +20,10 @@ public final class KubernetesUtils {
     }
 
     private static boolean isException(
-            final KubernetesClientException e, final String alreadyExistsErrorCode) {
+            final KubernetesClientException e, final String expectedReason) {
         return Optional.ofNullable(e.getStatus())
                 .map(Status::getReason)
-                .map(reason -> reason.equals(alreadyExistsErrorCode))
+                .map(reason -> reason.equals(expectedReason))
                 .orElse(false);
     }
 }

@@ -7,7 +7,6 @@ import io.littlehorse.connector.service.KubernetesService;
 import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 import io.littlehorse.quarkus.task.LHTask;
 import io.littlehorse.sdk.worker.LHTaskMethod;
-import io.littlehorse.sdk.worker.WorkerContext;
 import io.quarkus.arc.properties.IfBuildProperty;
 
 @LHTask
@@ -20,7 +19,7 @@ public class ApplyTask {
     }
 
     @LHTaskMethod(ConnectorConfig.TASK_APPLY_NAME_EXPRESSION)
-    public void apply(final String yaml, final WorkerContext context) {
+    public void apply(final String yaml) {
         try {
             service.apply(yaml);
         } catch (final KubernetesClientException e) {
