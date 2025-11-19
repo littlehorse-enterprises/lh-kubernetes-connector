@@ -11,13 +11,23 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
 <!-- TOC -->
 * [LittleHorse Kubernetes Connector](#littlehorse-kubernetes-connector)
   * [Table of Content](#table-of-content)
+  * [Examples](#examples)
   * [Development](#development)
+  * [Configurations](#configurations)
   * [License](#license)
 <!-- TOC -->
+
+## Examples
+
+For workflow examples go to [src/main/java/io/littlehorse/connector/dev/workflow](src/main/java/io/littlehorse/connector/dev/workflow).
 
 ## Development
 
 For development instructions go to [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Configurations
+
+For the list of configurations go to [CONFIGURATIONS.md](CONFIGURATIONS.md).
 
 ## License
 

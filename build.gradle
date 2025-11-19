@@ -1,21 +1,8 @@
 plugins {
-    id 'java'
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'com.diffplug.spotless' version '6.25.0'
-}
-
-group 'io.littlehorse'
-
-// This is required so that we can use the Reflection API to determine the names
-// of parameters for Task Functions and match them to the TaskDef param names.
-compileJava {
-    options.compilerArgs << '-parameters'
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    id "java"
+    id "io.quarkus"
+    id "com.diffplug.spotless"
+    id "checkstyle"
 }
 
 repositories {
@@ -23,62 +10,62 @@ repositories {
     mavenLocal()
 }
 
-shadowJar {
-    mergeServiceFiles()
-}
-
-def fabric8Version='6.13.3'
-def log4jVersion='2.24.0'
-def lombokVersion='1.18.34'
-def smallryeConfigVersion='3.9.1'
-
 dependencies {
-    // Javalin
-    implementation 'io.javalin:javalin:6.3.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+    // quarkus
+    implementation enforcedPlatform("io.quarkus.platform:quarkus-bom:${quarkusVersion}")
+    implementation "io.quarkus:quarkus-arc"
+    implementation "io.quarkus:quarkus-smallrye-health"
+    implementation "io.quarkus:quarkus-kubernetes-client"
 
-    // Logging
-    implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
-    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
+    // littlehorse
+    implementation "io.littlehorse:littlehorse-quarkus:${littlehorseVersion}"
 
-    // LittleHorse
-    implementation 'io.littlehorse:littlehorse-client:0.11.2'
+    // logs
+    implementation "org.jboss.logging:commons-logging-jboss-logging"
+    implementation "org.jboss.logmanager:log4j-jboss-logmanager"
+    implementation "org.jboss.slf4j:slf4j-jboss-logmanager"
+    implementation "org.jboss.logmanager:log4j2-jboss-logmanager"
 
-    // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
-    testImplementation 'org.assertj:assertj-core:3.26.3'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.13.0'
-
-    // k8s clients
-    implementation "io.fabric8:kubernetes-client:${fabric8Version}"
-
-    // Configurations
-    implementation "io.smallrye.config:smallrye-config:${smallryeConfigVersion}"
-    implementation "io.smallrye.config:smallrye-config-source-yaml:${smallryeConfigVersion}"
-
-    // lombok
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    // tests
+    testImplementation "io.quarkus:quarkus-junit5"
+    testImplementation "io.quarkus:quarkus-test-kubernetes-client"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.mockito:mockito-junit-jupiter"
 }
 
-application {
-    mainClass = 'io.littlehorse.agentworker.Main'
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 test {
-    useJUnitPlatform()
     testLogging {
-        events 'passed', 'skipped', 'failed'
-        exceptionFormat = 'full'
+        events "passed", "skipped", "failed"
+        exceptionFormat = "full"
     }
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+    jvmArgs "--add-opens", "java.base/java.lang=ALL-UNNAMED"
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+    options.compilerArgs << "-parameters"
+}
+
+compileTestJava {
+    options.encoding = "UTF-8"
 }
 
 spotless {
     java {
-        target('**/*.java')
-        targetExclude('**/proto/*.java')
-        palantirJavaFormat()
+        removeUnusedImports()
+        palantirJavaFormat().style("AOSP")
     }
+}
+
+checkstyle {
+    configFile = file("${rootDir}/checkstyle.xml")
+    checkstyleTest.enabled = false
+    checkstyleIntegrationTest.enabled = false
 }

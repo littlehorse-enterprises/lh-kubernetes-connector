@@ -1,0 +1,36 @@
+name: publish
+run-name: Publishing version "${{ github.head_ref }}"
+on:
+  workflow_call:
+
+permissions:
+  packages: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download jar
+        uses: actions/download-artifact@v4
+        with:
+          name: connector-jar
+          path: build/quarkus-app/
+
+      - name: Download native
+        uses: actions/download-artifact@v4
+        with:
+          name: connector-native
+          path: build/quarkus-run
+
+      - name: Build and Publish
+        uses: littlehorse-enterprises/publish-image@v1
+        with:
+          image-name: lh-kubernetes-connector
+          dockerfile: Dockerfile
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=ref,event=branch

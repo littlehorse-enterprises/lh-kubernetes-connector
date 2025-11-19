@@ -1,0 +1,22 @@
+name: main
+run-name: Merge into "main"
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  tests:
+    uses: ./.github/workflows/shared-tests.yaml
+    with:
+      upload-artifacts: true
+
+  publish:
+    needs:
+      - tests
+    uses: ./.github/workflows/shared-publish.yaml
+    secrets: inherit
