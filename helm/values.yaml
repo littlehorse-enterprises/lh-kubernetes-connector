@@ -78,3 +78,17 @@ affinity: {}
 connector:
   logLevel: INFO
   port: 9090
+  native: true
+
+#littlehorse:
+#  host: littlehorse
+#  port: 2023
+#  cert:
+#  oauth:
+
+role:
+  kind: Role
+  create: true
+  name: ""
+  annotations: {}
+  rules: []

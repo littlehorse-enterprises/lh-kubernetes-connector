@@ -8,6 +8,7 @@
   * [Commands](#commands)
   * [Setup](#setup)
   * [Run Connector](#run-connector)
+  * [Helm](#helm)
   * [Unit Tests](#unit-tests)
   * [Apply Code Style](#apply-code-style)
   * [Interesting Links](#interesting-links)
@@ -45,12 +46,10 @@ Run local env with Kind and LittleHorse server:
 
 > Clean `./setup.sh --clean`
 
-## Run Connector
-
-Port fordward:
+Port forward:
 
 ```shell
-kubectl port-forward service/littlehorse 2023:grpc
+kubectl port-forward service/littlehorse 2023:external
 ```
 
 Run connector in `dev` profile:
@@ -60,6 +59,32 @@ quarkus dev
 ```
 
 > `quarkus run` for `prod` profile
+
+## Script
+
+Setup kind:
+
+```shell
+./setup.sh
+```
+
+Install using helm:
+
+```shell
+./install.sh
+```
+
+> `./install.sh --build` for building before install
+
+Build docker:
+
+```shell
+./build.sh
+```
+
+> `./build.sh --rollout` to load the new docker image into kind
+
+## LittleHorse
 
 Check workflow:
 
@@ -74,6 +99,23 @@ lhctl search taskDef
 ```
 
 Check our workflow examples in [src/main/java/io/littlehorse/connector/dev/workflow](src/main/java/io/littlehorse/connector/dev/workflow).
+
+## Helm
+
+Render templates:
+
+```shell
+helm template lh-kubernetes-connector helm/
+```
+
+Install templates:
+
+```shell
+helm upgrade --install lh-kubernetes-connector \
+     --set image.repository=littlehorse/lh-kubernetes-connector \
+     --set image.tag=latest \
+     helm/
+```
 
 ## Unit Tests
 

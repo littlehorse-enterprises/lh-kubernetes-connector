@@ -12,6 +12,8 @@ import io.littlehorse.sdk.worker.LHTaskMethod;
 import io.littlehorse.sdk.worker.LHType;
 import io.quarkus.arc.properties.IfBuildProperty;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Map;
 
 @LHTask
@@ -31,6 +33,10 @@ public class SecretTask {
             final Map<String, String> labels,
             @LHType(masked = true) final Map<String, String> stringData,
             @LHType(masked = true) final Map<String, String> data) {
+
+        if (StringUtils.isBlank(name)) {
+            throw new BadRequestException("Secret name must not be blank");
+        }
 
         final Secret secret = new SecretBuilder()
                 .editMetadata()

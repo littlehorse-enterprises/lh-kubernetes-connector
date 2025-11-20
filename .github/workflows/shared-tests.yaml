@@ -21,7 +21,7 @@ jobs:
       - name: Check
         run: ./gradlew check
       - name: Helm Lint
-        run: helm link helm/
+        run: helm lint helm/
 
   build:
     runs-on: ubuntu-latest

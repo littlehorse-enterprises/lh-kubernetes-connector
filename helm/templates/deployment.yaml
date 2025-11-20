@@ -40,6 +40,17 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["{{ .Values.connector.native | ternary "native" "jvm" }}"]
+          env:
+            - name: QUARKUS_LOG_CATEGORY__IO_LITTLEHORSE__LEVEL
+              value: "{{ .Values.connector.logLevel }}"
+            - name: QUARKUS_HTTP_PORT
+              value: "{{ .Values.connector.port }}"
+{{/*              TODO: remore this */}}
+            - name: LHC_API_HOST
+              value: "littlehorse"
+            - name: LHC_API_PORT
+              value: "2024"
           ports:
             - name: http
               containerPort: {{ .Values.connector.port }}

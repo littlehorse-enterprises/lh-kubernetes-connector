@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the service role to use
+*/}}
+{{- define "lh-kubernetes-connector.roleName" -}}
+{{- if .Values.role.create }}
+{{- default (include "lh-kubernetes-connector.fullname" .) .Values.role.name }}
+{{- else }}
+{{- default "default" .Values.role.name }}
+{{- end }}
+{{- end }}

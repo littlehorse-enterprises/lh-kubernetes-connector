@@ -9,6 +9,8 @@
     * [Client](#client)
     * [Task Worker](#task-worker)
   * [LittleHorse Kubernetes Connector](#littlehorse-kubernetes-connector)
+    * [Task Apply](#task-apply)
+    * [Task Secret](#task-secret)
   * [Quarkus Kubernetes Client](#quarkus-kubernetes-client)
 <!-- TOC -->
 
