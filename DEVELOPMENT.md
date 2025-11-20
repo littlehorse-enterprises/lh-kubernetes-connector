@@ -105,16 +105,33 @@ Check our workflow examples in [src/main/java/io/littlehorse/connector/dev/workf
 Render templates:
 
 ```shell
-helm template lh-kubernetes-connector helm/
+helm template lh-kubernetes-connector \
+     --set littlehorse.apiHost="littlehorse" \
+     --set littlehorse.apiPort="2024" \
+     ./helm
 ```
 
-Install templates:
+Install chart:
 
 ```shell
 helm upgrade --install lh-kubernetes-connector \
-     --set image.repository=littlehorse/lh-kubernetes-connector \
-     --set image.tag=latest \
-     helm/
+     --set image.repository="littlehorse/lh-kubernetes-connector" \
+     --set image.tag="latest" \
+     --set littlehorse.apiHost="littlehorse" \
+     --set littlehorse.apiPort="2024" \
+     ./helm
+```
+
+Uninstall chart:
+
+```shell
+helm uninstall lh-kubernetes-connector
+```
+
+Test chart:
+
+```shell
+helm test lh-kubernetes-connector --timeout 10s
 ```
 
 ## Unit Tests

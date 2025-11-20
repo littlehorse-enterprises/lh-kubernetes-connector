@@ -34,9 +34,15 @@ fi
 
 kind load docker-image --name "$name" "$repository:$tag"
 
-helm upgrade --install "$name" \
-     --set image.repository="$repository" \
-     --set image.tag="$tag" \
-     --set littlehorse.apiHost="littlehorse" \
-     --set littlehorse.apiPort="2024" \
-     helm
+helm upgrade --install "$name" ./helm -f - <<EOF
+image:
+  repository: $repository
+  tag: $tag
+
+connector:
+  logLevel: DEBUG
+
+littlehorse:
+  apiHost: littlehorse
+  apiPort: 2024
+EOF

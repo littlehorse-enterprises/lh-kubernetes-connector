@@ -29,7 +29,7 @@ fi
 kind create cluster --name "$name" -q || true
 kubectx "kind-$name"
 
-cat <<EOF | kubectl apply -f -
+kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
