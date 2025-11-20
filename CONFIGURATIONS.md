@@ -134,6 +134,8 @@ Default namespace. Used when a namespace is not passed to a connector task.
 * Default: default
 * Importance: high
 
+### Task Apply
+
 ``littlehorse.connector.kubernetes.task.apply.name``
 Defines the name of the task apply in LittleHorse.
 
@@ -147,6 +149,8 @@ Enables task apply.
 * Type: boolean
 * Default: true
 * Importance: medium
+
+### Task Secret
 
 ``littlehorse.connector.kubernetes.task.secret.name``
 Defines the name of the task secret in LittleHorse.

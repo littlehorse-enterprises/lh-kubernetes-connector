@@ -20,6 +20,7 @@
   - [kind](https://kind.sigs.k8s.io/)
   - [kubectl](https://kubernetes.io/docs/reference/kubectl/)
   - [kubectx](https://kubectx.org/)
+  - [helm](https://helm.sh/)
 - Java:
   - [java](https://sdkman.io/jdks/amzn/)
   - [sdk](https://sdkman.io/)

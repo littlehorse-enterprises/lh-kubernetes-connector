@@ -5,6 +5,10 @@ import io.littlehorse.sdk.common.exception.LHTaskException;
 
 public class BadRequestException extends LHTaskException {
     public BadRequestException(final KubernetesClientException cause) {
-        super("bad-request", cause.getStatus().getMessage());
+        this(cause.getStatus().getMessage());
+    }
+
+    public BadRequestException(final String message) {
+        super("bad-request", message);
     }
 }

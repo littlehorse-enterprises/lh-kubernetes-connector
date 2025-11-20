@@ -3,6 +3,7 @@ package io.littlehorse.connector.dev.workflow;
 import io.littlehorse.connector.config.ConnectorConfig;
 import io.littlehorse.quarkus.workflow.LHWorkflow;
 import io.littlehorse.quarkus.workflow.LHWorkflowDefinition;
+import io.littlehorse.sdk.wfsdk.WfRunVariable;
 import io.littlehorse.sdk.wfsdk.WorkflowThread;
 import io.quarkus.arc.profile.IfBuildProfile;
 
@@ -55,6 +56,7 @@ public class ApplyExampleWorkflow implements LHWorkflowDefinition {
 
     @Override
     public void define(final WorkflowThread wf) {
-        wf.execute(taskApplyName, wf.declareStr("inputYaml"));
+        final WfRunVariable inputYaml = wf.declareStr("inputYaml");
+        wf.execute(taskApplyName, inputYaml);
     }
 }
