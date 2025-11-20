@@ -20,6 +20,8 @@ jobs:
           java-version: "25"
       - name: Check
         run: ./gradlew check
+      - name: Helm Lint
+        run: helm link helm/
 
   build:
     runs-on: ubuntu-latest

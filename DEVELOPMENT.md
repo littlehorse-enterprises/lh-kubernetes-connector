@@ -40,12 +40,18 @@ pre-commit install
 Run local env with Kind and LittleHorse server:
 
 ```shell
-./local-dev/setup.sh
+./setup.sh
 ```
 
-> Clean `./local-dev/setup.sh --clean`
+> Clean `./setup.sh --clean`
 
 ## Run Connector
+
+Port fordward:
+
+```shell
+kubectl port-forward service/littlehorse 2023:grpc
+```
 
 Run connector in `dev` profile:
 
