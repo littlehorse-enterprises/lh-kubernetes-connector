@@ -4,15 +4,9 @@ metadata:
   name: {{ include "lh-kubernetes-connector.fullname" . }}
   labels:
     {{- include "lh-kubernetes-connector.labels" . | nindent 4 }}
-  {{- with .Values.role.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
 subjects:
   - kind: ServiceAccount
     name: {{ include "lh-kubernetes-connector.serviceAccountName" . }}
-{{/*    TODO: quitar esto */}}
-{{/*    namespace: {{ .Release.Namespace }}*/}}
 roleRef:
   kind: {{ .Values.role.kind }}
   name: {{ include "lh-kubernetes-connector.roleName" . }}

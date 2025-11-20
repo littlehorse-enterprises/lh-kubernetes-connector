@@ -1,0 +1,16 @@
+{{- if .Values.role.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{ .Values.role.kind }}
+metadata:
+  name: {{ include "lh-kubernetes-connector.roleName" . }}
+  labels:
+    {{- include "lh-kubernetes-connector.labels" . | nindent 4 }}
+  {{- with .Values.role.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- with .Values.role.rules }}
+rules:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}

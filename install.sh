@@ -45,4 +45,13 @@ connector:
 littlehorse:
   apiHost: littlehorse
   apiPort: 2024
+
+role:
+  rules:
+    - apiGroups: [""]
+      resources: ["secrets"]
+      verbs: ["get", "list", "watch", "create", "delete", "patch", "update"]
+    - apiGroups: ["apps"]
+      resources: ["deployments"]
+      verbs: ["get", "list", "watch", "create", "delete", "patch", "update"]
 EOF
