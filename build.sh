@@ -29,6 +29,7 @@ tag="latest"
           -Dquarkus.package.runner-suffix=-run \
           -Dquarkus.package.output-name=quarkus \
           -Dquarkus.package.jar.enabled=false \
+          -Dquarkus.native.container-build=true \
           -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
 docker build -t "$repository:$tag" .
 

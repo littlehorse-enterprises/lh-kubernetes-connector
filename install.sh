@@ -37,4 +37,6 @@ kind load docker-image --name "$name" "$repository:$tag"
 helm upgrade --install "$name" \
      --set image.repository="$repository" \
      --set image.tag="$tag" \
-     helm/
+     --set littlehorse.apiHost="littlehorse" \
+     --set littlehorse.apiPort="2024" \
+     helm

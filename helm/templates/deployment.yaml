@@ -46,11 +46,10 @@ spec:
               value: "{{ .Values.connector.logLevel }}"
             - name: QUARKUS_HTTP_PORT
               value: "{{ .Values.connector.port }}"
-{{/*              TODO: remore this */}}
             - name: LHC_API_HOST
-              value: "littlehorse"
+              value: "{{ required "littlehorse.apiHost is missing" .Values.littlehorse.apiHost }}"
             - name: LHC_API_PORT
-              value: "2024"
+              value: "{{ required "littlehorse.apiPort is missing" .Values.littlehorse.apiPort }}"
           ports:
             - name: http
               containerPort: {{ .Values.connector.port }}

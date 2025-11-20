@@ -80,11 +80,9 @@ connector:
   port: 9090
   native: true
 
-#littlehorse:
-#  host: littlehorse
-#  port: 2023
-#  cert:
-#  oauth:
+littlehorse:
+  apiHost:
+  apiPort:
 
 role:
   kind: Role
