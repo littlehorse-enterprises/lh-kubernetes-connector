@@ -1,9 +1,9 @@
-name: tests
+name: shared-tests
 on:
   workflow_call:
     inputs:
       upload-artifacts:
-        type: 'boolean'
+        type: "boolean"
         required: false
         default: false
 
@@ -13,13 +13,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "corretto"
           java-version: "25"
+
       - name: Check
         run: ./gradlew check
+
       - name: Helm Lint
         run: helm lint helm/
 
@@ -30,18 +33,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "corretto"
           java-version: "25"
+
       - name: Build Jar
         run: ./gradlew -x check build
+
       - uses: actions/upload-artifact@v4
         if: ${{ inputs.upload-artifacts }}
         with:
           name: connector-jar
           path: build/quarkus-app/
+
       - name: Build Native
         run: >
           ./gradlew -x check build
@@ -50,6 +57,7 @@ jobs:
           -Dquarkus.package.output-name=quarkus
           -Dquarkus.package.jar.enabled=false
           -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
+
       - uses: actions/upload-artifact@v4
         if: ${{ inputs.upload-artifacts }}
         with:

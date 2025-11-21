@@ -1,5 +1,4 @@
-name: publish
-run-name: Publishing version "${{ github.head_ref }}"
+name: shared-publish
 on:
   workflow_call:
 
@@ -13,13 +12,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Download jar
+
+      - name: Download Jar
         uses: actions/download-artifact@v4
         with:
           name: connector-jar
           path: build/quarkus-app/
 
-      - name: Download native
+      - name: Download Native
         uses: actions/download-artifact@v4
         with:
           name: connector-native
