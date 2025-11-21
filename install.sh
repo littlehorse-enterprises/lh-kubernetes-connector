@@ -41,6 +41,7 @@ image:
 
 connector:
   logLevel: DEBUG
+  native: true
   task:
     apply:
       enabled: true
