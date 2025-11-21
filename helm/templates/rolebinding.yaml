@@ -1,3 +1,4 @@
+{{- if .Values.role.create -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: {{ .Values.role.kind }}Binding
 metadata:
@@ -12,3 +13,4 @@ roleRef:
   kind: {{ .Values.role.kind }}
   name: {{ include "lh-kubernetes-connector.roleName" . }}
   apiGroup: rbac.authorization.k8s.io
+{{- end }}

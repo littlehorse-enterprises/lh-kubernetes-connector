@@ -7,7 +7,8 @@
   * [Table of Content](#table-of-content)
   * [Commands](#commands)
   * [Setup](#setup)
-  * [Run Connector](#run-connector)
+  * [Script](#script)
+  * [LittleHorse](#littlehorse)
   * [Helm](#helm)
   * [Unit Tests](#unit-tests)
   * [Apply Code Style](#apply-code-style)
@@ -44,8 +45,6 @@ Run local env with Kind and LittleHorse server:
 ./setup.sh
 ```
 
-> Clean `./setup.sh --clean`
-
 Port forward:
 
 ```shell
@@ -67,6 +66,8 @@ Setup kind:
 ```shell
 ./setup.sh
 ```
+
+> `./setup.sh --clean` to destroy the environment
 
 Install using helm:
 
