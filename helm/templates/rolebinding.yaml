@@ -7,6 +7,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: {{ include "lh-kubernetes-connector.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
 roleRef:
   kind: {{ .Values.role.kind }}
   name: {{ include "lh-kubernetes-connector.roleName" . }}

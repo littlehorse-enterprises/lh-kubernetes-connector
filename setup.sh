@@ -21,7 +21,7 @@ done
 
 name="lh-kubernetes-connector"
 
-if [ ${clean} = true ]; then
+if [[ ${clean} = true ]]; then
   kind delete cluster --name "$name"
   exit
 fi
