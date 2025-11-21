@@ -50,6 +50,16 @@ spec:
               value: "{{ required "littlehorse.apiHost is missing" .Values.littlehorse.apiHost }}"
             - name: LHC_API_PORT
               value: "{{ required "littlehorse.apiPort is missing" .Values.littlehorse.apiPort }}"
+            - name: LITTLEHORSE_CONNECTOR_KUBERNETES_DEFAULT_NAMESPACE
+              value: "{{ .Values.connector.defaultNamespace }}"
+            - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_APPLY_NAME
+              value: "{{ .Values.connector.task.apply.name }}"
+            - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_APPLY_ENABLED
+              value: "{{ .Values.connector.task.apply.enabled }}"
+            - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_SECRET_NAME
+              value: "{{ .Values.connector.task.secret.name }}"
+            - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_SECRET_ENABLED
+              value: "{{ .Values.connector.task.secret.enabled }}"
           ports:
             - name: http
               containerPort: {{ .Values.connector.port }}

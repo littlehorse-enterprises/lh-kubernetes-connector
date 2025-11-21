@@ -79,6 +79,14 @@ connector:
   logLevel: INFO
   port: 9090
   native: true
+  defaultNamespace: default
+  task:
+    apply:
+      name: lh-kubernetes-connector-apply
+      enabled: true
+    secret:
+      name: lh-kubernetes-connector-secret
+      enabled: false
 
 littlehorse:
   apiHost:

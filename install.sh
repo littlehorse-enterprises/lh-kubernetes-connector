@@ -41,6 +41,11 @@ image:
 
 connector:
   logLevel: DEBUG
+  task:
+    apply:
+      enabled: true
+    secret:
+      enabled: true
 
 littlehorse:
   apiHost: littlehorse
