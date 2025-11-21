@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lh-kubernetes-connector.fullname" . }}
+  labels:
+    {{- include "lh-kubernetes-connector.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.connector.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "lh-kubernetes-connector.selectorLabels" . | nindent 4 }}

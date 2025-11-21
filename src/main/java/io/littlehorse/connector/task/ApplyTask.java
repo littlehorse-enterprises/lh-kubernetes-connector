@@ -7,10 +7,12 @@ import io.littlehorse.connector.service.KubernetesService;
 import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 import io.littlehorse.quarkus.task.LHTask;
 import io.littlehorse.sdk.worker.LHTaskMethod;
-import io.quarkus.arc.properties.IfBuildProperty;
+import io.quarkus.arc.lookup.LookupIfProperty;
+
+import org.apache.commons.lang3.StringUtils;
 
 @LHTask
-@IfBuildProperty(name = ConnectorConfig.TASK_APPLY_ENABLED, stringValue = "true")
+@LookupIfProperty(name = ConnectorConfig.TASK_APPLY_ENABLED, stringValue = "true")
 public class ApplyTask {
     private final KubernetesService service;
 
@@ -20,6 +22,10 @@ public class ApplyTask {
 
     @LHTaskMethod(ConnectorConfig.TASK_APPLY_NAME_EXPRESSION)
     public void apply(final String yaml) {
+        if (StringUtils.isBlank(yaml)) {
+            throw new BadRequestException("Yaml must not be blank");
+        }
+
         try {
             service.apply(yaml);
         } catch (final KubernetesClientException e) {

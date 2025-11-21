@@ -23,16 +23,28 @@ class ApplyTaskTest {
 
     @Test
     void shouldThrowBadRequestIfKubernetesClientExceptionIsBadRequest() {
+        String expectedMessage = "Expected Message";
         Status status = new StatusBuilder()
                 .withReason("BadRequest")
                 .withCode(0)
-                .withMessage("")
+                .withMessage(expectedMessage)
                 .build();
         KubernetesClientException exception = new KubernetesClientException(status);
         doThrow(exception).when(service).apply(anyString());
 
         ApplyTask task = new ApplyTask(service);
 
-        assertThrows(BadRequestException.class, () -> task.apply(""));
+        BadRequestException result =
+                assertThrows(BadRequestException.class, () -> task.apply("My yaml"));
+        assertEquals(expectedMessage, result.getMessage());
+    }
+
+    @Test
+    void shouldThrowBadRequestIfYamlIsBlank() {
+        ApplyTask task = new ApplyTask(service);
+
+        BadRequestException result = assertThrows(BadRequestException.class, () -> task.apply(""));
+
+        assertEquals("Yaml must not be blank", result.getMessage());
     }
 }

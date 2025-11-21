@@ -11,11 +11,57 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
 <!-- TOC -->
 * [LittleHorse Kubernetes Connector](#littlehorse-kubernetes-connector)
   * [Table of Content](#table-of-content)
+  * [Tasks](#tasks)
+    * [Task Apply](#task-apply)
+    * [Task Secret](#task-secret)
   * [Examples](#examples)
   * [Development](#development)
   * [Configurations](#configurations)
   * [License](#license)
 <!-- TOC -->
+
+## Tasks
+
+### Task Apply
+
+This task allows you to apply any manifest in Kubernetes.
+Default name `lh-kubernetes-connector-apply`.
+
+```java
+public void define(final WorkflowThread wf) {
+    WfRunVariable inputYaml = wf.declareStr("inputYaml");
+    wf.execute("lh-kubernetes-connector-apply", inputYaml);
+}
+```
+
+| Parameter  | Position | Type   | Required | Masked | Description       |
+|------------|----------|--------|----------|--------|-------------------|
+| Input yaml | 1        | String | True     | False  | Resource manifest |
+
+### Task Secret
+
+This task allows you to create secret in Kubernetes.
+Default name `lh-kubernetes-connector-secret`. More at [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/).
+
+```java
+public void define(final WorkflowThread wf) {
+    final WfRunVariable namespace = wf.declareStr("namespace");
+    final WfRunVariable labels = wf.declareJsonObj("labels");
+    final WfRunVariable name = wf.declareStr("name").required();
+    final WfRunVariable stringData = wf.declareJsonObj("stringData").masked();
+    final WfRunVariable data = wf.declareJsonObj("data").masked();
+
+    wf.execute("lh-kubernetes-connector-secret", namespace, name, labels, stringData, data);
+}
+```
+
+| Parameter   | Position | Type   | Required | Masked | Description     |
+|-------------|----------|--------|----------|--------|-----------------|
+| Namespace   | 1        | String | False    | False  | Namespace       |
+| Name        | 2        | String | True     | False  | Resource name   |
+| Labels      | 3        | Json   | False    | False  | Resource labels |
+| String data | 4        | Json   | False    | True   | Plain text data |
+| Data        | 5        | Json   | False    | True   | Base64 data     |
 
 ## Examples
 

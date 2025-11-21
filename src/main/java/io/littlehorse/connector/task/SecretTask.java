@@ -10,12 +10,14 @@ import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 import io.littlehorse.quarkus.task.LHTask;
 import io.littlehorse.sdk.worker.LHTaskMethod;
 import io.littlehorse.sdk.worker.LHType;
-import io.quarkus.arc.properties.IfBuildProperty;
+import io.quarkus.arc.lookup.LookupIfProperty;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
 @LHTask
-@IfBuildProperty(name = ConnectorConfig.TASK_SECRET_ENABLED, stringValue = "true")
+@LookupIfProperty(name = ConnectorConfig.TASK_SECRET_ENABLED, stringValue = "true")
 public class SecretTask {
 
     private final KubernetesService service;
@@ -31,6 +33,10 @@ public class SecretTask {
             final Map<String, String> labels,
             @LHType(masked = true) final Map<String, String> stringData,
             @LHType(masked = true) final Map<String, String> data) {
+
+        if (StringUtils.isBlank(name)) {
+            throw new BadRequestException("Secret name must not be blank");
+        }
 
         final Secret secret = new SecretBuilder()
                 .editMetadata()

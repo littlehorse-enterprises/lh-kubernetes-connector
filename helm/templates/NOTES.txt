@@ -1,0 +1,3 @@
+LittleHorse Kubernetes Connector is an
+[LH Worker](https://littlehorse.io/docs/server/developer-guide/task-worker-development)
+that allows you to interact with kubernetes.

@@ -1,0 +1,101 @@
+name: shared-release
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      pre-release:
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  helm:
+   runs-on: ubuntu-latest
+   steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4.2.0
+
+      - name: Replace Version
+        run: |
+          yq e -i '.version = "${{ inputs.version }}"' ./helm/Chart.yaml
+          yq e -i '.appVersion = "${{ inputs.version }}"' ./helm/Chart.yaml
+
+      - name: Clone Helm Repository
+        uses: actions/checkout@v4
+        with:
+          repository: littlehorse-enterprises/lh-helm-charts
+          path: lh-helm-charts
+          ref: gh-pages
+          token: ${{ secrets.PAT_LH_HELM_CHARTS }}
+
+      - name: Package Helm Chart
+        run: helm package ./helm -d charts/
+
+      - name: Update Helm Index
+        run: |
+          helm repo index --merge lh-helm-charts/index.yaml charts/ --url https://github.com/littlehorse-enterprises/lh-helm-charts/releases/download/lh-kubernete-connector-${{ inputs.version }}/
+          cp charts/index.yaml lh-helm-charts/
+
+      - name: Configure Git
+        shell: bash
+        working-directory: ./lh-helm-charts
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit Changes
+        shell: bash
+        working-directory: ./lh-helm-charts
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          git add -A
+          if git commit -m "release(lh-kubernetes-connector): publish version ${VERSION}"; then
+            git push
+          else
+            echo "Nothing to push"
+          fi
+
+      - name: Publish Helm Chart
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_LH_HELM_CHARTS }}
+          PRE_RELEASE: ${{ inputs.pre-release && '--prerelease' || '' }}
+        run: |
+          echo "PRE_RELEASE=${PRE_RELEASE}"
+          gh release create lh-kubernete-connector-${{ inputs.version }} charts/lh-kubernete-connector-*.tgz ${PRE_RELEASE} -R littlehorse-enterprises/lh-helm-charts
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs:
+      - helm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate a Changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: --verbose --current
+        env:
+          OUTPUT: CHANGELOG.md
+
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRE_RELEASE: ${{ inputs.pre-release && '--prerelease' || '' }}
+        run: |
+          echo "PRE_RELEASE=${PRE_RELEASE}"
+          gh release create ${{ inputs.version }} -t ${{inputs.version }} -F CHANGELOG.md ${PRE_RELEASE} -R littlehorse-enterprises/lh-kubernete-connector

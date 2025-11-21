@@ -7,7 +7,9 @@
   * [Table of Content](#table-of-content)
   * [Commands](#commands)
   * [Setup](#setup)
-  * [Run Connector](#run-connector)
+  * [Script](#script)
+  * [LittleHorse](#littlehorse)
+  * [Helm](#helm)
   * [Unit Tests](#unit-tests)
   * [Apply Code Style](#apply-code-style)
   * [Interesting Links](#interesting-links)
@@ -20,6 +22,7 @@
   - [kind](https://kind.sigs.k8s.io/)
   - [kubectl](https://kubernetes.io/docs/reference/kubectl/)
   - [kubectx](https://kubectx.org/)
+  - [helm](https://helm.sh/)
 - Java:
   - [java](https://sdkman.io/jdks/amzn/)
   - [sdk](https://sdkman.io/)
@@ -39,12 +42,14 @@ pre-commit install
 Run local env with Kind and LittleHorse server:
 
 ```shell
-./local-dev/setup.sh
+./setup.sh
 ```
 
-> Clean `./local-dev/setup.sh --clean`
+Port forward:
 
-## Run Connector
+```shell
+kubectl port-forward service/littlehorse 2023:external
+```
 
 Run connector in `dev` profile:
 
@@ -53,6 +58,34 @@ quarkus dev
 ```
 
 > `quarkus run` for `prod` profile
+
+## Script
+
+Setup kind:
+
+```shell
+./setup.sh
+```
+
+> `./setup.sh --clean` to destroy the environment
+
+Install using helm:
+
+```shell
+./install.sh
+```
+
+> `./install.sh --build` for building before install
+
+Build docker:
+
+```shell
+./build.sh
+```
+
+> `./build.sh --rollout` to load the new docker image into kind
+
+## LittleHorse
 
 Check workflow:
 
@@ -67,6 +100,40 @@ lhctl search taskDef
 ```
 
 Check our workflow examples in [src/main/java/io/littlehorse/connector/dev/workflow](src/main/java/io/littlehorse/connector/dev/workflow).
+
+## Helm
+
+Render templates:
+
+```shell
+helm template lh-kubernetes-connector \
+     --set littlehorse.apiHost="littlehorse" \
+     --set littlehorse.apiPort="2024" \
+     ./helm
+```
+
+Install chart:
+
+```shell
+helm upgrade --install lh-kubernetes-connector \
+     --set image.repository="littlehorse/lh-kubernetes-connector" \
+     --set image.tag="latest" \
+     --set littlehorse.apiHost="littlehorse" \
+     --set littlehorse.apiPort="2024" \
+     ./helm
+```
+
+Uninstall chart:
+
+```shell
+helm uninstall lh-kubernetes-connector
+```
+
+Test chart:
+
+```shell
+helm test lh-kubernetes-connector --timeout 10s
+```
 
 ## Unit Tests
 

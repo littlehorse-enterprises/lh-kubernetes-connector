@@ -15,6 +15,7 @@ COPY build/quarkus-app/quarkus/ /connector/quarkus/
 
 # native app
 COPY build/quarkus-run /connector/
+RUN chmod +x /connector/quarkus-run
 
 ENTRYPOINT ["/connector/docker-entrypoint.sh"]
 CMD ["jvm"]

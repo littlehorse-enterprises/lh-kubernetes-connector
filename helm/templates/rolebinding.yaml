@@ -1,0 +1,16 @@
+{{- if .Values.role.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{ .Values.role.kind }}Binding
+metadata:
+  name: {{ include "lh-kubernetes-connector.fullname" . }}
+  labels:
+    {{- include "lh-kubernetes-connector.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "lh-kubernetes-connector.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: {{ .Values.role.kind }}
+  name: {{ include "lh-kubernetes-connector.roleName" . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
