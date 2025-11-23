@@ -7,15 +7,31 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
+  # @schema
+  # required: false
+  # type: string
+  # @schema
   tag: ""
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/.
+# @schema
+# required: false
+# type: array
+# @schema
 imagePullSecrets: []
 
 # This is to override the chart name.
+# @schema
+# required: false
+# type: string
+# @schema
 nameOverride: ""
 
 # This is to override the resources name.
+# @schema
+# required: false
+# type: string
+# @schema
 fullnameOverride: ""
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/.
@@ -25,26 +41,54 @@ serviceAccount:
   # Automatically mount a ServiceAccount's API credentials?.
   automount: true
   # Annotations to add to the service account.
+  # @schema
+  # required: false
+  # type: object
+  # @schema
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template.
+  # @schema
+  # required: false
+  # type: string
+  # @schema
   name: ""
 
 # This is for setting Kubernetes Annotations to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/.
+# @schema
+# required: false
+# type: object
+# @schema
 podAnnotations: {}
 
 # This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/.
+# @schema
+# required: false
+# type: object
+# @schema
 podLabels: {}
 
 # Pod level security context. More at https://kubernetes.io/docs/tasks/configure-pod-container/security-context/.
+# @schema
+# required: false
+# type: object
+# @schema
 podSecurityContext: {}
 
 # Container level security context. More at https://kubernetes.io/docs/tasks/configure-pod-container/security-context/.
+# @schema
+# required: false
+# type: object
+# @schema
 securityContext: {}
 
 # Pod resources. More at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/.
+# @schema
+# required: false
+# type: object
+# @schema
 resources: {}
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/.
@@ -56,18 +100,31 @@ autoscaling:
   targetMemoryUtilizationPercentage: 80
 
 # Assign pod to nodes. More at https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/.
+# @schema
+# required: false
+# type: object
+# @schema
 nodeSelector: {}
 
 # Node tolerations. More at https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/.
+# @schema
+# required: false
+# type: array
+# @schema
 tolerations: []
 
 # Node affinity. More at https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity/.
+# @schema
+# required: false
+# type: object
+# @schema
 affinity: {}
 
 # Settings related to the kubernetes connector.
 connector:
   # Log level
   # @schema
+  # required: false
   # enum:
   # - ERROR
   # - WARN
@@ -99,36 +156,75 @@ littlehorse:
   apiPort: 2023
   # LH bootstrap protocol.
   # @schema
+  # required: true
   # enum:
   # - PLAINTEXT
   # - TLS
   # @schema
   apiProtocol: PLAINTEXT
   # LH tenant id.
+  # @schema
+  # required: false
+  # type: string
+  # @schema
   tenantId: ""
   # Number of worker threads to run.
   workerThreads: 2
+  # OAuth configurations.
+  # @schema
+  # required: false
+  # type: object
+  # @schema
   oauth:
     # Identity provider access token URL.
+    # @schema
+    # required: false
+    # type: string
+    # @schema
     accessTokenUrl: ""
     # Secret with OAuth client id.
+    # @schema
+    # required: false
+    # type: object
+    # @schema
     clientId:
       secretName: ""
       secretKey: ""
     # Secret with OAuth client secret.
+    # @schema
+    # required: false
+    # type: object
+    # @schema
     clientSecret:
       secretName: ""
       secretKey: ""
+  # TLS configurations.
+  # @schema
+  # required: false
+  # type: object
+  # @schema
   certs:
     # Secret with Client Cert File.
+    # @schema
+    # required: false
+    # type: object
+    # @schema
     clientCert:
       secretName: ""
       secretKey: ""
     # Secret with Client Key Cert File.
+    # @schema
+    # required: false
+    # type: object
+    # @schema
     clientKey:
       secretName: ""
       secretKey: ""
     # Secret with CA Cert File.
+    # @schema
+    # required: false
+    # type: object
+    # @schema
     caCert:
       secretName: ""
       secretKey: ""
@@ -137,6 +233,7 @@ littlehorse:
 role:
   # Role type. More at https://kubernetes.io/docs/reference/access-authn-authz/rbac/.
   # @schema
+  # required: true
   # enum:
   # - Role
   # - ClusterRole
@@ -146,8 +243,20 @@ role:
   create: true
   # The name of the role to use.
   # If not set and create is true, a name is generated using the fullname template.
+  # @schema
+  # required: false
+  # type: string
+  # @schema
   name: ""
   # Annotations to add to the role.
+  # @schema
+  # required: false
+  # type: object
+  # @schema
   annotations: {}
   # Set rules access for this connector. More at https://kubernetes.io/docs/reference/access-authn-authz/rbac/.
+  # @schema
+  # required: false
+  # type: array
+  # @schema
   rules: []

@@ -200,8 +200,7 @@
       },
       "required": [
         "repository",
-        "pullPolicy",
-        "tag"
+        "pullPolicy"
       ],
       "title": "image",
       "type": "object"
@@ -245,6 +244,7 @@
         },
         "certs": {
           "additionalProperties": false,
+          "description": "TLS configurations.",
           "properties": {
             "caCert": {
               "additionalProperties": false,
@@ -319,16 +319,13 @@
               "type": "object"
             }
           },
-          "required": [
-            "clientCert",
-            "clientKey",
-            "caCert"
-          ],
+          "required": [],
           "title": "certs",
           "type": "object"
         },
         "oauth": {
           "additionalProperties": false,
+          "description": "OAuth configurations.",
           "properties": {
             "accessTokenUrl": {
               "default": "",
@@ -386,11 +383,7 @@
               "type": "object"
             }
           },
-          "required": [
-            "accessTokenUrl",
-            "clientId",
-            "clientSecret"
-          ],
+          "required": [],
           "title": "oauth",
           "type": "object"
         },
@@ -412,10 +405,8 @@
       "required": [
         "apiHost",
         "apiPort",
-        "tenantId",
-        "workerThreads",
-        "oauth",
-        "certs"
+        "apiProtocol",
+        "workerThreads"
       ],
       "title": "littlehorse",
       "type": "object"
@@ -515,10 +506,8 @@
         }
       },
       "required": [
-        "create",
-        "name",
-        "annotations",
-        "rules"
+        "kind",
+        "create"
       ],
       "title": "role",
       "type": "object"
@@ -565,9 +554,7 @@
       },
       "required": [
         "create",
-        "automount",
-        "annotations",
-        "name"
+        "automount"
       ],
       "title": "serviceAccount",
       "type": "object"
@@ -585,19 +572,8 @@
   "required": [
     "replicaCount",
     "image",
-    "imagePullSecrets",
-    "nameOverride",
-    "fullnameOverride",
     "serviceAccount",
-    "podAnnotations",
-    "podLabels",
-    "podSecurityContext",
-    "securityContext",
-    "resources",
     "autoscaling",
-    "nodeSelector",
-    "tolerations",
-    "affinity",
     "connector",
     "littlehorse",
     "role"
