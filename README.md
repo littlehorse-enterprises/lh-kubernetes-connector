@@ -14,9 +14,10 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
   * [Tasks](#tasks)
     * [Task Apply](#task-apply)
     * [Task Secret](#task-secret)
+  * [Installation](#installation)
   * [Examples](#examples)
-  * [Development](#development)
-  * [Configurations](#configurations)
+  * [Development Instructions](#development-instructions)
+  * [Configurations List](#configurations-list)
   * [License](#license)
 <!-- TOC -->
 
@@ -63,17 +64,23 @@ public void define(final WorkflowThread wf) {
 | String data | 4        | Json   | False    | True   | Plain text data |
 | Data        | 5        | Json   | False    | True   | Base64 data     |
 
+## Installation
+
+<a href="https://github.com/littlehorse-enterprises/lh-kubernetes-connector/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/littlehorse-enterprises/lh-kubernetes-connector?label=latest"></a>
+
+Go to [LH Helm Charts Repository](https://github.com/littlehorse-enterprises/lh-helm-charts).
+
 ## Examples
 
-For workflow examples go to [src/main/java/io/littlehorse/connector/dev/workflow](src/main/java/io/littlehorse/connector/dev/workflow).
+Go to [src/main/java/io/littlehorse/connector/dev/workflow](src/main/java/io/littlehorse/connector/dev/workflow).
 
-## Development
+## Development Instructions
 
-For development instructions go to [DEVELOPMENT.md](DEVELOPMENT.md).
+Go to [DEVELOPMENT.md](DEVELOPMENT.md).
 
-## Configurations
+## Configurations List
 
-For the list of configurations go to [CONFIGURATIONS.md](CONFIGURATIONS.md).
+Go to [CONFIGURATIONS.md](CONFIGURATIONS.md).
 
 ## License
 
