@@ -1,11 +1,7 @@
-# Default values for lh-kubernetes-connector.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+# This will set the replicaset count more information can be found at https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/.
 replicaCount: 1
 
-# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/.
 image:
   repository: ghcr.io/littlehorse-enterprises/lh-kubernetes-connector
   # This sets the pull policy for images.
@@ -13,17 +9,18 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/.
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
+# This is to override the resources name.
 fullnameOverride: ""
 
-# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/.
 serviceAccount:
   # Specifies whether a service account should be created.
   create: true
-  # Automatically mount a ServiceAccount's API credentials?
+  # Automatically mount a ServiceAccount's API credentials?.
   automount: true
   # Annotations to add to the service account.
   annotations: {}
@@ -32,54 +29,57 @@ serviceAccount:
   name: ""
 
 # This is for setting Kubernetes Annotations to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/.
 podAnnotations: {}
 # This is for setting Kubernetes Labels to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/.
 podLabels: {}
 
+# Pod level security context. More at https://kubernetes.io/docs/tasks/configure-pod-container/security-context/.
 podSecurityContext: {}
-  # fsGroup: 2000
 
+# Container level security context. More at https://kubernetes.io/docs/tasks/configure-pod-container/security-context/.
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
 
+# Pod resources. More at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/.
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
 
-# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/.
 autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
 
+# Assign pod to nodes. More at https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/.
 nodeSelector: {}
 
+# Node tolerations. More at https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/.
 tolerations: []
 
+# Node affinity. More at https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity/.
 affinity: {}
 
+# Settings related to the kubernetes connector.
 connector:
+  # Log level
+  # @schema
+  # enum:
+  # - ERROR
+  # - WARN
+  # - INFO
+  # - DEBUG
+  # - TRACE
+  # @schema
   logLevel: INFO
+  # Health check port.
   port: 9090
+  # Specifies whether to run the connector using the native build or jvm.
   native: true
+  # Default namespace where resources are created if not specified.
   defaultNamespace: default
+  # Specifies which tasks to run.
   task:
     apply:
       name: lh-kubernetes-connector-apply
@@ -88,34 +88,63 @@ connector:
       name: lh-kubernetes-connector-secret
       enabled: false
 
+# Settings related to the lh client. More at https://littlehorse.io/docs/server/developer-guide/client-configuration/.
 littlehorse:
-#  apiHost: littlehorse
-#  apiPort: 2023
-#  apiProtocol: TLS
-#  tenantId: default
-#  workerThreads: 8
+  # LH bootstrap server.
+  apiHost: ""
+  # LH bootstrap server port.
+  apiPort: 2023
+  # LH bootstrap protocol.
+  # @schema
+  # enum:
+  # - PLAINTEXT
+  # - TLS
+  # @schema
+  apiProtocol: PLAINTEXT
+  # LH tenant id.
+  tenantId: ""
+  # Number of worker threads to run.
+  workerThreads: 2
   oauth:
-#    accessTokenUrl:
-    clientId: {}
-#      secretName:
-#      secretKey:
-    clientSecret: {}
-#      secretName:
-#      secretKey:
+    # Identity provider access token URL.
+    accessTokenUrl: ""
+    # Secret with OAuth client id.
+    clientId:
+      secretName: ""
+      secretKey: ""
+    # Secret with OAuth client secret.
+    clientSecret:
+      secretName: ""
+      secretKey: ""
   certs:
-    clientCert: {}
-#      secretName:
-#      secretKey:
-    clientKey: {}
-#      secretName:
-#      secretKey:
-    caCert: {}
-#      secretName:
-#      secretKey:
+    # Secret with Client Cert File.
+    clientCert:
+      secretName: ""
+      secretKey: ""
+    # Secret with Client Key Cert File.
+    clientKey:
+      secretName: ""
+      secretKey: ""
+    # Secret with CA Cert File.
+    caCert:
+      secretName: ""
+      secretKey: ""
 
+# This is for setting a Role or ClusterRole.
 role:
+  # Role type. More at https://kubernetes.io/docs/reference/access-authn-authz/rbac/.
+  # @schema
+  # enum:
+  # - Role
+  # - ClusterRole
+  # @schema
   kind: Role
+  # Specifies whether a role should be created.
   create: true
+  # The name of the role to use.
+  # If not set and create is true, a name is generated using the fullname template.
   name: ""
+  # Annotations to add to the role.
   annotations: {}
+  # Set rules access for this connector. More at https://kubernetes.io/docs/reference/access-authn-authz/rbac/.
   rules: []
