@@ -80,6 +80,8 @@ Install using helm:
 
 > `./local-dev/install.sh --build` for building before install
 
+> `./local-dev/install.sh --dry-run` for showing resources
+
 Build docker:
 
 ```shell

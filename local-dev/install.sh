@@ -9,15 +9,15 @@ name="lh-kubernetes-connector"
 repository="littlehorse/$name"
 tag="latest"
 build=false
-dry=false
+dryRun=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --build)
       build=true
       ;;
-    --dry)
-      dry=true
+    --dry-run)
+      dryRun=true
       ;;
     *)
       echo "Unknown argument: $1"
@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ ${dry} == "true" ]]; then
+if [[ ${dryRun} == "true" ]]; then
   helm template "$name" ./helm -f "${SCRIPT_DIR}/values.yaml"
   exit
 fi
