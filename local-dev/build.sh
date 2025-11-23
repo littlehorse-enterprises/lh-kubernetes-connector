@@ -2,8 +2,12 @@
 set -e
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-cd "${SCRIPT_DIR}"
+PROJECT_DIR=$(cd "$SCRIPT_DIR/.." && pwd)
+cd "${PROJECT_DIR}"
 
+name="lh-kubernetes-connector"
+repository="littlehorse/$name"
+tag="latest"
 rollout=false
 
 while [[ $# -gt 0 ]]; do
@@ -19,10 +23,6 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-name="lh-kubernetes-connector"
-repository="littlehorse/$name"
-tag="latest"
-
 ./gradlew -x check build
 ./gradlew -x check build \
           -Dquarkus.native.enabled=true \
@@ -33,7 +33,7 @@ tag="latest"
           -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
 docker build -t "$repository:$tag" .
 
-if [[ ${rollout} = true ]]; then
+if [[ ${rollout} == "true" ]]; then
     kind load docker-image --name "$name" "$repository:$tag"
     kubectl rollout restart deployment "$name"
 fi

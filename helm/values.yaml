@@ -89,8 +89,29 @@ connector:
       enabled: false
 
 littlehorse:
-  apiHost:
-  apiPort:
+#  apiHost: littlehorse
+#  apiPort: 2023
+#  apiProtocol: TLS
+#  tenantId: default
+#  workerThreads: 8
+  oauth:
+#    accessTokenUrl:
+    clientId: {}
+#      secretName:
+#      secretKey:
+    clientSecret: {}
+#      secretName:
+#      secretKey:
+  certs:
+    clientCert: {}
+#      secretName:
+#      secretKey:
+    clientKey: {}
+#      secretName:
+#      secretKey:
+    caCert: {}
+#      secretName:
+#      secretKey:
 
 role:
   kind: Role

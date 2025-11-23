@@ -60,6 +60,48 @@ spec:
               value: "{{ .Values.connector.task.secret.name }}"
             - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_SECRET_ENABLED
               value: "{{ .Values.connector.task.secret.enabled }}"
+            {{- if .Values.littlehorse.apiProtocol }}
+            - name: LHC_API_PROTOCOL
+              value: "{{ .Values.littlehorse.apiProtocol }}"
+            {{- end }}
+            {{- if .Values.littlehorse.tenantId }}
+            - name: LHC_TENANT_ID
+              value: "{{ .Values.littlehorse.tenantId }}"
+            {{- end }}
+            {{- if .Values.littlehorse.workerThreads }}
+            - name: LHW_NUM_WORKER_THREADS
+              value: "{{ .Values.littlehorse.workerThreads }}"
+            {{- end }}
+            {{- if .Values.littlehorse.oauth.accessTokenUrl }}
+            - name: LHC_OAUTH_ACCESS_TOKEN_URL
+              value: "{{ .Values.littlehorse.oauth.accessTokenUrl }}"
+            {{- end }}
+            {{- if .Values.littlehorse.oauth.clientId }}
+            - name: LHC_OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.littlehorse.oauth.clientId.secretName }}"
+                  key: "{{ .Values.littlehorse.oauth.clientId.secretKey }}"
+            {{- end }}
+            {{- if .Values.littlehorse.oauth.clientSecret }}
+            - name: LHC_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.littlehorse.oauth.clientSecret.secretName }}"
+                  key: "{{.Values.littlehorse.oauth.clientSecret.secretKey }}"
+            {{- end }}
+            {{- if .Values.littlehorse.certs.caCert }}
+            - name: LHC_CA_CERT
+              value: "/etc/littlehorse/certs/ca-cert/ca.crt"
+            {{- end }}
+            {{- if .Values.littlehorse.certs.clientCert }}
+            - name: LHC_CLIENT_CERT
+              value: "/etc/littlehorse/certs/client-cert/client.crt"
+            {{- end }}
+            {{- if .Values.littlehorse.certs.clientKey }}
+            - name: LHC_CLIENT_KEY
+              value: "/etc/littlehorse/certs/client-key/client.key"
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.connector.port }}
@@ -76,6 +118,51 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if or .Values.littlehorse.certs.caCert .Values.littlehorse.certs.clientCert .Values.littlehorse.certs.clientKey }}
+          volumeMounts:
+            {{- if .Values.littlehorse.certs.caCert }}
+            - name: littlehorse-ca-cert
+              mountPath: "/etc/littlehorse/certs/ca-cert"
+              readOnly: true
+            {{- end }}
+            {{- if .Values.littlehorse.certs.clientCert }}
+            - name: littlehorse-client-cert
+              mountPath: "/etc/littlehorse/certs/client-cert"
+              readOnly: true
+            {{- end }}
+            {{- if .Values.littlehorse.certs.clientKey }}
+            - name: littlehorse-client-key
+              mountPath: "/etc/littlehorse/certs/client-key"
+              readOnly: true
+            {{- end }}
+          {{- end }}
+      {{- if or .Values.littlehorse.certs.caCert .Values.littlehorse.certs.clientCert .Values.littlehorse.certs.clientKey }}
+      volumes:
+        {{- if .Values.littlehorse.certs.caCert }}
+        - name: littlehorse-ca-cert
+          secret:
+            secretName: "{{ .Values.littlehorse.certs.caCert.secretName }}"
+            items:
+              - key: "{{ .Values.littlehorse.certs.caCert.secretKey }}"
+                path: "ca.crt"
+        {{- end }}
+        {{- if .Values.littlehorse.certs.clientCert }}
+        - name: littlehorse-client-cert
+          secret:
+            secretName: "{{ .Values.littlehorse.certs.clientCert.secretName }}"
+            items:
+              - key: "{{ .Values.littlehorse.certs.clientCert.secretKey }}"
+                path: "client.crt"
+        {{- end }}
+        {{- if .Values.littlehorse.certs.clientKey }}
+        - name: littlehorse-client-key
+          secret:
+            secretName: "{{ .Values.littlehorse.certs.clientKey.secretName }}"
+            items:
+              - key: "{{ .Values.littlehorse.certs.clientKey.secretKey }}"
+                path: "client.key"
+        {{- end }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
