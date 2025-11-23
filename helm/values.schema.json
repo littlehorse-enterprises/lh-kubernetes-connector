@@ -87,7 +87,7 @@
         },
         "port": {
           "default": 9090,
-          "description": "Health check port.",
+          "description": "REST health check port.",
           "required": [],
           "title": "port",
           "type": "integer"
