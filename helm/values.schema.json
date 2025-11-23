@@ -152,6 +152,7 @@
         }
       },
       "required": [
+        "logLevel",
         "port",
         "native",
         "defaultNamespace",

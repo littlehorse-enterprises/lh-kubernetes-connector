@@ -124,7 +124,7 @@ affinity: {}
 connector:
   # Log level
   # @schema
-  # required: false
+  # required: true
   # enum:
   # - ERROR
   # - WARN
