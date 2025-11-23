@@ -32,6 +32,7 @@
   - [lhctl](https://littlehorse.io/docs/server/developer-guide/install)
   - [jq](https://jqlang.org/)
   - [yq](https://mikefarah.gitbook.io/yq/)
+  - [helm-schema](https://github.com/dadav/helm-schema/)
 
 ## Setup
 
