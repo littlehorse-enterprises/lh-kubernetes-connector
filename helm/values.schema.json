@@ -15,26 +15,31 @@
       "properties": {
         "enabled": {
           "default": false,
+          "required": [],
           "title": "enabled",
           "type": "boolean"
         },
         "maxReplicas": {
           "default": 100,
+          "required": [],
           "title": "maxReplicas",
           "type": "integer"
         },
         "minReplicas": {
           "default": 1,
+          "required": [],
           "title": "minReplicas",
           "type": "integer"
         },
         "targetCPUUtilizationPercentage": {
           "default": 80,
+          "required": [],
           "title": "targetCPUUtilizationPercentage",
           "type": "integer"
         },
         "targetMemoryUtilizationPercentage": {
           "default": 80,
+          "required": [],
           "title": "targetMemoryUtilizationPercentage",
           "type": "integer"
         }
@@ -56,6 +61,7 @@
         "defaultNamespace": {
           "default": "default",
           "description": "Default namespace where resources are created if not specified.",
+          "required": [],
           "title": "defaultNamespace",
           "type": "string"
         },
@@ -75,12 +81,14 @@
         "native": {
           "default": true,
           "description": "Specifies whether to run the connector using the native build or jvm.",
+          "required": [],
           "title": "native",
           "type": "boolean"
         },
         "port": {
           "default": 9090,
           "description": "REST health check port.",
+          "required": [],
           "title": "port",
           "type": "integer"
         },
@@ -93,11 +101,13 @@
               "properties": {
                 "enabled": {
                   "default": true,
+                  "required": [],
                   "title": "enabled",
                   "type": "boolean"
                 },
                 "name": {
                   "default": "lh-kubernetes-connector-apply",
+                  "required": [],
                   "title": "name",
                   "type": "string"
                 }
@@ -114,11 +124,13 @@
               "properties": {
                 "enabled": {
                   "default": false,
+                  "required": [],
                   "title": "enabled",
                   "type": "boolean"
                 },
                 "name": {
                   "default": "lh-kubernetes-connector-secret",
+                  "required": [],
                   "title": "name",
                   "type": "string"
                 }
@@ -152,6 +164,7 @@
     "fullnameOverride": {
       "default": "",
       "description": "This is to override the resources name.",
+      "required": [],
       "title": "fullnameOverride",
       "type": "string"
     },
@@ -168,17 +181,20 @@
         "pullPolicy": {
           "default": "IfNotPresent",
           "description": "This sets the pull policy for images.",
+          "required": [],
           "title": "pullPolicy",
           "type": "string"
         },
         "repository": {
           "default": "ghcr.io/littlehorse-enterprises/lh-kubernetes-connector",
+          "required": [],
           "title": "repository",
           "type": "string"
         },
         "tag": {
           "default": "",
           "description": "Overrides the image tag whose default is the chart appVersion.",
+          "required": [],
           "title": "tag",
           "type": "string"
         }
@@ -195,6 +211,7 @@
       "items": {
         "required": []
       },
+      "required": [],
       "title": "imagePullSecrets",
       "type": "array"
     },
@@ -205,12 +222,14 @@
         "apiHost": {
           "default": "",
           "description": "LH bootstrap server.",
+          "required": [],
           "title": "apiHost",
           "type": "string"
         },
         "apiPort": {
           "default": 2023,
           "description": "LH bootstrap server port.",
+          "required": [],
           "title": "apiPort",
           "type": "integer"
         },
@@ -234,11 +253,13 @@
               "properties": {
                 "secretKey": {
                   "default": "",
+                  "required": [],
                   "title": "secretKey",
                   "type": "string"
                 },
                 "secretName": {
                   "default": "",
+                  "required": [],
                   "title": "secretName",
                   "type": "string"
                 }
@@ -256,11 +277,13 @@
               "properties": {
                 "secretKey": {
                   "default": "",
+                  "required": [],
                   "title": "secretKey",
                   "type": "string"
                 },
                 "secretName": {
                   "default": "",
+                  "required": [],
                   "title": "secretName",
                   "type": "string"
                 }
@@ -278,11 +301,13 @@
               "properties": {
                 "secretKey": {
                   "default": "",
+                  "required": [],
                   "title": "secretKey",
                   "type": "string"
                 },
                 "secretName": {
                   "default": "",
+                  "required": [],
                   "title": "secretName",
                   "type": "string"
                 }
@@ -306,6 +331,7 @@
             "accessTokenUrl": {
               "default": "",
               "description": "Identity provider access token URL.",
+              "required": [],
               "title": "accessTokenUrl",
               "type": "string"
             },
@@ -315,11 +341,13 @@
               "properties": {
                 "secretKey": {
                   "default": "",
+                  "required": [],
                   "title": "secretKey",
                   "type": "string"
                 },
                 "secretName": {
                   "default": "",
+                  "required": [],
                   "title": "secretName",
                   "type": "string"
                 }
@@ -337,11 +365,13 @@
               "properties": {
                 "secretKey": {
                   "default": "",
+                  "required": [],
                   "title": "secretKey",
                   "type": "string"
                 },
                 "secretName": {
                   "default": "",
+                  "required": [],
                   "title": "secretName",
                   "type": "string"
                 }
@@ -361,12 +391,14 @@
         "tenantId": {
           "default": "",
           "description": "LH tenant id.",
+          "required": [],
           "title": "tenantId",
           "type": "string"
         },
         "workerThreads": {
           "default": 2,
           "description": "Number of worker threads to run.",
+          "required": [],
           "title": "workerThreads",
           "type": "integer"
         }
@@ -383,6 +415,7 @@
     "nameOverride": {
       "default": "",
       "description": "This is to override the chart name.",
+      "required": [],
       "title": "nameOverride",
       "type": "string"
     },
@@ -417,6 +450,7 @@
     "replicaCount": {
       "default": 1,
       "description": "This will set the replicaset count more information can be found at https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/.",
+      "required": [],
       "title": "replicaCount",
       "type": "integer"
     },
@@ -441,6 +475,7 @@
         "create": {
           "default": true,
           "description": "Specifies whether a role should be created.",
+          "required": [],
           "title": "create",
           "type": "boolean"
         },
@@ -457,6 +492,7 @@
         "name": {
           "default": "",
           "description": "The name of the role to use.\nIf not set and create is true, a name is generated using the fullname template.",
+          "required": [],
           "title": "name",
           "type": "string"
         },
@@ -465,6 +501,7 @@
           "items": {
             "required": []
           },
+          "required": [],
           "title": "rules",
           "type": "array"
         }
@@ -497,18 +534,21 @@
         "automount": {
           "default": true,
           "description": "Automatically mount a ServiceAccount's API credentials?.",
+          "required": [],
           "title": "automount",
           "type": "boolean"
         },
         "create": {
           "default": true,
           "description": "Specifies whether a service account should be created.",
+          "required": [],
           "title": "create",
           "type": "boolean"
         },
         "name": {
           "default": "",
           "description": "The name of the service account to use.\nIf not set and create is true, a name is generated using the fullname template.",
+          "required": [],
           "title": "name",
           "type": "string"
         }
@@ -525,6 +565,7 @@
       "items": {
         "required": []
       },
+      "required": [],
       "title": "tolerations",
       "type": "array"
     }
