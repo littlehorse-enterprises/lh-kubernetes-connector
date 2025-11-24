@@ -71,7 +71,7 @@ public void define(final WorkflowThread wf) {
 Add repository
 
 ```shell
-helm repo add littlehorse https://littlehorse-enterprises.github.io/lh-helm-charts/
+helm repo add littlehorse https://littlehorse-enterprises.github.io/lh-helm-charts
 ```
 
 Install chart
