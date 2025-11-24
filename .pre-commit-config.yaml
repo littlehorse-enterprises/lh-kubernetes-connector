@@ -20,6 +20,13 @@ repos:
         stages: [ pre-commit ]
       - id: check-added-large-files
         stages: [ pre-commit ]
+  - repo: https://github.com/dadav/helm-schema
+    rev: 0.18.1
+    hooks:
+      - id: helm-schema
+        name: check helm schema
+        args: [ --chart-search-root=./helm ]
+        stages: [ pre-commit ]
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.30
     hooks:
