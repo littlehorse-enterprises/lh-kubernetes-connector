@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: littlehorse
+spec:
+  selector:
+    app: littlehorse
+  ports:
+    - name: dashboard
+      protocol: TCP
+      port: 8080
+      targetPort: dashboard
+    - name: external
+      protocol: TCP
+      port: 2023
+      targetPort: external
+    - name: internal
+      protocol: TCP
+      port: 2024
+      targetPort: internal
+    - name: health
+      protocol: TCP
+      port: 1822
+      targetPort: health

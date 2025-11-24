@@ -42,7 +42,7 @@ jobs:
 
       - name: Update Helm Index
         run: |
-          helm repo index --merge lh-helm-charts/index.yaml charts/ --url https://github.com/littlehorse-enterprises/lh-helm-charts/releases/download/lh-kubernete-connector-${{ inputs.version }}/
+          helm repo index --merge lh-helm-charts/index.yaml charts/ --url https://github.com/littlehorse-enterprises/lh-helm-charts/releases/download/lh-kubernetes-connector-${{ inputs.version }}/
           cp charts/index.yaml lh-helm-charts/
 
       - name: Configure Git
@@ -71,7 +71,7 @@ jobs:
           PRE_RELEASE: ${{ inputs.pre-release && '--prerelease' || '' }}
         run: |
           echo "PRE_RELEASE=${PRE_RELEASE}"
-          gh release create lh-kubernete-connector-${{ inputs.version }} charts/lh-kubernete-connector-*.tgz ${PRE_RELEASE} -R littlehorse-enterprises/lh-helm-charts
+          gh release create lh-kubernetes-connector-${{ inputs.version }} charts/lh-kubernetes-connector-*.tgz ${PRE_RELEASE} -R littlehorse-enterprises/lh-helm-charts
 
   create-release:
     runs-on: ubuntu-latest
@@ -98,4 +98,4 @@ jobs:
           PRE_RELEASE: ${{ inputs.pre-release && '--prerelease' || '' }}
         run: |
           echo "PRE_RELEASE=${PRE_RELEASE}"
-          gh release create ${{ inputs.version }} -t ${{inputs.version }} -F CHANGELOG.md ${PRE_RELEASE} -R littlehorse-enterprises/lh-kubernete-connector
+          gh release create ${{ inputs.version }} -t ${{inputs.version }} -F CHANGELOG.md ${PRE_RELEASE} -R littlehorse-enterprises/lh-kubernetes-connector

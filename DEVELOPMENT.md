@@ -30,6 +30,9 @@
 - Tools:
   - [pre-commit](https://pre-commit.com/)
   - [lhctl](https://littlehorse.io/docs/server/developer-guide/install)
+  - [jq](https://jqlang.org/)
+  - [yq](https://mikefarah.gitbook.io/yq/)
+  - [helm-schema](https://github.com/dadav/helm-schema/)
 
 ## Setup
 
@@ -42,7 +45,7 @@ pre-commit install
 Run local env with Kind and LittleHorse server:
 
 ```shell
-./setup.sh
+./local-dev/setup.sh
 ```
 
 Port forward:
@@ -64,26 +67,28 @@ quarkus dev
 Setup kind:
 
 ```shell
-./setup.sh
+./local-dev/setup.sh
 ```
 
-> `./setup.sh --clean` to destroy the environment
+> `./local-dev/setup.sh --clean` to destroy the environment
 
 Install using helm:
 
 ```shell
-./install.sh
+./local-dev/install.sh
 ```
 
-> `./install.sh --build` for building before install
+> `./local-dev/install.sh --build` for building before install
+
+> `./local-dev/install.sh --dry-run` for showing resources
 
 Build docker:
 
 ```shell
-./build.sh
+./local-dev/build.sh
 ```
 
-> `./build.sh --rollout` to load the new docker image into kind
+> `./local-dev/build.sh --rollout` to load the new docker image into kind
 
 ## LittleHorse
 

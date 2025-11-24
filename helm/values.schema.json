@@ -1,0 +1,583 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "affinity": {
+      "additionalProperties": false,
+      "description": "Node affinity. More at https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity/.",
+      "required": [],
+      "title": "affinity",
+      "type": "object"
+    },
+    "autoscaling": {
+      "additionalProperties": false,
+      "description": "This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/.",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "maxReplicas": {
+          "default": 100,
+          "required": [],
+          "title": "maxReplicas",
+          "type": "integer"
+        },
+        "minReplicas": {
+          "default": 1,
+          "required": [],
+          "title": "minReplicas",
+          "type": "integer"
+        },
+        "targetCPUUtilizationPercentage": {
+          "default": 80,
+          "required": [],
+          "title": "targetCPUUtilizationPercentage",
+          "type": "integer"
+        },
+        "targetMemoryUtilizationPercentage": {
+          "default": 80,
+          "required": [],
+          "title": "targetMemoryUtilizationPercentage",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "enabled",
+        "minReplicas",
+        "maxReplicas",
+        "targetCPUUtilizationPercentage",
+        "targetMemoryUtilizationPercentage"
+      ],
+      "title": "autoscaling",
+      "type": "object"
+    },
+    "connector": {
+      "additionalProperties": false,
+      "description": "Settings related to the kubernetes connector.",
+      "properties": {
+        "defaultNamespace": {
+          "default": "default",
+          "description": "Default namespace where resources are created if not specified.",
+          "required": [],
+          "title": "defaultNamespace",
+          "type": "string"
+        },
+        "logLevel": {
+          "default": "INFO",
+          "description": "Log level",
+          "enum": [
+            "ERROR",
+            "WARN",
+            "INFO",
+            "DEBUG",
+            "TRACE"
+          ],
+          "required": [],
+          "title": "logLevel"
+        },
+        "native": {
+          "default": true,
+          "description": "Specifies whether to run the connector using the native build or jvm.",
+          "required": [],
+          "title": "native",
+          "type": "boolean"
+        },
+        "port": {
+          "default": 9090,
+          "description": "REST health check port.",
+          "required": [],
+          "title": "port",
+          "type": "integer"
+        },
+        "task": {
+          "additionalProperties": false,
+          "description": "Specifies which tasks to run.",
+          "properties": {
+            "apply": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "name": {
+                  "default": "lh-kubernetes-connector-apply",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "enabled"
+              ],
+              "title": "apply",
+              "type": "object"
+            },
+            "secret": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": false,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "name": {
+                  "default": "lh-kubernetes-connector-secret",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "enabled"
+              ],
+              "title": "secret",
+              "type": "object"
+            }
+          },
+          "required": [
+            "apply",
+            "secret"
+          ],
+          "title": "task",
+          "type": "object"
+        }
+      },
+      "required": [
+        "logLevel",
+        "port",
+        "native",
+        "defaultNamespace",
+        "task"
+      ],
+      "title": "connector",
+      "type": "object"
+    },
+    "fullnameOverride": {
+      "default": "",
+      "description": "This is to override the resources name.",
+      "required": [],
+      "title": "fullnameOverride",
+      "type": "string"
+    },
+    "global": {
+      "description": "Global values are values that can be accessed from any chart or subchart by exactly the same name.",
+      "required": [],
+      "title": "global",
+      "type": "object"
+    },
+    "image": {
+      "additionalProperties": false,
+      "description": "This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/.",
+      "properties": {
+        "pullPolicy": {
+          "default": "IfNotPresent",
+          "description": "This sets the pull policy for images.",
+          "required": [],
+          "title": "pullPolicy",
+          "type": "string"
+        },
+        "repository": {
+          "default": "ghcr.io/littlehorse-enterprises/lh-kubernetes-connector",
+          "required": [],
+          "title": "repository",
+          "type": "string"
+        },
+        "tag": {
+          "default": "",
+          "description": "Overrides the image tag whose default is the chart appVersion.",
+          "required": [],
+          "title": "tag",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "pullPolicy"
+      ],
+      "title": "image",
+      "type": "object"
+    },
+    "imagePullSecrets": {
+      "description": "This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/.",
+      "items": {
+        "required": []
+      },
+      "required": [],
+      "title": "imagePullSecrets",
+      "type": "array"
+    },
+    "littlehorse": {
+      "additionalProperties": false,
+      "description": "Settings related to the lh client. More at https://littlehorse.io/docs/server/developer-guide/client-configuration/.",
+      "properties": {
+        "apiHost": {
+          "default": "",
+          "description": "LH bootstrap server.",
+          "required": [],
+          "title": "apiHost",
+          "type": "string"
+        },
+        "apiPort": {
+          "default": 2023,
+          "description": "LH bootstrap server port.",
+          "required": [],
+          "title": "apiPort",
+          "type": "integer"
+        },
+        "apiProtocol": {
+          "default": "PLAINTEXT",
+          "description": "LH bootstrap protocol.",
+          "enum": [
+            "PLAINTEXT",
+            "TLS"
+          ],
+          "required": [],
+          "title": "apiProtocol"
+        },
+        "certs": {
+          "additionalProperties": false,
+          "description": "TLS configurations.",
+          "properties": {
+            "caCert": {
+              "additionalProperties": false,
+              "description": "Secret with CA Cert File.",
+              "properties": {
+                "secretKey": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretKey",
+                  "type": "string"
+                },
+                "secretName": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretName",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "secretName",
+                "secretKey"
+              ],
+              "title": "caCert",
+              "type": "object"
+            },
+            "clientCert": {
+              "additionalProperties": false,
+              "description": "Secret with Client Cert File.",
+              "properties": {
+                "secretKey": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretKey",
+                  "type": "string"
+                },
+                "secretName": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretName",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "secretName",
+                "secretKey"
+              ],
+              "title": "clientCert",
+              "type": "object"
+            },
+            "clientKey": {
+              "additionalProperties": false,
+              "description": "Secret with Client Key Cert File.",
+              "properties": {
+                "secretKey": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretKey",
+                  "type": "string"
+                },
+                "secretName": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretName",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "secretName",
+                "secretKey"
+              ],
+              "title": "clientKey",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "certs",
+          "type": "object"
+        },
+        "oauth": {
+          "additionalProperties": false,
+          "description": "OAuth configurations.",
+          "properties": {
+            "accessTokenUrl": {
+              "default": "",
+              "description": "Identity provider access token URL.",
+              "required": [],
+              "title": "accessTokenUrl",
+              "type": "string"
+            },
+            "clientId": {
+              "additionalProperties": false,
+              "description": "Secret with OAuth client id.",
+              "properties": {
+                "secretKey": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretKey",
+                  "type": "string"
+                },
+                "secretName": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretName",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "secretName",
+                "secretKey"
+              ],
+              "title": "clientId",
+              "type": "object"
+            },
+            "clientSecret": {
+              "additionalProperties": false,
+              "description": "Secret with OAuth client secret.",
+              "properties": {
+                "secretKey": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretKey",
+                  "type": "string"
+                },
+                "secretName": {
+                  "default": "",
+                  "required": [],
+                  "title": "secretName",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "secretName",
+                "secretKey"
+              ],
+              "title": "clientSecret",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "oauth",
+          "type": "object"
+        },
+        "tenantId": {
+          "default": "",
+          "description": "LH tenant id.",
+          "required": [],
+          "title": "tenantId",
+          "type": "string"
+        },
+        "workerThreads": {
+          "default": 2,
+          "description": "Number of worker threads to run.",
+          "required": [],
+          "title": "workerThreads",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "apiHost",
+        "apiPort",
+        "apiProtocol",
+        "workerThreads"
+      ],
+      "title": "littlehorse",
+      "type": "object"
+    },
+    "nameOverride": {
+      "default": "",
+      "description": "This is to override the chart name.",
+      "required": [],
+      "title": "nameOverride",
+      "type": "string"
+    },
+    "nodeSelector": {
+      "additionalProperties": false,
+      "description": "Assign pod to nodes. More at https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/.",
+      "required": [],
+      "title": "nodeSelector",
+      "type": "object"
+    },
+    "podAnnotations": {
+      "additionalProperties": false,
+      "description": "This is for setting Kubernetes Annotations to a Pod.\nFor more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/.",
+      "required": [],
+      "title": "podAnnotations",
+      "type": "object"
+    },
+    "podLabels": {
+      "additionalProperties": false,
+      "description": "This is for setting Kubernetes Labels to a Pod.\nFor more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/.",
+      "required": [],
+      "title": "podLabels",
+      "type": "object"
+    },
+    "podSecurityContext": {
+      "additionalProperties": false,
+      "description": "Pod level security context. More at https://kubernetes.io/docs/tasks/configure-pod-container/security-context/.",
+      "required": [],
+      "title": "podSecurityContext",
+      "type": "object"
+    },
+    "replicaCount": {
+      "default": 1,
+      "description": "This will set the replicaset count more information can be found at https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/.",
+      "required": [],
+      "title": "replicaCount",
+      "type": "integer"
+    },
+    "resources": {
+      "additionalProperties": false,
+      "description": "Pod resources. More at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/.",
+      "required": [],
+      "title": "resources",
+      "type": "object"
+    },
+    "role": {
+      "additionalProperties": false,
+      "description": "This is for setting a Role or ClusterRole.",
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "description": "Annotations to add to the role.",
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "create": {
+          "default": true,
+          "description": "Specifies whether a role should be created.",
+          "required": [],
+          "title": "create",
+          "type": "boolean"
+        },
+        "kind": {
+          "default": "Role",
+          "description": "Role type. More at https://kubernetes.io/docs/reference/access-authn-authz/rbac/.",
+          "enum": [
+            "Role",
+            "ClusterRole"
+          ],
+          "required": [],
+          "title": "kind"
+        },
+        "name": {
+          "default": "",
+          "description": "The name of the role to use.\nIf not set and create is true, a name is generated using the fullname template.",
+          "required": [],
+          "title": "name",
+          "type": "string"
+        },
+        "rules": {
+          "description": "Set rules access for this connector. More at https://kubernetes.io/docs/reference/access-authn-authz/rbac/.",
+          "items": {
+            "required": []
+          },
+          "required": [],
+          "title": "rules",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "create"
+      ],
+      "title": "role",
+      "type": "object"
+    },
+    "securityContext": {
+      "additionalProperties": false,
+      "description": "Container level security context. More at https://kubernetes.io/docs/tasks/configure-pod-container/security-context/.",
+      "required": [],
+      "title": "securityContext",
+      "type": "object"
+    },
+    "serviceAccount": {
+      "additionalProperties": false,
+      "description": "This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/.",
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "description": "Annotations to add to the service account.",
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "automount": {
+          "default": true,
+          "description": "Automatically mount a ServiceAccount's API credentials?.",
+          "required": [],
+          "title": "automount",
+          "type": "boolean"
+        },
+        "create": {
+          "default": true,
+          "description": "Specifies whether a service account should be created.",
+          "required": [],
+          "title": "create",
+          "type": "boolean"
+        },
+        "name": {
+          "default": "",
+          "description": "The name of the service account to use.\nIf not set and create is true, a name is generated using the fullname template.",
+          "required": [],
+          "title": "name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "create",
+        "automount"
+      ],
+      "title": "serviceAccount",
+      "type": "object"
+    },
+    "tolerations": {
+      "description": "Node tolerations. More at https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/.",
+      "items": {
+        "required": []
+      },
+      "required": [],
+      "title": "tolerations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "replicaCount",
+    "image",
+    "serviceAccount",
+    "autoscaling",
+    "connector",
+    "littlehorse",
+    "role"
+  ],
+  "type": "object"
+}
