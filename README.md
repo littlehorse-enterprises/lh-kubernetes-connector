@@ -68,6 +68,18 @@ public void define(final WorkflowThread wf) {
 
 <a href="https://github.com/littlehorse-enterprises/lh-kubernetes-connector/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/littlehorse-enterprises/lh-kubernetes-connector?label=latest"></a>
 
+Add repository
+
+```shell
+helm repo add littlehorse https://littlehorse-enterprises.github.io/lh-helm-charts/
+```
+
+Install chart
+
+```shell
+helm install lh-kubernetes-connector littlehorse/lh-kubernetes-connector --values values.yaml
+```
+
 Go to [LH Helm Charts Repository](https://github.com/littlehorse-enterprises/lh-helm-charts).
 
 ## Examples
