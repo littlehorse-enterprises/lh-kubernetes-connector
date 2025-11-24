@@ -23,12 +23,16 @@ repos:
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.30
     hooks:
-      - id: shellcheck
-        name: check scripts
-        stages: [ pre-commit ]
       - id: helmlint
         name: check helm
         stages: [ pre-commit ]
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        name: shell script files
+        stages: [ pre-commit ]
+        args: [ -e, SC1091 ]
   - repo: https://github.com/dadav/helm-schema
     rev: 0.18.1
     hooks:
