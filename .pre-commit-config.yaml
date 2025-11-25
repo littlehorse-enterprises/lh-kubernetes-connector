@@ -37,7 +37,7 @@ repos:
     rev: v0.10.0.1
     hooks:
       - id: shellcheck
-        name: shell script files
+        name: check script files
         stages: [ pre-commit ]
         args: [ -e, SC1091 ]
   - repo: https://github.com/dadav/helm-schema
