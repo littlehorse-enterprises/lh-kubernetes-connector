@@ -56,6 +56,10 @@ spec:
               value: "{{ .Values.connector.task.apply.name }}"
             - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_APPLY_ENABLED
               value: "{{ .Values.connector.task.apply.enabled }}"
+            - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_STATUS_NAME
+              value: "{{ .Values.connector.task.status.name }}"
+            - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_STATUS_ENABLED
+              value: "{{ .Values.connector.task.status.enabled }}"
             - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_SECRET_NAME
               value: "{{ .Values.connector.task.secret.name }}"
             - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_SECRET_ENABLED

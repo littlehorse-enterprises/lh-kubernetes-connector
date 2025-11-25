@@ -141,11 +141,35 @@
               ],
               "title": "secret",
               "type": "object"
+            },
+            "status": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "name": {
+                  "default": "lh-kubernetes-connector-status",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "enabled"
+              ],
+              "title": "status",
+              "type": "object"
             }
           },
           "required": [
             "apply",
-            "secret"
+            "secret",
+            "status"
           ],
           "title": "task",
           "type": "object"
