@@ -30,6 +30,14 @@ public interface ConnectorConfig {
     @WithName("task.secret")
     TaskConfig taskSecret();
 
+    String TASK_STATUS_NAME = PREFIX + ".task.status.name";
+    String TASK_STATUS_NAME_EXPRESSION = "${" + TASK_STATUS_NAME + "}";
+    String TASK_STATUS_ENABLED = PREFIX + ".task.status.enabled";
+    String TASK_STATUS_ENABLED_EXPRESSION = "${" + TASK_STATUS_ENABLED + "}";
+
+    @WithName("task.status")
+    TaskConfig taskStatus();
+
     interface TaskConfig {
         String name();
 
