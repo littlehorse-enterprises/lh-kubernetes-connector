@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-ARCH=$(arch)
+ARCH="$(arch)"
 
 if [[ "${ARCH}" != "x86_64" ]]; then
   MODE="jvm"
