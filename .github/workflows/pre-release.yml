@@ -23,7 +23,7 @@ jobs:
 
   release:
     needs:
-      - tests
+      - publish
     uses: ./.github/workflows/shared-release.yml
     secrets: inherit
     with:
