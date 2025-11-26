@@ -14,6 +14,7 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
   * [Tasks](#tasks)
     * [Task Apply](#task-apply)
     * [Task Secret](#task-secret)
+    * [Task Status](#task-status)
   * [Installation](#installation)
   * [Examples](#examples)
   * [Development Instructions](#development-instructions)
@@ -63,6 +64,29 @@ public void define(final WorkflowThread wf) {
 | Labels      | 3        | Json   | False    | False  | Resource labels |
 | String data | 4        | Json   | False    | True   | Plain text data |
 | Data        | 5        | Json   | False    | True   | Base64 data     |
+
+### Task Status
+
+This task allows you to get a resource's status from Kubernetes.
+Default name `lh-kubernetes-connector-status`.
+
+```java
+public void define(final WorkflowThread wf) {
+    final WfRunVariable apiVersion = wf.declareStr("apiVersion");
+    final WfRunVariable kind = wf.declareStr("kind");
+    final WfRunVariable namespace = wf.declareStr("namespace");
+    final WfRunVariable name = wf.declareStr("name");
+
+    wf.execute("lh-kubernetes-connector-status", apiVersion, kind, namespace, name);
+}
+```
+
+| Parameter   | Position | Type   | Required | Masked | Description         |
+|-------------|----------|--------|----------|--------|---------------------|
+| Api Version | 1        | String | True     | False  | Resource apiVersion |
+| King        | 2        | String | True     | False  | Resource king       |
+| Namespace   | 3        | String | False    | False  | Namespace           |
+| Name        | 4        | String | True     | False  | Resource name       |
 
 ## Installation
 

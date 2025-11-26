@@ -1,24 +1,35 @@
 package io.littlehorse.connector.service;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.littlehorse.connector.config.ConnectorConfig;
+import io.littlehorse.connector.exception.NotFoundException;
 import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 @ApplicationScoped
 public class KubernetesService {
     private static Logger log = LoggerFactory.getLogger(KubernetesService.class);
     private final KubernetesClient client;
+    private final String defaultNamespace;
 
-    public KubernetesService(final KubernetesClient client) {
+    public KubernetesService(
+            final KubernetesClient client,
+            @ConfigProperty(name = ConnectorConfig.DEFAULT_NAMESPACE)
+                    final String defaultNamespace) {
         this.client = client;
+        this.defaultNamespace = defaultNamespace;
     }
 
     private static void logSuccess(final HasMetadata resource) {
@@ -27,6 +38,31 @@ public class KubernetesService {
                 resource.getKind(),
                 resource.getMetadata().getName(),
                 resource.getMetadata().getNamespace());
+    }
+
+    /**
+     * Get resource status
+     * @param apiVersion Specifies which version of the Kubernetes API you are using to create or interact with an object
+     * @param kind Type of resource
+     * @param namespace Specific namespace
+     * @param name Name of the resource
+     * @return Status
+     */
+    public Object status(
+            final String apiVersion, final String kind, final String namespace, final String name) {
+        final GenericKubernetesResource resource = client.genericKubernetesResources(
+                        apiVersion, kind)
+                .inNamespace(Optional.ofNullable(namespace).orElse(defaultNamespace))
+                .withName(name)
+                .get();
+
+        if (resource == null) {
+            throw new NotFoundException("Resource not found");
+        }
+
+        return Optional.ofNullable(resource.getAdditionalProperties())
+                .map(properties -> properties.get("status"))
+                .orElse(null);
     }
 
     /**

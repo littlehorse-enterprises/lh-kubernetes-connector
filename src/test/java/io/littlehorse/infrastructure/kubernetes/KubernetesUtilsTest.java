@@ -21,6 +21,13 @@ class KubernetesUtilsTest {
     }
 
     @Test
+    void shouldReturnFalseIfNotBadRequestForUnknownResourceDefinition() {
+        KubernetesClientException clientException = new KubernetesClientException(
+                "Could not find the metadata for the given apiVersion and kind, please pass a ResourceDefinitionContext instead");
+        assertTrue(KubernetesUtils.isBadRequestException(clientException));
+    }
+
+    @Test
     void shouldReturnTrueIfAlreadyExists() {
         assertTrue(KubernetesUtils.isAlreadyExistsException(newException("AlreadyExists")));
     }

@@ -147,6 +147,9 @@ connector:
     secret:
       name: lh-kubernetes-connector-secret
       enabled: false
+    status:
+      name: lh-kubernetes-connector-status
+      enabled: true
 
 # Settings related to the lh client. More at https://littlehorse.io/docs/server/developer-guide/client-configuration/.
 littlehorse:
