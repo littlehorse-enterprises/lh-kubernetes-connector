@@ -130,7 +130,7 @@ class KubernetesServiceTest {
     }
 
     @Test
-    void shouldShouldGetStatusInDefaultNamespace() {
+    void shouldGetStatusInDefaultNamespace() {
         String expectedMessage = UUID.randomUUID().toString();
         String expectedName = UUID.randomUUID().toString();
 
@@ -150,7 +150,7 @@ class KubernetesServiceTest {
     }
 
     @Test
-    void shouldShouldGetStatusInNamespace() {
+    void shouldGetStatusInNamespace() {
         String expectedMessage = UUID.randomUUID().toString();
         String expectedName = UUID.randomUUID().toString();
         String expectedNamespace = UUID.randomUUID().toString();
@@ -172,7 +172,7 @@ class KubernetesServiceTest {
     }
 
     @Test
-    void shouldShouldThrowNotFoundException() {
+    void shouldThrowNotFoundException() {
         assertThrows(
                 NotFoundException.class,
                 () -> service.status("v1", "Pod", null, UUID.randomUUID().toString()));
