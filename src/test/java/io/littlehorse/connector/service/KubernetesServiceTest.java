@@ -3,12 +3,12 @@ package io.littlehorse.connector.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.littlehorse.connector.exception.NotFoundException;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.kubernetes.client.WithKubernetesTestServer;
 
@@ -99,5 +99,31 @@ class KubernetesServiceTest {
         Object status = service.status("v1", "Pod", expectedNamespace, expectedName);
 
         assertThat(status, is(Map.of("message", expectedMessage)));
+    }
+
+    @Test
+    void shouldShouldGetStatusForDefaultNamespace() {
+        String expectedMessage = "expected message";
+        String expectedName = "pod";
+        String expectedNamespace = "default";
+
+        Pod pod = new PodBuilder()
+                .withNewMetadata()
+                .withName(expectedName)
+                .and()
+                .withNewStatus()
+                .withMessage(expectedMessage)
+                .endStatus()
+                .build();
+        client.pods().resource(pod).create();
+
+        Object status = service.status("v1", "Pod", expectedNamespace, expectedName);
+
+        assertThat(status, is(Map.of("message", expectedMessage)));
+    }
+
+    @Test
+    void shouldShouldThrowNotFoundException() {
+        assertThrows(NotFoundException.class, () -> service.status("v1", "Pod", null, "not-a-pod"));
     }
 }
