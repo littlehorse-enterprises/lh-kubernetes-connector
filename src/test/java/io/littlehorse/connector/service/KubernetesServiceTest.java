@@ -97,7 +97,7 @@ class KubernetesServiceTest {
                 .endMetadata()
                 .build();
 
-        service.save(inputSecret);
+        service.apply(inputSecret);
 
         Secret result = client.secrets().withName(expectedName).get();
 
@@ -117,7 +117,7 @@ class KubernetesServiceTest {
                 .endMetadata()
                 .build();
 
-        service.save(inputSecret);
+        service.apply(inputSecret);
 
         Secret result = client.secrets()
                 .inNamespace(expectedNamespace)

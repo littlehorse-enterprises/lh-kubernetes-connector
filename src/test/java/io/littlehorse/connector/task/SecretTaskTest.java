@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
+import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -29,7 +30,7 @@ class SecretTaskTest {
                 .withMessage("")
                 .build();
         KubernetesClientException exception = new KubernetesClientException(status);
-        doThrow(exception).when(service).save(any());
+        doThrow(exception).when(service).apply(any(Secret.class));
 
         SecretTask task = new SecretTask(service);
 

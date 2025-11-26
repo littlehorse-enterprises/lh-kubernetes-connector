@@ -49,7 +49,7 @@ public class SecretTask {
                 .build();
 
         try {
-            service.save(secret);
+            service.apply(secret);
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isBadRequestException(e)) {
                 throw new BadRequestException(e);

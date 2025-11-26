@@ -13,43 +13,33 @@ import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Optional;
 
 @ApplicationScoped
 public class KubernetesService {
-    private static Logger log = LoggerFactory.getLogger(KubernetesService.class);
     private final KubernetesClient client;
 
     public KubernetesService(final KubernetesClient client) {
         this.client = client;
     }
 
-    private static void logSuccess(final HasMetadata resource) {
-        log.info(
-                "Resource '{}/{}' successfully updated in namespace '{}'",
-                resource.getKind(),
-                resource.getMetadata().getName(),
-                resource.getMetadata().getNamespace());
-    }
-
     /**
-     * Current namespace
-     * @return Namespace name
+     * Current namespace.
+     *
+     * @return Namespace name.
      */
     public String currentNamespace() {
         return client.getNamespace();
     }
 
     /**
-     * Get resource status
-     * @param apiVersion Specifies which version of the Kubernetes API you are using to create or interact with an object
-     * @param kind Type of resource
-     * @param namespace Specific namespace
-     * @param name Name of the resource
-     * @return Status
+     * Get resource status.
+     *
+     * @param apiVersion Specifies which version of the Kubernetes API you are using to create or interact with an object.
+     * @param kind Type of resource.
+     * @param namespace Specific namespace.
+     * @param name Name of the resource.
+     * @return Status.
      */
     public Object status(
             final String apiVersion, final String kind, final String namespace, final String name) {
@@ -83,9 +73,10 @@ public class KubernetesService {
      * Save (create/update) a secret.
      *
      * @param secret Secret to be saved.
+     * @return Result.
      */
-    public void save(final Secret secret) {
-        apply(client.secrets().resource(secret));
+    public HasMetadata apply(final Secret secret) {
+        return apply(client.secrets().resource(secret));
     }
 
     /**
@@ -93,23 +84,24 @@ public class KubernetesService {
      * If the manifest does not provide a namespace the service will use the default one.
      *
      * @param yaml Manifest yaml file.
+     * @return Result.
      */
-    public void apply(final String yaml) {
-        apply(client.resource(yaml));
+    public HasMetadata apply(final String yaml) {
+        return apply(client.resource(yaml));
     }
 
     /**
      * Resource to be applied.
      *
      * @param resource Any resource.
+     * @return Result.
      */
-    public void apply(final Resource<? extends HasMetadata> resource) {
+    public HasMetadata apply(final Resource<? extends HasMetadata> resource) {
         try {
-            logSuccess(resource.create());
+            return resource.create();
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isAlreadyExistsException(e)) {
-                logSuccess(resource.update());
-                return;
+                return resource.update();
             }
             throw e;
         }
