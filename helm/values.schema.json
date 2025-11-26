@@ -58,13 +58,6 @@
       "additionalProperties": false,
       "description": "Settings related to the kubernetes connector.",
       "properties": {
-        "defaultNamespace": {
-          "default": "default",
-          "description": "Default namespace where resources are created if not specified.",
-          "required": [],
-          "title": "defaultNamespace",
-          "type": "string"
-        },
         "logLevel": {
           "default": "INFO",
           "description": "Log level",
@@ -179,7 +172,6 @@
         "logLevel",
         "port",
         "native",
-        "defaultNamespace",
         "task"
       ],
       "title": "connector",

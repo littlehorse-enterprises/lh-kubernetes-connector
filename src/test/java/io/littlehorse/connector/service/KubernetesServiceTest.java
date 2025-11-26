@@ -17,6 +17,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.UUID;
 
 @WithKubernetesTestServer
 @QuarkusTest
@@ -24,26 +25,27 @@ class KubernetesServiceTest {
 
     final String inputYaml =
             """
-            apiVersion: apps/v1
-            kind: Deployment
-            metadata:
-              name: nginx-deployment
-            spec:
-              selector:
-                matchLabels:
-                  app: nginx
-              replicas: 3
-              template:
-                metadata:
-                  labels:
-                    app: nginx
-                spec:
-                  containers:
-                  - name: nginx
-                    image: nginx:latest
-                    ports:
-                    - containerPort: 80
-            """;
+                    apiVersion: apps/v1
+                    kind: Deployment
+                    metadata:
+                      name: %s
+                      %s
+                    spec:
+                      selector:
+                        matchLabels:
+                          app: nginx
+                      replicas: 3
+                      template:
+                        metadata:
+                          labels:
+                            app: nginx
+                        spec:
+                          containers:
+                          - name: nginx
+                            image: nginx:latest
+                            ports:
+                            - containerPort: 80
+                    """;
 
     @Inject
     KubernetesClient client;
@@ -51,21 +53,44 @@ class KubernetesServiceTest {
     @Inject
     KubernetesService service;
 
-    @Test
-    void shouldApplyYaml() {
-        service.apply(inputYaml);
+    private String buildYaml(String namespace, String name) {
+        return inputYaml.formatted(name, namespace == null ? "" : "namespace: " + namespace);
+    }
 
-        Deployment result =
-                client.apps().deployments().withName("nginx-deployment").get();
+    @Test
+    void shouldApplyYamlInDefaultNamespace() {
+        String expectedName = UUID.randomUUID().toString();
+        service.apply(buildYaml(null, expectedName));
+
+        Deployment result = client.apps().deployments().withName(expectedName).get();
 
         assertNotNull(result, "Deployment not found");
         assertEquals(result.getSpec().getReplicas(), 3);
+        assertEquals(result.getMetadata().getNamespace(), "default");
         assertThat(result.getSpec().getSelector().getMatchLabels(), hasEntry("app", "nginx"));
     }
 
     @Test
-    void shouldCreateSecret() {
-        String expectedName = "my-secret";
+    void shouldApplyYamlInNamespace() {
+        String expectedNamespace = UUID.randomUUID().toString();
+        String expectedName = UUID.randomUUID().toString();
+        service.apply(buildYaml(expectedNamespace, expectedName));
+
+        Deployment result = client.apps()
+                .deployments()
+                .inNamespace(expectedNamespace)
+                .withName(expectedName)
+                .get();
+
+        assertNotNull(result, "Deployment not found");
+        assertEquals(result.getSpec().getReplicas(), 3);
+        assertEquals(result.getMetadata().getNamespace(), expectedNamespace);
+        assertThat(result.getSpec().getSelector().getMatchLabels(), hasEntry("app", "nginx"));
+    }
+
+    @Test
+    void shouldCreateSecretInDefaultNamespace() {
+        String expectedName = UUID.randomUUID().toString();
         Secret inputSecret = new SecretBuilder()
                 .editMetadata()
                 .withName(expectedName)
@@ -77,13 +102,58 @@ class KubernetesServiceTest {
         Secret result = client.secrets().withName(expectedName).get();
 
         assertNotNull(result, "Secret not found");
+        assertEquals("default", result.getMetadata().getNamespace());
+        assertEquals(expectedName, result.getMetadata().getName());
     }
 
     @Test
-    void shouldShouldGetStatus() {
-        String expectedMessage = "expected message";
-        String expectedName = "pod";
-        String expectedNamespace = "test";
+    void shouldCreateSecretInNamespace() {
+        String expectedName = UUID.randomUUID().toString();
+        String expectedNamespace = UUID.randomUUID().toString();
+        Secret inputSecret = new SecretBuilder()
+                .editMetadata()
+                .withName(expectedName)
+                .withNamespace(expectedNamespace)
+                .endMetadata()
+                .build();
+
+        service.save(inputSecret);
+
+        Secret result = client.secrets()
+                .inNamespace(expectedNamespace)
+                .withName(expectedName)
+                .get();
+
+        assertNotNull(result, "Secret not found");
+        assertEquals(expectedNamespace, result.getMetadata().getNamespace());
+        assertEquals(expectedName, result.getMetadata().getName());
+    }
+
+    @Test
+    void shouldShouldGetStatusInDefaultNamespace() {
+        String expectedMessage = UUID.randomUUID().toString();
+        String expectedName = UUID.randomUUID().toString();
+
+        Pod pod = new PodBuilder()
+                .withNewMetadata()
+                .withName(expectedName)
+                .and()
+                .withNewStatus()
+                .withMessage(expectedMessage)
+                .endStatus()
+                .build();
+        client.pods().resource(pod).create();
+
+        Object status = service.status("v1", "Pod", null, expectedName);
+
+        assertThat(status, is(Map.of("message", expectedMessage)));
+    }
+
+    @Test
+    void shouldShouldGetStatusInNamespace() {
+        String expectedMessage = UUID.randomUUID().toString();
+        String expectedName = UUID.randomUUID().toString();
+        String expectedNamespace = UUID.randomUUID().toString();
 
         Pod pod = new PodBuilder()
                 .withNewMetadata()
@@ -102,28 +172,9 @@ class KubernetesServiceTest {
     }
 
     @Test
-    void shouldShouldGetStatusForDefaultNamespace() {
-        String expectedMessage = "expected message";
-        String expectedName = "pod";
-        String expectedNamespace = "default";
-
-        Pod pod = new PodBuilder()
-                .withNewMetadata()
-                .withName(expectedName)
-                .and()
-                .withNewStatus()
-                .withMessage(expectedMessage)
-                .endStatus()
-                .build();
-        client.pods().resource(pod).create();
-
-        Object status = service.status("v1", "Pod", expectedNamespace, expectedName);
-
-        assertThat(status, is(Map.of("message", expectedMessage)));
-    }
-
-    @Test
     void shouldShouldThrowNotFoundException() {
-        assertThrows(NotFoundException.class, () -> service.status("v1", "Pod", null, "not-a-pod"));
+        assertThrows(
+                NotFoundException.class,
+                () -> service.status("v1", "Pod", null, UUID.randomUUID().toString()));
     }
 }

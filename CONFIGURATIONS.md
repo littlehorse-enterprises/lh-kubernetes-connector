@@ -129,13 +129,6 @@ Optional version identifier. Intended to be informative. Useful when you're runn
 
 ## LittleHorse Kubernetes Connector
 
-``littlehorse.connector.kubernetes.default.namespace``
-Default namespace. Used when a namespace is not passed to a connector task.
-
-* Type: string
-* Default: default
-* Importance: high
-
 ### Task Apply
 
 ``littlehorse.connector.kubernetes.task.apply.name``

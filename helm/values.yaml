@@ -137,8 +137,6 @@ connector:
   port: 9090
   # Specifies whether to run the connector using the native build or jvm.
   native: true
-  # Default namespace where resources are created if not specified.
-  defaultNamespace: default
   # Specifies which tasks to run.
   task:
     apply:

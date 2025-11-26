@@ -62,7 +62,7 @@ quarkus dev
 
 > `quarkus run` for `prod` profile
 
-## Script
+## Scripts
 
 Setup kind:
 

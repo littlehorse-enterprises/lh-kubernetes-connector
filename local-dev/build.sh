@@ -33,7 +33,7 @@ done
           -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
 docker build -t "$repository:$tag" .
 
-if [[ ${rollout} == "true" ]]; then
+if [[ "${rollout}" == "true" ]]; then
     kind load docker-image --name "$name" "$repository:$tag"
     kubectl rollout restart deployment "$name"
 fi

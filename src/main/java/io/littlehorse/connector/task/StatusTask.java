@@ -10,10 +10,15 @@ import io.littlehorse.sdk.worker.LHTaskMethod;
 import io.quarkus.arc.lookup.LookupIfProperty;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 @LHTask
 @LookupIfProperty(name = ConnectorConfig.TASK_STATUS_ENABLED, stringValue = "true")
 public class StatusTask {
+    private static Logger log = LoggerFactory.getLogger(StatusTask.class);
     private final KubernetesService service;
 
     public StatusTask(final KubernetesService service) {
@@ -37,7 +42,15 @@ public class StatusTask {
         }
 
         try {
-            return service.status(apiVersion, kind, namespace, name);
+            final Object status = service.status(apiVersion, kind, namespace, name);
+            log.debug(
+                    "Status of resource apiVersion: {}, kind: {}, namespace: {}, name: {}, status: {}",
+                    apiVersion,
+                    kind,
+                    Optional.ofNullable(namespace).orElseGet(service::currentNamespace),
+                    name,
+                    status);
+            return status;
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isBadRequestException(e)) {
                 throw new BadRequestException(e);
