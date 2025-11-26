@@ -29,7 +29,7 @@ class StatusTaskTest {
     }
 
     @Test
-    void shouldShouldThrowBadRequestExceptionWhenThereIsNotCRD() {
+    void shouldThrowBadRequestExceptionWhenThereIsNotCRD() {
         KubernetesClientException exception = new KubernetesClientException(
                 "Could not find the metadata for the given apiVersion and kind, please pass a ResourceDefinitionContext instead");
         doThrow(exception).when(service).status(anyString(), anyString(), isNull(), anyString());

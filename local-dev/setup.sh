@@ -21,12 +21,14 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ ${clean} == "true" ]]; then
+if [[ "${clean}" == "true" ]]; then
   kind delete cluster --name "$name"
   exit
 fi
 
 kind create cluster --name "$name" -q || true
 kubectx "kind-$name"
+kubectl apply -f "${SCRIPT_DIR}/namespace.yaml"
+kubectl config set-context --current --namespace=littlehorse
 kubectl apply -f "${SCRIPT_DIR}/littlehorse.yaml"
 kubectl apply -f "${SCRIPT_DIR}/service.yaml"

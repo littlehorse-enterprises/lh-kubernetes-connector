@@ -7,7 +7,7 @@
   * [Table of Content](#table-of-content)
   * [Commands](#commands)
   * [Setup](#setup)
-  * [Script](#script)
+  * [Scripts](#scripts)
   * [LittleHorse](#littlehorse)
   * [Helm](#helm)
   * [Unit Tests](#unit-tests)
@@ -62,7 +62,7 @@ quarkus dev
 
 > `quarkus run` for `prod` profile
 
-## Script
+## Scripts
 
 Setup kind:
 
@@ -89,6 +89,16 @@ Build docker:
 ```
 
 > `./local-dev/build.sh --rollout` to load the new docker image into kind
+
+Run using built artifact:
+
+```shell
+./local-dev/run.sh
+```
+
+> `./local-dev/run.sh --build` for building before run
+
+> `./local-dev/run.sh --native` for using native build
 
 ## LittleHorse
 

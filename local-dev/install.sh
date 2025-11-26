@@ -27,12 +27,12 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ ${dryRun} == "true" ]]; then
+if [[ "${dryRun}" == "true" ]]; then
   helm template "$name" ./helm -f "${SCRIPT_DIR}/values.yaml"
   exit
 fi
 
-if [[ ${build} == "true" ]]; then
+if [[ "${build}" == "true" ]]; then
   "${SCRIPT_DIR}/build.sh"
 fi
 
