@@ -70,7 +70,11 @@ Setup kind:
 ./local-dev/setup.sh
 ```
 
-> `./local-dev/setup.sh --clean` to destroy the environment
+Cleanup:
+
+```shell
+./local-dev/cleanup.sh
+```
 
 Install using helm:
 
