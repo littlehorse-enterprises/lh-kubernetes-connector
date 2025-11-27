@@ -5,7 +5,7 @@ RUN yum install findutils -y && \
     rm -rf /var/cache/yum
 
 # entrypoint
-COPY docker-entrypoint.sh /connector/
+COPY docker-entrypoint.sh /connector/docker-entrypoint.sh
 
 # jar app
 COPY build/quarkus-app/lib/ /connector/lib/
