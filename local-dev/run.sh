@@ -24,16 +24,12 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ "${native}" == "true" ]]; then
-  if [[ "${build}" = "true" ]]; then
-    ./local-dev/build.sh --native
-  fi
+if [[ "${build}" = "true" ]]; then
+  ./local-dev/build.sh
+fi
 
+if [[ "${native}" == "true" ]]; then
   ./build/quarkus-run -Dquarkus.log.category.\"io.littlehorse\".level=DEBUG
 else
-  if [[ "${build}" = "true" ]]; then
-    ./local-dev/build.sh
-  fi
-
   java -Dquarkus.log.category.\"io.littlehorse\".level=DEBUG -jar ./build/quarkus-app/quarkus-run.jar
 fi
