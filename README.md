@@ -30,8 +30,9 @@ This task allows you to apply any manifest in Kubernetes.
 Default name `lh-kubernetes-connector-apply`.
 
 ```java
-public void define(final WorkflowThread wf) {
+public void define(WorkflowThread wf) {
     WfRunVariable inputYaml = wf.declareStr("inputYaml");
+
     wf.execute("lh-kubernetes-connector-apply", inputYaml);
 }
 ```
@@ -46,12 +47,12 @@ This task allows you to create secret in Kubernetes.
 Default name `lh-kubernetes-connector-secret`. More at [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/).
 
 ```java
-public void define(final WorkflowThread wf) {
-    final WfRunVariable namespace = wf.declareStr("namespace");
-    final WfRunVariable labels = wf.declareJsonObj("labels");
-    final WfRunVariable name = wf.declareStr("name").required();
-    final WfRunVariable stringData = wf.declareJsonObj("stringData").masked();
-    final WfRunVariable data = wf.declareJsonObj("data").masked();
+public void define(WorkflowThread wf) {
+    WfRunVariable namespace = wf.declareStr("namespace");
+    WfRunVariable labels = wf.declareJsonObj("labels");
+    WfRunVariable name = wf.declareStr("name").required();
+    WfRunVariable stringData = wf.declareJsonObj("stringData").masked();
+    WfRunVariable data = wf.declareJsonObj("data").masked();
 
     wf.execute("lh-kubernetes-connector-secret", namespace, name, labels, stringData, data);
 }
@@ -71,11 +72,11 @@ This task allows you to get a resource's status from Kubernetes.
 Default name `lh-kubernetes-connector-status`.
 
 ```java
-public void define(final WorkflowThread wf) {
-    final WfRunVariable apiVersion = wf.declareStr("apiVersion");
-    final WfRunVariable kind = wf.declareStr("kind");
-    final WfRunVariable namespace = wf.declareStr("namespace");
-    final WfRunVariable name = wf.declareStr("name");
+public void define(WorkflowThread wf) {
+    WfRunVariable apiVersion = wf.declareStr("apiVersion");
+    WfRunVariable kind = wf.declareStr("kind");
+    WfRunVariable namespace = wf.declareStr("namespace");
+    WfRunVariable name = wf.declareStr("name");
 
     wf.execute("lh-kubernetes-connector-status", apiVersion, kind, namespace, name);
 }
