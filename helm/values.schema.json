@@ -428,6 +428,40 @@
       "title": "littlehorse",
       "type": "object"
     },
+    "livenessProbe": {
+      "additionalProperties": false,
+      "description": "This is to setup the readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/.",
+      "properties": {
+        "httpGet": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "default": "/live",
+              "required": [],
+              "title": "path",
+              "type": "string"
+            },
+            "port": {
+              "default": "http",
+              "required": [],
+              "title": "port",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "port"
+          ],
+          "title": "httpGet",
+          "type": "object"
+        }
+      },
+      "required": [
+        "httpGet"
+      ],
+      "title": "livenessProbe",
+      "type": "object"
+    },
     "nameOverride": {
       "default": "",
       "description": "This is to override the chart name.",
@@ -461,6 +495,40 @@
       "description": "Pod level security context. More at https://kubernetes.io/docs/tasks/configure-pod-container/security-context/.",
       "required": [],
       "title": "podSecurityContext",
+      "type": "object"
+    },
+    "readinessProbe": {
+      "additionalProperties": false,
+      "description": "This is to setup the liveness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/.",
+      "properties": {
+        "httpGet": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "default": "/ready",
+              "required": [],
+              "title": "path",
+              "type": "string"
+            },
+            "port": {
+              "default": "http",
+              "required": [],
+              "title": "port",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "port"
+          ],
+          "title": "httpGet",
+          "type": "object"
+        }
+      },
+      "required": [
+        "httpGet"
+      ],
+      "title": "readinessProbe",
       "type": "object"
     },
     "replicaCount": {
@@ -590,6 +658,8 @@
     "replicaCount",
     "image",
     "serviceAccount",
+    "livenessProbe",
+    "readinessProbe",
     "autoscaling",
     "connector",
     "littlehorse",

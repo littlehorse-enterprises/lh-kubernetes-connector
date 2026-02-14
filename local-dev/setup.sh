@@ -5,6 +5,21 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_DIR=$(cd "$SCRIPT_DIR/.." && pwd)
 cd "${PROJECT_DIR}"
 
+if ! command -v kubectx &>/dev/null; then
+  echo "'kubectx' command not found. Install https://kubectx.org/."
+  exit 1
+fi
+
+if ! command -v kubectl &>/dev/null; then
+  echo "'kubectl' command not found. Install https://kubernetes.io/docs/tasks/tools/."
+  exit 1
+fi
+
+if ! command -v kind &>/dev/null; then
+  echo "'kind' command not found. Install https://kind.sigs.k8s.io/."
+  exit 1
+fi
+
 name="lh-kubernetes-connector"
 clean=false
 

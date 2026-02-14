@@ -16,6 +16,7 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
     * [Task Secret](#task-secret)
     * [Task Status](#task-status)
   * [Installation](#installation)
+  * [Compatibility Matrix](#compatibility-matrix)
   * [Examples](#examples)
   * [Development Instructions](#development-instructions)
   * [Configurations List](#configurations-list)
@@ -106,6 +107,13 @@ helm install lh-kubernetes-connector littlehorse/lh-kubernetes-connector --value
 ```
 
 Go to [LH Helm Charts Repository](https://github.com/littlehorse-enterprises/lh-helm-charts).
+
+## Compatibility Matrix
+
+| Connector Version | LittleHorse Version |
+|-------------------|---------------------|
+| `0.2.1`           | `0.15.0`            |
+| `0.3.0`           | `0.16.0`            |
 
 ## Examples
 

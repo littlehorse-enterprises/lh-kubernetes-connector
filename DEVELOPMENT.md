@@ -165,3 +165,4 @@ helm test lh-kubernetes-connector --timeout 10s
 ## Interesting Links
 
 - [Kubernetes Quarkus Extension](https://quarkus.io/guides/kubernetes-client)
+- [LittleHorse Quarkus Extension](https://littlehorse.io/docs/getting-started/quarkus-extension)
