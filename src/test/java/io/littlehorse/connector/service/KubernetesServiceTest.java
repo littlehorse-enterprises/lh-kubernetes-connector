@@ -23,8 +23,7 @@ import java.util.UUID;
 @QuarkusTest
 class KubernetesServiceTest {
 
-    final String inputYaml =
-            """
+    final String inputYaml = """
                     apiVersion: apps/v1
                     kind: Deployment
                     metadata:
