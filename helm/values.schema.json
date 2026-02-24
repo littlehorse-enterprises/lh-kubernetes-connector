@@ -432,6 +432,12 @@
       "additionalProperties": false,
       "description": "This is to setup the readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/.",
       "properties": {
+        "failureThreshold": {
+          "default": 3,
+          "required": [],
+          "title": "failureThreshold",
+          "type": "integer"
+        },
         "httpGet": {
           "additionalProperties": false,
           "properties": {
@@ -454,9 +460,31 @@
           ],
           "title": "httpGet",
           "type": "object"
+        },
+        "periodSeconds": {
+          "default": 10,
+          "required": [],
+          "title": "periodSeconds",
+          "type": "integer"
+        },
+        "successThreshold": {
+          "default": 1,
+          "required": [],
+          "title": "successThreshold",
+          "type": "integer"
+        },
+        "timeoutSeconds": {
+          "default": 1,
+          "required": [],
+          "title": "timeoutSeconds",
+          "type": "integer"
         }
       },
       "required": [
+        "failureThreshold",
+        "periodSeconds",
+        "successThreshold",
+        "timeoutSeconds",
         "httpGet"
       ],
       "title": "livenessProbe",
@@ -501,6 +529,12 @@
       "additionalProperties": false,
       "description": "This is to setup the liveness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/.",
       "properties": {
+        "failureThreshold": {
+          "default": 3,
+          "required": [],
+          "title": "failureThreshold",
+          "type": "integer"
+        },
         "httpGet": {
           "additionalProperties": false,
           "properties": {
@@ -523,9 +557,31 @@
           ],
           "title": "httpGet",
           "type": "object"
+        },
+        "periodSeconds": {
+          "default": 10,
+          "required": [],
+          "title": "periodSeconds",
+          "type": "integer"
+        },
+        "successThreshold": {
+          "default": 1,
+          "required": [],
+          "title": "successThreshold",
+          "type": "integer"
+        },
+        "timeoutSeconds": {
+          "default": 1,
+          "required": [],
+          "title": "timeoutSeconds",
+          "type": "integer"
         }
       },
       "required": [
+        "failureThreshold",
+        "periodSeconds",
+        "successThreshold",
+        "timeoutSeconds",
         "httpGet"
       ],
       "title": "readinessProbe",
@@ -644,6 +700,68 @@
       "title": "serviceAccount",
       "type": "object"
     },
+    "startupProbe": {
+      "additionalProperties": false,
+      "description": "This is to setup the startup probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/.",
+      "properties": {
+        "failureThreshold": {
+          "default": 3,
+          "required": [],
+          "title": "failureThreshold",
+          "type": "integer"
+        },
+        "httpGet": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "default": "/started",
+              "required": [],
+              "title": "path",
+              "type": "string"
+            },
+            "port": {
+              "default": "http",
+              "required": [],
+              "title": "port",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "port"
+          ],
+          "title": "httpGet",
+          "type": "object"
+        },
+        "periodSeconds": {
+          "default": 10,
+          "required": [],
+          "title": "periodSeconds",
+          "type": "integer"
+        },
+        "successThreshold": {
+          "default": 1,
+          "required": [],
+          "title": "successThreshold",
+          "type": "integer"
+        },
+        "timeoutSeconds": {
+          "default": 1,
+          "required": [],
+          "title": "timeoutSeconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "failureThreshold",
+        "periodSeconds",
+        "successThreshold",
+        "timeoutSeconds",
+        "httpGet"
+      ],
+      "title": "startupProbe",
+      "type": "object"
+    },
     "tolerations": {
       "description": "Node tolerations. More at https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/.",
       "items": {
@@ -660,6 +778,7 @@
     "serviceAccount",
     "livenessProbe",
     "readinessProbe",
+    "startupProbe",
     "autoscaling",
     "connector",
     "littlehorse",
