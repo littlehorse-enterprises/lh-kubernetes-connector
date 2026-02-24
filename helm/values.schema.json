@@ -644,6 +644,40 @@
       "title": "serviceAccount",
       "type": "object"
     },
+    "startupProbe": {
+      "additionalProperties": false,
+      "description": "This is to setup the startup probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/.",
+      "properties": {
+        "httpGet": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "default": "/started",
+              "required": [],
+              "title": "path",
+              "type": "string"
+            },
+            "port": {
+              "default": "http",
+              "required": [],
+              "title": "port",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "port"
+          ],
+          "title": "httpGet",
+          "type": "object"
+        }
+      },
+      "required": [
+        "httpGet"
+      ],
+      "title": "startupProbe",
+      "type": "object"
+    },
     "tolerations": {
       "description": "Node tolerations. More at https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/.",
       "items": {
@@ -660,6 +694,7 @@
     "serviceAccount",
     "livenessProbe",
     "readinessProbe",
+    "startupProbe",
     "autoscaling",
     "connector",
     "littlehorse",
