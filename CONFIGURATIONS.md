@@ -11,7 +11,10 @@
   * [LittleHorse Kubernetes Connector](#littlehorse-kubernetes-connector)
     * [Task Apply](#task-apply)
     * [Task Secret](#task-secret)
-  * [Quarkus Kubernetes Client](#quarkus-kubernetes-client)
+  * [Quarkus Configurations](#quarkus-configurations)
+    * [Quarkus Kubernetes Client Extension](#quarkus-kubernetes-client-extension)
+    * [Quarkus Logging Json Extension](#quarkus-logging-json-extension)
+    * [Quarkus SmallRye Health Extension](#quarkus-smallrye-health-extension)
 <!-- TOC -->
 
 ## LittleHorse Client Configurations
@@ -161,8 +164,18 @@ Enables task secret.
 * Default: false
 * Importance: medium
 
-## Quarkus Kubernetes Client
+## Quarkus Configurations
 
 This connector uses [Quarkus](https://quarkus.io/) as a framework.
 
-More about the kubernetes client configurations at: [Quarkus Configuration Reference](https://quarkus.io/guides/kubernetes-client#configuration-reference).
+### Quarkus Kubernetes Client Extension
+
+More kubernetes-client's configurations at: [Quarkus Kubernetes Client](https://quarkus.io/guides/kubernetes-client#configuration-reference).
+
+### Quarkus Logging Json Extension
+
+More logging-json's configurations at: [Quarkus JSON logging format](https://quarkus.io/guides/logging#configuration).
+
+### Quarkus SmallRye Health Extension
+
+More smallrye-health's configurations at: [Quarkus SmallRye Health](https://quarkus.io/guides/smallrye-health#configuration-reference).

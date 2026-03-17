@@ -104,6 +104,9 @@ spec:
             - name: LHC_CLIENT_KEY
               value: "/etc/littlehorse/certs/client-key/client.key"
             {{- end }}
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.connector.port }}

@@ -16,6 +16,7 @@ dependencies {
     implementation "io.quarkus:quarkus-arc"
     implementation "io.quarkus:quarkus-smallrye-health"
     implementation "io.quarkus:quarkus-kubernetes-client"
+    implementation "io.quarkus:quarkus-logging-json"
 
     // littlehorse
     implementation "io.littlehorse:littlehorse-quarkus:${littlehorseVersion}"
