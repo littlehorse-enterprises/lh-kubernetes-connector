@@ -177,6 +177,15 @@
       "title": "connector",
       "type": "object"
     },
+    "env": {
+      "description": "Environment variables to pass to the container. More at: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/",
+      "items": {
+        "required": []
+      },
+      "required": [],
+      "title": "env",
+      "type": "array"
+    },
     "fullnameOverride": {
       "default": "",
       "description": "This is to override the resources name.",

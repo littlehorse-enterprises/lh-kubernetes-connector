@@ -20,3 +20,7 @@ role:
     - apiGroups: [ "apps" ]
       resources: [ "deployments" ]
       verbs: [ "get", "list", "watch", "create", "delete", "patch", "update" ]
+
+env:
+  - name: QUARKUS_LOG_CONSOLE_JSON_ENABLED
+    value: "false"

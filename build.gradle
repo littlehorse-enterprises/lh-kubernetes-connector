@@ -16,15 +16,13 @@ dependencies {
     implementation "io.quarkus:quarkus-arc"
     implementation "io.quarkus:quarkus-smallrye-health"
     implementation "io.quarkus:quarkus-kubernetes-client"
+    implementation "io.quarkus:quarkus-logging-json"
 
     // littlehorse
     implementation "io.littlehorse:littlehorse-quarkus:${littlehorseVersion}"
 
     // logs
-    implementation "org.jboss.logging:commons-logging-jboss-logging"
-    implementation "org.jboss.logmanager:log4j-jboss-logmanager"
     implementation "org.jboss.slf4j:slf4j-jboss-logmanager"
-    implementation "org.jboss.logmanager:log4j2-jboss-logmanager"
 
     // tests
     testImplementation "io.quarkus:quarkus-junit5"

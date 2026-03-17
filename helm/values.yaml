@@ -143,6 +143,13 @@ nodeSelector: {}
 # @schema
 tolerations: []
 
+# Environment variables to pass to the container. More at: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
+# @schema
+# required: false
+# type: array
+# @schema
+env: []
+
 # Node affinity. More at https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity/.
 # @schema
 # required: false
