@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download Jar
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: connector-jar
           path: build/quarkus-app/
 
       - name: Download Native
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: connector-native
           path: build/quarkus-run
