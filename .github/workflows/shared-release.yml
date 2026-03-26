@@ -19,7 +19,7 @@ jobs:
    runs-on: ubuntu-latest
    steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Helm
         uses: azure/setup-helm@v4.2.0
@@ -30,7 +30,7 @@ jobs:
           yq e -i '.appVersion = "${{ inputs.version }}"' ./helm/Chart.yaml
 
       - name: Clone Helm Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: littlehorse-enterprises/lh-helm-charts
           path: lh-helm-charts
@@ -79,7 +79,7 @@ jobs:
       - helm
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
