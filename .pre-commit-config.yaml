@@ -21,7 +21,7 @@ repos:
       - id: check-added-large-files
         stages: [ pre-commit ]
   - repo: https://github.com/dadav/helm-schema
-    rev: 0.18.1
+    rev: 0.23.0
     hooks:
       - id: helm-schema
         name: check helm schema
@@ -34,21 +34,21 @@ repos:
         name: check helm
         stages: [ pre-commit ]
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
         name: check script files
         stages: [ pre-commit ]
         args: [ -e, SC1091 ]
   - repo: https://github.com/dadav/helm-schema
-    rev: 0.18.1
+    rev: 0.23.0
     hooks:
       - id: helm-schema
         name: check helm schema
         args: [ --chart-search-root=./helm ]
         stages: [ pre-commit ]
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
       - id: conventional-pre-commit
         name: check commit message format
