@@ -1,6 +1,10 @@
 name: shared-publish
 on:
   workflow_call:
+    inputs:
+      version: 
+        required: true
+        type: string
 
 permissions:
   packages: write
@@ -32,3 +36,7 @@ jobs:
           dockerfile: Dockerfile
           github-token: ${{ secrets.GITHUB_TOKEN }}
           ghcr-root: true
+          tags: |
+            type=raw,value=latest,enable=false
+            type=raw,value=${{ inputs.version }},enable=true
+            type=ref,event=branch,enable=${{ github.ref_name == 'main' }}
