@@ -14,12 +14,15 @@ jobs:
     uses: ./.github/workflows/shared-tests.yaml
     with:
       upload-artifacts: true
+      version: ${{ github.ref_name }}
 
   publish:
     needs:
       - tests
     uses: ./.github/workflows/shared-publish.yaml
     secrets: inherit
+    with:
+      version: ${{ github.ref_name }}
 
   release:
     needs:

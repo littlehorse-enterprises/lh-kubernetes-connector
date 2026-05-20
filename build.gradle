@@ -7,7 +7,16 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven {
+        name = "Central Portal Snapshots"
+        url = "https://central.sonatype.com/repository/maven-snapshots/"
+    }
     mavenLocal()
+}
+
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 dependencies {
@@ -19,7 +28,7 @@ dependencies {
     implementation "io.quarkus:quarkus-logging-json"
 
     // littlehorse
-    implementation "io.littlehorse:littlehorse-quarkus:${littlehorseVersion}"
+    implementation "io.littlehorse:littlehorse-quarkus:${version}", { changing = true }
 
     // logs
     implementation "org.jboss.slf4j:slf4j-jboss-logmanager"

@@ -2,6 +2,7 @@ package io.littlehorse.infrastructure.health;
 
 import io.littlehorse.quarkus.runtime.LHTaskStatusesContainer;
 import io.littlehorse.quarkus.runtime.health.LHTaskStatus;
+import io.littlehorse.sdk.worker.LHTaskWorkerHealthReason;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -28,10 +29,13 @@ public class ConnectorHealthCheck implements HealthCheck {
 
     private boolean isHealthy() {
         try {
-            return taskStatusesContainer.getTaskStatuses().stream()
-                    .allMatch(LHTaskStatus::isHealthy);
+            return taskStatusesContainer.getTaskStatuses().stream().allMatch(this::isHealthy);
         } catch (final Exception e) {
             return false;
         }
+    }
+
+    private boolean isHealthy(final LHTaskStatus lhTaskStatus) {
+        return !LHTaskWorkerHealthReason.UNHEALTHY.equals(lhTaskStatus.getStatus());
     }
 }
