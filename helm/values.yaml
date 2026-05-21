@@ -25,7 +25,7 @@ imagePullSecrets: []
 # required: false
 # type: string
 # @schema
-nameOverride: ""
+nameOverride: "lh-kubernetes-connector"
 
 # This is to override the resources name.
 # @schema
