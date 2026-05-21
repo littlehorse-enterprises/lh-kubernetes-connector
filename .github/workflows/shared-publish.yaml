@@ -40,3 +40,11 @@ jobs:
             type=raw,value=latest,enable=false
             type=raw,value=${{ inputs.version }},enable=true
             type=ref,event=branch,enable=${{ github.ref_name == 'main' }}
+
+  helm-oci:
+    needs:
+      - publish
+    uses: ./.github/workflows/publish-helm-oci.yaml
+    with:
+      name: helm-lh-kubernetes-connector
+      version: ${{ inputs.version }}
