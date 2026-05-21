@@ -110,7 +110,7 @@ Go to [LH Helm Charts Repository](https://github.com/littlehorse-enterprises/lh-
 
 ## Versioning
 
-These connector keeps the same versioning as LittleHorse.
+This connector keeps the same versioning as LittleHorse.
 
 ## Examples
 
