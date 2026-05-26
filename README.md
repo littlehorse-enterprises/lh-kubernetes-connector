@@ -53,8 +53,8 @@ public void define(WorkflowThread wf) {
     WfRunVariable labels = wf.declareJsonObj("labels");
     WfRunVariable annotations = wf.declareJsonObj("annotations");
     WfRunVariable name = wf.declareStr("name").required();
-    WfRunVariable type = wf.declareStr("type");
-    WfRunVariable immutable = wf.declareBool("immutable");
+    WfRunVariable type = wf.declareStr("type").withDefault("Opaque");
+    WfRunVariable immutable = wf.declareBool("immutable").withDefault(false);
     WfRunVariable stringData = wf.declareJsonObj("stringData").masked();
     WfRunVariable data = wf.declareJsonObj("data").masked();
 
