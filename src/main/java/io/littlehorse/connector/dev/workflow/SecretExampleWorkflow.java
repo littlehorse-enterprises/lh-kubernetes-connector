@@ -42,10 +42,22 @@ public class SecretExampleWorkflow implements LHWorkflowDefinition {
     public void define(final WorkflowThread wf) {
         final WfRunVariable namespace = wf.declareStr("namespace");
         final WfRunVariable labels = wf.declareJsonObj("labels");
+        final WfRunVariable annotations = wf.declareJsonObj("annotations");
         final WfRunVariable name = wf.declareStr("name").required();
+        final WfRunVariable type = wf.declareStr("type").withDefault("Opaque");
+        final WfRunVariable immutable = wf.declareBool("immutable").withDefault(false);
         final WfRunVariable stringData = wf.declareJsonObj("stringData").masked();
         final WfRunVariable data = wf.declareJsonObj("data").masked();
 
-        wf.execute(taskSecretName, namespace, name, labels, stringData, data);
+        wf.execute(
+                taskSecretName,
+                namespace,
+                name,
+                labels,
+                annotations,
+                type,
+                immutable,
+                stringData,
+                data);
     }
 }
