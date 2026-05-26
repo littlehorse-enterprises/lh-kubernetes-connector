@@ -35,6 +35,7 @@ class SecretTaskTest {
         SecretTask task = new SecretTask(service);
 
         assertThrows(
-                BadRequestException.class, () -> task.save(null, "my-secret", null, null, null));
+                BadRequestException.class,
+                () -> task.save(null, "my-secret", null, null, null, null, null, null));
     }
 }

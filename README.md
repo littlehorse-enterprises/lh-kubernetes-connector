@@ -51,21 +51,27 @@ Default name `lh-kubernetes-connector-secret`. More at [Secrets](https://kuberne
 public void define(WorkflowThread wf) {
     WfRunVariable namespace = wf.declareStr("namespace");
     WfRunVariable labels = wf.declareJsonObj("labels");
+    WfRunVariable annotations = wf.declareJsonObj("annotations");
     WfRunVariable name = wf.declareStr("name").required();
+    WfRunVariable type = wf.declareStr("type");
+    WfRunVariable immutable = wf.declareBool("immutable");
     WfRunVariable stringData = wf.declareJsonObj("stringData").masked();
     WfRunVariable data = wf.declareJsonObj("data").masked();
 
-    wf.execute("lh-kubernetes-connector-secret", namespace, name, labels, stringData, data);
+    wf.execute("lh-kubernetes-connector-secret", namespace, name, labels, annotations, type, immutable, stringData, data);
 }
 ```
 
-| Parameter   | Position | Type   | Required | Masked | Description     |
-|-------------|----------|--------|----------|--------|-----------------|
-| Namespace   | 1        | String | False    | False  | Namespace       |
-| Name        | 2        | String | True     | False  | Resource name   |
-| Labels      | 3        | Json   | False    | False  | Resource labels |
-| String data | 4        | Json   | False    | True   | Plain text data |
-| Data        | 5        | Json   | False    | True   | Base64 data     |
+| Parameter   | Position | Type    | Required | Masked | Description            |
+|-------------|----------|---------|----------|--------|------------------------|
+| Namespace   | 1        | String  | False    | False  | Namespace              |
+| Name        | 2        | String  | True     | False  | Resource name          |
+| Labels      | 3        | Json    | False    | False  | Resource labels        |
+| Annotations | 4        | Json    | False    | False  | Resource annotations   |
+| Type        | 5        | String  | False    | False  | Secret type            |
+| Immutable   | 6        | Boolean | False    | False  | Immutable secret       |
+| String data | 7        | Json    | False    | True   | Plain text data        |
+| Data        | 8        | Json    | False    | True   | Base64 data            |
 
 ### Task Status
 

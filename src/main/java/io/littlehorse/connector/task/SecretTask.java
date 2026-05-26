@@ -34,6 +34,9 @@ public class SecretTask {
             final String namespace,
             final String name,
             final Map<String, String> labels,
+            final Map<String, String> annotations,
+            final String type,
+            final Boolean immutable,
             @LHType(masked = true) final Map<String, String> stringData,
             @LHType(masked = true) final Map<String, String> data) {
 
@@ -46,7 +49,10 @@ public class SecretTask {
                 .withName(name)
                 .withNamespace(namespace)
                 .withLabels(labels)
+                .withAnnotations(annotations)
                 .endMetadata()
+                .withType(type)
+                .withImmutable(immutable)
                 .withStringData(stringData)
                 .withData(data)
                 .build();
