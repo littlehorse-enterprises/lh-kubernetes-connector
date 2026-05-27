@@ -3,6 +3,7 @@ image:
   tag: latest
 
 connector:
+  defaultTargetNamespace: "test"
   logLevel: DEBUG
   task:
     secret:
@@ -13,6 +14,7 @@ littlehorse:
   apiPort: 2024
 
 role:
+  kind: ClusterRole
   rules:
     - apiGroups: [ "" ]
       resources: [ "secrets" ]

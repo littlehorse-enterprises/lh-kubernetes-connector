@@ -8,7 +8,8 @@ import java.util.Optional;
 public final class KubernetesUtils {
     private enum KubernetesClientExceptionReason {
         AlreadyExists,
-        BadRequest
+        BadRequest,
+        Forbidden
     }
 
     private static final String RESOURCE_DEFINITION_NOT_FOUND_MESSAGE =
@@ -18,6 +19,10 @@ public final class KubernetesUtils {
 
     public static boolean isAlreadyExistsException(final KubernetesClientException e) {
         return isThisReason(KubernetesClientExceptionReason.AlreadyExists, e);
+    }
+
+    public static boolean isForbiddenException(final KubernetesClientException e) {
+        return isThisReason(KubernetesClientExceptionReason.Forbidden, e);
     }
 
     public static boolean isBadRequestException(final KubernetesClientException e) {

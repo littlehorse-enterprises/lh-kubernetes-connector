@@ -37,6 +37,16 @@ class KubernetesUtilsTest {
         assertFalse(KubernetesUtils.isAlreadyExistsException(newException("NotAlreadyExists")));
     }
 
+    @Test
+    void shouldReturnTrueIfForbidden() {
+        assertTrue(KubernetesUtils.isForbiddenException(newException("Forbidden")));
+    }
+
+    @Test
+    void shouldReturnFalseIfNotForbidden() {
+        assertFalse(KubernetesUtils.isForbiddenException(newException("NotForbidden")));
+    }
+
     private static KubernetesClientException newException(String reason) {
         return new KubernetesClientException(newStatus(reason));
     }
