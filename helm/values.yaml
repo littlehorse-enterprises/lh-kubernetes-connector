@@ -177,6 +177,12 @@ connector:
   port: 9090
   # Specifies whether to run the connector using the native build or jvm.
   native: true
+  # Default target namespace for the Kubernetes client. If empty, the connector uses the namespace where it is deployed.
+  # @schema
+  # required: false
+  # type: string
+  # @schema
+  defaultTargetNamespace: ""
   # Specifies which tasks to run.
   task:
     apply:

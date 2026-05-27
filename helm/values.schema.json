@@ -53,6 +53,12 @@
       "additionalProperties": false,
       "description": "Settings related to the kubernetes connector.",
       "properties": {
+        "defaultTargetNamespace": {
+          "default": "",
+          "description": "Default target namespace for the Kubernetes client. If empty, the connector uses the namespace where it is deployed.",
+          "title": "defaultTargetNamespace",
+          "type": "string"
+        },
         "logLevel": {
           "default": "INFO",
           "description": "Log level",
@@ -466,7 +472,7 @@
       "type": "object"
     },
     "nameOverride": {
-      "default": "",
+      "default": "lh-kubernetes-connector",
       "description": "This is to override the chart name.",
       "title": "nameOverride",
       "type": "string"
