@@ -2,7 +2,7 @@ package io.littlehorse.connector.task;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.littlehorse.connector.exception.BadRequestException;
@@ -32,7 +32,7 @@ class StatusTaskTest {
     void shouldThrowBadRequestExceptionWhenThereIsNotCRD() {
         KubernetesClientException exception = new KubernetesClientException(
                 "Could not find the metadata for the given apiVersion and kind, please pass a ResourceDefinitionContext instead");
-        doThrow(exception).when(service).status(anyString(), anyString(), isNull(), anyString());
+        when(service.get(anyString(), anyString(), isNull(), anyString())).thenThrow(exception);
 
         StatusTask task = new StatusTask(service);
         assertThrows(

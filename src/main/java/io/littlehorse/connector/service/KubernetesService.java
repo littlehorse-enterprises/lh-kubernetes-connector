@@ -1,14 +1,11 @@
 package io.littlehorse.connector.service;
 
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.littlehorse.connector.exception.NotFoundException;
 import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,49 +21,22 @@ public class KubernetesService {
     }
 
     /**
-     * Current namespace.
-     *
-     * @return Namespace name.
-     */
-    public String currentNamespace() {
-        return client.getNamespace();
-    }
-
-    /**
-     * Get resource status.
+     * Get resource.
      *
      * @param apiVersion Specifies which version of the Kubernetes API you are using to create or interact with an object.
      * @param kind Type of resource.
      * @param namespace Specific namespace.
      * @param name Name of the resource.
-     * @return Status.
+     * @return Optional resource.
      */
-    public Object status(
+    public Optional<GenericKubernetesResource> get(
             final String apiVersion, final String kind, final String namespace, final String name) {
-        final GenericKubernetesResource resource =
-                getGenericKubernetesResource(apiVersion, kind, namespace, name);
-
-        if (resource == null) {
-            throw new NotFoundException("Resource not found");
-        }
-
-        return Optional.ofNullable(resource.getAdditionalProperties())
-                .map(properties -> properties.get("status"))
-                .orElse(null);
-    }
-
-    private GenericKubernetesResource getGenericKubernetesResource(
-            final String apiVersion, final String kind, final String namespace, final String name) {
-        final MixedOperation<
-                        GenericKubernetesResource,
-                        GenericKubernetesResourceList,
-                        Resource<GenericKubernetesResource>>
-                operation = client.genericKubernetesResources(apiVersion, kind);
-        return Optional.ofNullable(namespace)
-                .map(nullableNamespace ->
-                        operation.inNamespace(nullableNamespace).withName(name))
-                .orElse(operation.withName(name))
-                .get();
+        return Optional.ofNullable(Optional.ofNullable(namespace)
+                .map(nullableNamespace -> client.genericKubernetesResources(apiVersion, kind)
+                        .inNamespace(nullableNamespace)
+                        .withName(name))
+                .orElse(client.genericKubernetesResources(apiVersion, kind).withName(name))
+                .get());
     }
 
     /**

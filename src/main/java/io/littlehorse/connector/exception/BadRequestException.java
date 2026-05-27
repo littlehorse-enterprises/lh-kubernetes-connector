@@ -6,6 +6,9 @@ import io.littlehorse.sdk.common.exception.LHTaskException;
 
 import java.util.Optional;
 
+/**
+ * Unretryable exception indicating that the request was invalid. This can occur when the provided parameters are incorrect or when there is an issue with the Kubernetes API server. The workflow will not retry the task, and the error will be logged for further investigation.
+ */
 public class BadRequestException extends LHTaskException {
     public BadRequestException(final KubernetesClientException cause) {
         this(Optional.ofNullable(cause)

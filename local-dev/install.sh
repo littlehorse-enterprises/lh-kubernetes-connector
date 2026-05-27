@@ -10,6 +10,7 @@ repository="littlehorse/$name"
 tag="latest"
 build=false
 dryRun=false
+uninstall=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -19,6 +20,9 @@ while [[ $# -gt 0 ]]; do
     --dry-run)
       dryRun=true
       ;;
+    --uninstall)
+      uninstall=true
+      ;;
     *)
       echo "Unknown argument: $1"
       exit 1
@@ -26,6 +30,11 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+if [[ "${uninstall}" == "true" ]]; then
+  helm uninstall "$name"
+  exit
+fi
 
 if [[ "${dryRun}" == "true" ]]; then
   helm template "$name" ./helm -f "${SCRIPT_DIR}/values.yaml"
