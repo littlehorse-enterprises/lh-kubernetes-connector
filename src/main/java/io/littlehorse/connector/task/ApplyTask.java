@@ -44,7 +44,6 @@ public class ApplyTask {
             } else if (KubernetesUtils.isForbiddenException(e)) {
                 throw new ForbiddenException(e);
             }
-            log.error("PEDROOOO Error applying resource with provided yaml: {}", e.getStatus(), e);
             throw e;
         }
     }
