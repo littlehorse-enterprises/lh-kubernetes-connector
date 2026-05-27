@@ -1,4 +1,4 @@
-package io.littlehorse.infrastructure.health;
+package io.littlehorse.connector.health;
 
 import io.littlehorse.quarkus.runtime.LHTaskStatusesContainer;
 import io.littlehorse.quarkus.runtime.health.LHTaskStatus;

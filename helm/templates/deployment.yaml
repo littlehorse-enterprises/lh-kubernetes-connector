@@ -42,7 +42,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: ["{{ .Values.connector.native | ternary "native" "jvm" }}"]
           env:
-            - name: QUARKUS_LOG_CATEGORY__IO_LITTLEHORSE__LEVEL
+            - name: QUARKUS_LOG_CATEGORY__IO_LITTLEHORSE_CONNECTOR__LEVEL
               value: "{{ .Values.connector.logLevel }}"
             - name: QUARKUS_HTTP_PORT
               value: "{{ .Values.connector.port }}"

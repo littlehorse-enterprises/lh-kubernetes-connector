@@ -6,7 +6,7 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
+import io.littlehorse.connector.kubernetes.KubernetesUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
 

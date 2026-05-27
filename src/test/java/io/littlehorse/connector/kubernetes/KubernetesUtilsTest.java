@@ -1,4 +1,4 @@
-package io.littlehorse.infrastructure.kubernetes;
+package io.littlehorse.connector.kubernetes;
 
 import static org.junit.jupiter.api.Assertions.*;
 
