@@ -13,6 +13,7 @@ littlehorse:
   apiPort: 2024
 
 role:
+  kind: ClusterRole
   rules:
     - apiGroups: [ "" ]
       resources: [ "secrets" ]

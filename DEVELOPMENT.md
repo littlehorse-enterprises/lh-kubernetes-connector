@@ -82,6 +82,8 @@ Install using helm:
 
 > `./local-dev/install.sh --dry-run` for showing resources
 
+> `./local-dev/install.sh --uninstall` to uninstall the chart
+
 Build docker:
 
 ```shell

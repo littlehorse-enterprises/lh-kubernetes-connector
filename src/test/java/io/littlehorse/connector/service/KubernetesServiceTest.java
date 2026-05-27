@@ -2,13 +2,11 @@ package io.littlehorse.connector.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.littlehorse.connector.exception.NotFoundException;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.kubernetes.client.WithKubernetesTestServer;
 
@@ -16,7 +14,7 @@ import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @WithKubernetesTestServer
@@ -129,51 +127,36 @@ class KubernetesServiceTest {
     }
 
     @Test
-    void shouldGetStatusInDefaultNamespace() {
-        String expectedMessage = UUID.randomUUID().toString();
+    void shouldGetResourceInDefaultNamespace() {
         String expectedName = UUID.randomUUID().toString();
+        service.apply(buildYaml(null, expectedName));
 
-        Pod pod = new PodBuilder()
-                .withNewMetadata()
-                .withName(expectedName)
-                .and()
-                .withNewStatus()
-                .withMessage(expectedMessage)
-                .endStatus()
-                .build();
-        client.pods().resource(pod).create();
+        Optional<GenericKubernetesResource> result =
+                service.get("apps/v1", "Deployment", null, expectedName);
 
-        Object status = service.status("v1", "Pod", null, expectedName);
-
-        assertThat(status, is(Map.of("message", expectedMessage)));
+        assertTrue(result.isPresent());
+        assertEquals(expectedName, result.get().getMetadata().getName());
     }
 
     @Test
-    void shouldGetStatusInNamespace() {
-        String expectedMessage = UUID.randomUUID().toString();
-        String expectedName = UUID.randomUUID().toString();
+    void shouldGetResourceInNamespace() {
         String expectedNamespace = UUID.randomUUID().toString();
+        String expectedName = UUID.randomUUID().toString();
+        service.apply(buildYaml(expectedNamespace, expectedName));
 
-        Pod pod = new PodBuilder()
-                .withNewMetadata()
-                .withName(expectedName)
-                .withNamespace(expectedNamespace)
-                .and()
-                .withNewStatus()
-                .withMessage(expectedMessage)
-                .endStatus()
-                .build();
-        client.pods().resource(pod).create();
+        Optional<GenericKubernetesResource> result =
+                service.get("apps/v1", "Deployment", expectedNamespace, expectedName);
 
-        Object status = service.status("v1", "Pod", expectedNamespace, expectedName);
-
-        assertThat(status, is(Map.of("message", expectedMessage)));
+        assertTrue(result.isPresent());
+        assertEquals(expectedName, result.get().getMetadata().getName());
+        assertEquals(expectedNamespace, result.get().getMetadata().getNamespace());
     }
 
     @Test
-    void shouldThrowNotFoundException() {
-        assertThrows(
-                NotFoundException.class,
-                () -> service.status("v1", "Pod", null, UUID.randomUUID().toString()));
+    void shouldReturnEmptyWhenResourceDoesNotExist() {
+        Optional<GenericKubernetesResource> result =
+                service.get("apps/v1", "Deployment", null, "non-existent-resource");
+
+        assertTrue(result.isEmpty());
     }
 }

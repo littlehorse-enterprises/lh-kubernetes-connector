@@ -42,7 +42,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: ["{{ .Values.connector.native | ternary "native" "jvm" }}"]
           env:
-            - name: QUARKUS_LOG_CATEGORY__IO_LITTLEHORSE__LEVEL
+            - name: QUARKUS_LOG_CATEGORY__IO_LITTLEHORSE_CONNECTOR__LEVEL
               value: "{{ .Values.connector.logLevel }}"
             - name: QUARKUS_HTTP_PORT
               value: "{{ .Values.connector.port }}"
@@ -62,6 +62,10 @@ spec:
               value: "{{ .Values.connector.task.secret.name }}"
             - name: LITTLEHORSE_CONNECTOR_KUBERNETES_TASK_SECRET_ENABLED
               value: "{{ .Values.connector.task.secret.enabled }}"
+            {{- if .Values.connector.defaultTargetNamespace }}
+            - name: QUARKUS_KUBERNETES_CLIENT_NAMESPACE
+              value: "{{ .Values.connector.defaultTargetNamespace }}"
+            {{- end }}
             {{- if .Values.littlehorse.apiProtocol }}
             - name: LHC_API_PROTOCOL
               value: "{{ .Values.littlehorse.apiProtocol }}"

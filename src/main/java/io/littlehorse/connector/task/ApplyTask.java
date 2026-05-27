@@ -4,8 +4,9 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.littlehorse.connector.config.ConnectorConfig;
 import io.littlehorse.connector.exception.BadRequestException;
+import io.littlehorse.connector.exception.ForbiddenException;
+import io.littlehorse.connector.kubernetes.KubernetesUtils;
 import io.littlehorse.connector.service.KubernetesService;
-import io.littlehorse.infrastructure.kubernetes.KubernetesUtils;
 import io.littlehorse.quarkus.task.LHTask;
 import io.littlehorse.sdk.worker.LHTaskMethod;
 import io.quarkus.arc.lookup.LookupIfProperty;
@@ -40,6 +41,8 @@ public class ApplyTask {
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isBadRequestException(e)) {
                 throw new BadRequestException(e);
+            } else if (KubernetesUtils.isForbiddenException(e)) {
+                throw new ForbiddenException(e);
             }
             throw e;
         }

@@ -29,7 +29,7 @@ if [[ "${build}" = "true" ]]; then
 fi
 
 if [[ "${native}" == "true" ]]; then
-  ./build/quarkus-run -Dquarkus.log.category.\"io.littlehorse\".level=DEBUG
+  ./build/quarkus-run -Dquarkus.log.category.\"io.littlehorse.connector\".level=DEBUG
 else
-  java -Dquarkus.log.category.\"io.littlehorse\".level=DEBUG -jar ./build/quarkus-app/quarkus-run.jar
+  java -Dquarkus.log.category.\"io.littlehorse.connector\".level=DEBUG -jar ./build/quarkus-app/quarkus-run.jar
 fi
