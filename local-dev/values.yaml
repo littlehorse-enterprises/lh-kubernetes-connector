@@ -3,7 +3,6 @@ image:
   tag: latest
 
 connector:
-  defaultTargetNamespace: "test"
   logLevel: DEBUG
   task:
     secret:
