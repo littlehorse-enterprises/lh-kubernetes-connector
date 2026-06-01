@@ -50,12 +50,21 @@ public class KubernetesService {
     }
 
     /**
-     * Delete a secret.
+     * Delete a resource.
      *
-     * @param secret Secret to be deleted.
+     * @param apiVersion Specifies which version of the Kubernetes API you are using to create or interact with an
+     *     object.
+     * @param kind Type of resource.
+     * @param namespace Specific namespace.
+     * @param name Name of the resource.
      */
-    public void delete(final Secret secret) {
-        delete(client.secrets().resource(secret));
+    public void delete(
+            final String apiVersion, final String kind, final String namespace, final String name) {
+        delete(Optional.ofNullable(namespace)
+                .map(nullableNamespace -> client.genericKubernetesResources(apiVersion, kind)
+                        .inNamespace(nullableNamespace)
+                        .withName(name))
+                .orElse(client.genericKubernetesResources(apiVersion, kind).withName(name)));
     }
 
     /**

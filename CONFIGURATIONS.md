@@ -10,7 +10,9 @@
     * [Task Worker](#task-worker)
   * [LittleHorse Kubernetes Connector](#littlehorse-kubernetes-connector)
     * [Task Apply](#task-apply)
+    * [Task Delete](#task-delete)
     * [Task Secret](#task-secret)
+    * [Task Status](#task-status)
   * [Quarkus Configurations](#quarkus-configurations)
     * [Quarkus Kubernetes Client Extension](#quarkus-kubernetes-client-extension)
     * [Quarkus Logging Json Extension](#quarkus-logging-json-extension)
@@ -148,6 +150,22 @@ Enables task apply.
 * Default: true
 * Importance: medium
 
+### Task Delete
+
+``littlehorse.connector.kubernetes.task.delete.name``
+Defines the name of the task delete in LittleHorse.
+
+* Type: string
+* Default: lh-kubernetes-connector-delete
+* Importance: high
+
+``littlehorse.connector.kubernetes.task.delete.enabled``
+Enables task delete.
+
+* Type: boolean
+* Default: true
+* Importance: medium
+
 ### Task Secret
 
 ``littlehorse.connector.kubernetes.task.secret.name``
@@ -155,13 +173,6 @@ Defines the name of the task secret in LittleHorse.
 
 * Type: string
 * Default: lh-kubernetes-connector-secret
-* Importance: high
-
-``littlehorse.connector.kubernetes.task.secret.delete.name``
-Defines the name of the task that deletes a Kubernetes secret in LittleHorse.
-
-* Type: string
-* Default: lh-kubernetes-connector-secret-delete
 * Importance: high
 
 ``littlehorse.connector.kubernetes.task.secret.enabled``

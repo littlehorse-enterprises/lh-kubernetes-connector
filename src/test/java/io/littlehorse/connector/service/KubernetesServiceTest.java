@@ -138,7 +138,7 @@ class KubernetesServiceTest {
         service.apply(inputSecret);
         assertNotNull(client.secrets().withName(expectedName).get(), "Secret not found");
 
-        service.delete(inputSecret);
+        service.delete("v1", "Secret", null, expectedName);
 
         Secret result = client.secrets().withName(expectedName).get();
         assertNull(result, "Secret should be deleted");
@@ -163,13 +163,26 @@ class KubernetesServiceTest {
                         .get(),
                 "Secret not found");
 
-        service.delete(inputSecret);
+        service.delete("v1", "Secret", expectedNamespace, expectedName);
 
         Secret result = client.secrets()
                 .inNamespace(expectedNamespace)
                 .withName(expectedName)
                 .get();
         assertNull(result, "Secret should be deleted");
+    }
+
+    @Test
+    void shouldDeleteDeploymentInDefaultNamespace() {
+        String expectedName = UUID.randomUUID().toString();
+        service.apply(buildYaml(null, expectedName));
+        assertNotNull(
+                client.apps().deployments().withName(expectedName).get(), "Deployment not found");
+
+        service.delete("apps/v1", "Deployment", null, expectedName);
+
+        Deployment result = client.apps().deployments().withName(expectedName).get();
+        assertNull(result, "Deployment should be deleted");
     }
 
     @Test

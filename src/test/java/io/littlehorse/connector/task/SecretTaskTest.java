@@ -38,26 +38,4 @@ class SecretTaskTest {
                 BadRequestException.class,
                 () -> task.save(null, "my-secret", null, null, null, null, null, null));
     }
-
-    @Test
-    void shouldThrowBadRequestIfSecretNameIsBlankOnDelete() {
-        SecretTask task = new SecretTask(service);
-
-        assertThrows(BadRequestException.class, () -> task.delete(null, ""));
-    }
-
-    @Test
-    void shouldThrowBadRequestIfKubernetesClientExceptionIsBadRequestOnDelete() {
-        Status status = new StatusBuilder()
-                .withReason("BadRequest")
-                .withCode(0)
-                .withMessage("")
-                .build();
-        KubernetesClientException exception = new KubernetesClientException(status);
-        doThrow(exception).when(service).delete(any(Secret.class));
-
-        SecretTask task = new SecretTask(service);
-
-        assertThrows(BadRequestException.class, () -> task.delete(null, "my-secret"));
-    }
 }

@@ -16,10 +16,16 @@ public interface ConnectorConfig {
     @WithName("task.apply")
     TaskConfig taskApply();
 
+    String TASK_DELETE_NAME = PREFIX + ".task.delete.name";
+    String TASK_DELETE_NAME_EXPRESSION = "${" + TASK_DELETE_NAME + "}";
+    String TASK_DELETE_ENABLED = PREFIX + ".task.delete.enabled";
+    String TASK_DELETE_ENABLED_EXPRESSION = "${" + TASK_DELETE_ENABLED + "}";
+
+    @WithName("task.delete")
+    TaskConfig taskDelete();
+
     String TASK_SECRET_NAME = PREFIX + ".task.secret.name";
     String TASK_SECRET_NAME_EXPRESSION = "${" + TASK_SECRET_NAME + "}";
-    String TASK_SECRET_DELETE_NAME = PREFIX + ".task.secret.delete.name";
-    String TASK_SECRET_DELETE_NAME_EXPRESSION = "${" + TASK_SECRET_DELETE_NAME + "}";
     String TASK_SECRET_ENABLED = PREFIX + ".task.secret.enabled";
     String TASK_SECRET_ENABLED_EXPRESSION = "${" + TASK_SECRET_ENABLED + "}";
 
