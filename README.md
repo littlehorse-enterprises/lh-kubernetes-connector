@@ -44,7 +44,7 @@ public void define(WorkflowThread wf) {
 
 ### Task Secret
 
-This task allows you to create secret in Kubernetes.
+This task allows you to create a secret in Kubernetes.
 Default name `lh-kubernetes-connector-secret`. More at [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/).
 
 ```java
@@ -72,6 +72,23 @@ public void define(WorkflowThread wf) {
 | Immutable   | 6        | Boolean | False    | False  | Immutable secret       |
 | String data | 7        | Json    | False    | True   | Plain text data        |
 | Data        | 8        | Json    | False    | True   | Base64 data            |
+
+This task also supports deleting a secret by namespace and name.
+Default name `lh-kubernetes-connector-secret-delete`.
+
+```java
+public void define(WorkflowThread wf) {
+  WfRunVariable namespace = wf.declareStr("namespace");
+  WfRunVariable name = wf.declareStr("name").required();
+
+  wf.execute("lh-kubernetes-connector-secret-delete", namespace, name);
+}
+```
+
+| Parameter | Position | Type   | Required | Masked | Description   |
+|-----------|----------|--------|----------|--------|---------------|
+| Namespace | 1        | String | False    | False  | Namespace     |
+| Name      | 2        | String | True     | False  | Secret name   |
 
 ### Task Status
 

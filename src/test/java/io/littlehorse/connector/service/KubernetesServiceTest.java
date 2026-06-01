@@ -127,6 +127,52 @@ class KubernetesServiceTest {
     }
 
     @Test
+    void shouldDeleteSecretInDefaultNamespace() {
+        String expectedName = UUID.randomUUID().toString();
+        Secret inputSecret = new SecretBuilder()
+                .editMetadata()
+                .withName(expectedName)
+                .endMetadata()
+                .build();
+
+        service.apply(inputSecret);
+        assertNotNull(client.secrets().withName(expectedName).get(), "Secret not found");
+
+        service.delete(inputSecret);
+
+        Secret result = client.secrets().withName(expectedName).get();
+        assertNull(result, "Secret should be deleted");
+    }
+
+    @Test
+    void shouldDeleteSecretInNamespace() {
+        String expectedName = UUID.randomUUID().toString();
+        String expectedNamespace = UUID.randomUUID().toString();
+        Secret inputSecret = new SecretBuilder()
+                .editMetadata()
+                .withName(expectedName)
+                .withNamespace(expectedNamespace)
+                .endMetadata()
+                .build();
+
+        service.apply(inputSecret);
+        assertNotNull(
+                client.secrets()
+                        .inNamespace(expectedNamespace)
+                        .withName(expectedName)
+                        .get(),
+                "Secret not found");
+
+        service.delete(inputSecret);
+
+        Secret result = client.secrets()
+                .inNamespace(expectedNamespace)
+                .withName(expectedName)
+                .get();
+        assertNull(result, "Secret should be deleted");
+    }
+
+    @Test
     void shouldGetResourceInDefaultNamespace() {
         String expectedName = UUID.randomUUID().toString();
         service.apply(buildYaml(null, expectedName));

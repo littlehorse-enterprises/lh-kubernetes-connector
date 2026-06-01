@@ -50,6 +50,15 @@ public class KubernetesService {
     }
 
     /**
+     * Delete a secret.
+     *
+     * @param secret Secret to be deleted.
+     */
+    public void delete(final Secret secret) {
+        delete(client.secrets().resource(secret));
+    }
+
+    /**
      * Manifest to be applied.
      * If the manifest does not provide a namespace the service will use the default one.
      *
@@ -75,5 +84,14 @@ public class KubernetesService {
             }
             throw e;
         }
+    }
+
+    /**
+     * Resource to be deleted.
+     *
+     * @param resource Any resource.
+     */
+    public void delete(final Resource<? extends HasMetadata> resource) {
+        resource.delete();
     }
 }

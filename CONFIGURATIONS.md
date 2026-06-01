@@ -157,6 +157,13 @@ Defines the name of the task secret in LittleHorse.
 * Default: lh-kubernetes-connector-secret
 * Importance: high
 
+``littlehorse.connector.kubernetes.task.secret.delete.name``
+Defines the name of the task that deletes a Kubernetes secret in LittleHorse.
+
+* Type: string
+* Default: lh-kubernetes-connector-secret-delete
+* Importance: high
+
 ``littlehorse.connector.kubernetes.task.secret.enabled``
 Enables task secret.
 

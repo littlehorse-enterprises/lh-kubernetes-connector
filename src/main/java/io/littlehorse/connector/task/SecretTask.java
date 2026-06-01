@@ -74,4 +74,34 @@ public class SecretTask {
             throw e;
         }
     }
+
+    @LHTaskMethod(ConnectorConfig.TASK_SECRET_DELETE_NAME_EXPRESSION)
+    public void delete(final String namespace, final String name) {
+
+        if (StringUtils.isBlank(name)) {
+            throw new BadRequestException("Secret name must not be blank");
+        }
+
+        final Secret secret = new SecretBuilder()
+                .editMetadata()
+                .withName(name)
+                .withNamespace(namespace)
+                .endMetadata()
+                .build();
+
+        try {
+            service.delete(secret);
+            log.debug(
+                    "Secret '{}' successfully deleted in namespace '{}'",
+                    secret.getMetadata().getName(),
+                    secret.getMetadata().getNamespace());
+        } catch (final KubernetesClientException e) {
+            if (KubernetesUtils.isBadRequestException(e)) {
+                throw new BadRequestException(e);
+            } else if (KubernetesUtils.isForbiddenException(e)) {
+                throw new ForbiddenException(e);
+            }
+            throw e;
+        }
+    }
 }

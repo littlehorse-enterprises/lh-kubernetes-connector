@@ -18,6 +18,8 @@ public interface ConnectorConfig {
 
     String TASK_SECRET_NAME = PREFIX + ".task.secret.name";
     String TASK_SECRET_NAME_EXPRESSION = "${" + TASK_SECRET_NAME + "}";
+    String TASK_SECRET_DELETE_NAME = PREFIX + ".task.secret.delete.name";
+    String TASK_SECRET_DELETE_NAME_EXPRESSION = "${" + TASK_SECRET_DELETE_NAME + "}";
     String TASK_SECRET_ENABLED = PREFIX + ".task.secret.enabled";
     String TASK_SECRET_ENABLED_EXPRESSION = "${" + TASK_SECRET_ENABLED + "}";
 
