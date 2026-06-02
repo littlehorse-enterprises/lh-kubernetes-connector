@@ -54,6 +54,16 @@ class KubernetesServiceTest {
         return inputYaml.formatted(name, namespace == null ? "" : "namespace: " + namespace);
     }
 
+    private Secret buildSecret(String namespace, String name) {
+
+        SecretBuilder secretBuilder =
+                new SecretBuilder().editMetadata().withName(name).endMetadata();
+        if (namespace != null) {
+            secretBuilder.editMetadata().withNamespace(namespace).endMetadata();
+        }
+        return secretBuilder.build();
+    }
+
     @Test
     void shouldApplyYamlInDefaultNamespace() {
         String expectedName = UUID.randomUUID().toString();
@@ -217,5 +227,16 @@ class KubernetesServiceTest {
                 service.get("apps/v1", "Deployment", null, "non-existent-resource");
 
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void shouldSkipSecondDeleteCallOnSecret() {
+        final String name = UUID.randomUUID().toString();
+        service.apply(buildSecret(null, name));
+
+        service.delete("v1", "Secret", null, name);
+        assertNull(client.secrets().withName(name).get(), "Secret should be deleted");
+
+        assertDoesNotThrow(() -> service.delete("v1", "Secret", null, name));
     }
 }
