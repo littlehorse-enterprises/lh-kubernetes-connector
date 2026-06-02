@@ -109,6 +109,27 @@
               "title": "apply",
               "type": "object"
             },
+            "delete": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "name": {
+                  "default": "lh-kubernetes-connector-delete",
+                  "title": "name",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "enabled"
+              ],
+              "title": "delete",
+              "type": "object"
+            },
             "secret": {
               "additionalProperties": false,
               "properties": {
@@ -154,6 +175,7 @@
           },
           "required": [
             "apply",
+            "delete",
             "secret",
             "status"
           ],

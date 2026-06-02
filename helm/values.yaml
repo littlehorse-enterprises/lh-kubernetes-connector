@@ -188,6 +188,9 @@ connector:
     apply:
       name: lh-kubernetes-connector-apply
       enabled: true
+    delete:
+      name: lh-kubernetes-connector-delete
+      enabled: true
     secret:
       name: lh-kubernetes-connector-secret
       enabled: false

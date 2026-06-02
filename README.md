@@ -13,6 +13,7 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
   * [Table of Content](#table-of-content)
   * [Tasks](#tasks)
     * [Task Apply](#task-apply)
+    * [Task Delete](#task-delete)
     * [Task Secret](#task-secret)
     * [Task Status](#task-status)
   * [Installation](#installation)
@@ -42,9 +43,32 @@ public void define(WorkflowThread wf) {
 |------------|----------|--------|----------|--------|-------------------|
 | Input yaml | 1        | String | True     | False  | Resource manifest |
 
+### Task Delete
+
+This task allows you to delete any resource in Kubernetes.
+Default name `lh-kubernetes-connector-delete`.
+
+```java
+public void define(WorkflowThread wf) {
+  WfRunVariable apiVersion = wf.declareStr("apiVersion").required();
+  WfRunVariable kind = wf.declareStr("kind").required();
+  WfRunVariable namespace = wf.declareStr("namespace");
+  WfRunVariable name = wf.declareStr("name").required();
+
+  wf.execute("lh-kubernetes-connector-delete", apiVersion, kind, namespace, name);
+}
+```
+
+| Parameter   | Position | Type   | Required | Masked | Description         |
+|-------------|----------|--------|----------|--------|---------------------|
+| Api Version | 1        | String | True     | False  | Resource apiVersion |
+| Kind        | 2        | String | True     | False  | Resource kind       |
+| Namespace   | 3        | String | False    | False  | Namespace           |
+| Name        | 4        | String | True     | False  | Resource name       |
+
 ### Task Secret
 
-This task allows you to create secret in Kubernetes.
+This task allows you to create a secret in Kubernetes.
 Default name `lh-kubernetes-connector-secret`. More at [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/).
 
 ```java

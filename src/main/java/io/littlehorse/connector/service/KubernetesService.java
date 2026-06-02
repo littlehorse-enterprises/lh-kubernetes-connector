@@ -10,6 +10,7 @@ import io.littlehorse.connector.kubernetes.KubernetesUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -31,12 +32,18 @@ public class KubernetesService {
      */
     public Optional<GenericKubernetesResource> get(
             final String apiVersion, final String kind, final String namespace, final String name) {
-        return Optional.ofNullable(Optional.ofNullable(namespace)
-                .map(nullableNamespace -> client.genericKubernetesResources(apiVersion, kind)
-                        .inNamespace(nullableNamespace)
-                        .withName(name))
-                .orElse(client.genericKubernetesResources(apiVersion, kind).withName(name))
-                .get());
+
+        final Resource<GenericKubernetesResource> resource = Objects.requireNonNull(
+                Optional.ofNullable(namespace)
+                        .map(nullableNamespace -> client.genericKubernetesResources(
+                                        apiVersion, kind)
+                                .inNamespace(nullableNamespace)
+                                .withName(name))
+                        .orElse(client.genericKubernetesResources(apiVersion, kind)
+                                .withName(name)),
+                "Provide a valid resource operation");
+
+        return Optional.ofNullable(resource.get());
     }
 
     /**
@@ -47,6 +54,24 @@ public class KubernetesService {
      */
     public HasMetadata apply(final Secret secret) {
         return apply(client.secrets().resource(secret));
+    }
+
+    /**
+     * Delete a resource.
+     *
+     * @param apiVersion Specifies which version of the Kubernetes API you are using to create or interact with an
+     *     object.
+     * @param kind Type of resource.
+     * @param namespace Specific namespace.
+     * @param name Name of the resource.
+     */
+    public void delete(
+            final String apiVersion, final String kind, final String namespace, final String name) {
+        delete(Optional.ofNullable(namespace)
+                .map(nullableNamespace -> client.genericKubernetesResources(apiVersion, kind)
+                        .inNamespace(nullableNamespace)
+                        .withName(name))
+                .orElse(client.genericKubernetesResources(apiVersion, kind).withName(name)));
     }
 
     /**
@@ -66,14 +91,26 @@ public class KubernetesService {
      * @param resource Any resource.
      * @return Result.
      */
-    public HasMetadata apply(final Resource<? extends HasMetadata> resource) {
+    private HasMetadata apply(final Resource<? extends HasMetadata> resource) {
+        final Resource<? extends HasMetadata> requiredResource =
+                Objects.requireNonNull(resource, "Provide a valid resource operation");
+
         try {
-            return resource.create();
+            return requiredResource.create();
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isAlreadyExistsException(e)) {
-                return resource.update();
+                return requiredResource.update();
             }
             throw e;
         }
+    }
+
+    /**
+     * Resource to be deleted.
+     *
+     * @param resource Any resource.
+     */
+    private void delete(final Resource<? extends HasMetadata> resource) {
+        if (resource != null) resource.delete();
     }
 }
