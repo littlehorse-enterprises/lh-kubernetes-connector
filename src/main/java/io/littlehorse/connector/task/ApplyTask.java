@@ -41,7 +41,9 @@ public class ApplyTask {
                     resource.getMetadata().getName(),
                     resource.getMetadata().getNamespace());
 
-            return resource.getMetadata();
+            final ObjectMeta metadata = resource.getMetadata();
+            metadata.setManagedFields(null);
+            return metadata;
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isBadRequestException(e)) {
                 throw new BadRequestException(e);

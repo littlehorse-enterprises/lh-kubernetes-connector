@@ -16,6 +16,7 @@ LittleHorse Kubernetes Connector is an [LH Worker](https://littlehorse.io/docs/s
     * [Task Delete](#task-delete)
     * [Task Secret](#task-secret)
     * [Task Status](#task-status)
+  * [Exceptions](#exceptions)
   * [Installation](#installation)
   * [Versioning](#versioning)
   * [Examples](#examples)
@@ -123,6 +124,24 @@ public void define(WorkflowThread wf) {
 | Name        | 4        | String | True     | False  | Resource name       |
 
 **Returns:** the resource's `status` field as a Json object. Fails with a not found error if the resource does not exist, and with an unavailable status error if the resource has no `status` field.
+
+## Exceptions
+
+The connector raises two kinds of exceptions depending on whether the task can recover by retrying.
+
+**Unretryable exceptions** extend `LHTaskException`. They indicate a permanent failure (e.g. invalid input or insufficient permissions). The workflow does **not** retry the task, and the `TaskRun` fails immediately.
+
+| Exception                   | Error Code    | Description                                                                                  |
+|-----------------------------|---------------|----------------------------------------------------------------------------------------------|
+| `BadRequestException`       | `bad-request` | The request was invalid, e.g. incorrect parameters or a malformed manifest.                  |
+| `ForbiddenException`        | `forbidden`   | The service account lacks the permissions required to perform the requested operation.        |
+
+**Retryable exceptions** extend `RuntimeException`. They indicate a transient failure, so the workflow automatically retries the task after a delay.
+
+| Exception                    | Description                                                                                               |
+|------------------------------|-----------------------------------------------------------------------------------------------------------|
+| `NotFoundException`          | The requested resource was not found, e.g. it was deleted or has not been reflected by the API server yet. |
+| `UnavailableStatusException` | The resource's status is temporarily unavailable, e.g. due to API server unavailability or network issues. |
 
 ## Installation
 
