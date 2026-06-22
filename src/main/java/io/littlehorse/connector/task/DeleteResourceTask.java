@@ -42,6 +42,7 @@ public class DeleteResourceTask {
 
         try {
             service.delete(apiVersion, kind, namespace, name);
+
             log.debug(
                     "Resource apiVersion: {}, kind: {}, namespace: {}, name: {} successfully deleted",
                     apiVersion,

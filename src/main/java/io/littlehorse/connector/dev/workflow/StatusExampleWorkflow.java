@@ -3,6 +3,7 @@ package io.littlehorse.connector.dev.workflow;
 import io.littlehorse.connector.config.ConnectorConfig;
 import io.littlehorse.quarkus.workflow.LHWorkflow;
 import io.littlehorse.quarkus.workflow.LHWorkflowDefinition;
+import io.littlehorse.sdk.wfsdk.NodeOutput;
 import io.littlehorse.sdk.wfsdk.WfRunVariable;
 import io.littlehorse.sdk.wfsdk.WorkflowThread;
 import io.quarkus.arc.profile.IfBuildProfile;
@@ -36,7 +37,9 @@ public class StatusExampleWorkflow implements LHWorkflowDefinition {
         final WfRunVariable kind = wf.declareStr("kind");
         final WfRunVariable namespace = wf.declareStr("namespace");
         final WfRunVariable name = wf.declareStr("name");
+        final WfRunVariable status = wf.declareJsonObj("status");
 
-        wf.execute(taskStatusName, apiVersion, kind, namespace, name);
+        final NodeOutput output = wf.execute(taskStatusName, apiVersion, kind, namespace, name);
+        status.assign(output);
     }
 }

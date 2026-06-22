@@ -60,6 +60,7 @@ public class SecretTask {
 
         try {
             final HasMetadata resource = service.apply(secret);
+
             log.debug(
                     "Resource '{}/{}' successfully updated in namespace '{}'",
                     resource.getKind(),

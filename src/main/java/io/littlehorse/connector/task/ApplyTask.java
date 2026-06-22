@@ -1,6 +1,7 @@
 package io.littlehorse.connector.task;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.littlehorse.connector.config.ConnectorConfig;
 import io.littlehorse.connector.exception.BadRequestException;
@@ -26,18 +27,23 @@ public class ApplyTask {
     }
 
     @LHTaskMethod(ConnectorConfig.TASK_APPLY_NAME_EXPRESSION)
-    public void apply(final String yaml) {
+    public ObjectMeta apply(final String yaml) {
         if (StringUtils.isBlank(yaml)) {
             throw new BadRequestException("Yaml must not be blank");
         }
 
         try {
             final HasMetadata resource = service.apply(yaml);
+
             log.debug(
                     "Resource '{}/{}' successfully updated in namespace '{}'",
                     resource.getKind(),
                     resource.getMetadata().getName(),
                     resource.getMetadata().getNamespace());
+
+            final ObjectMeta metadata = resource.getMetadata();
+            metadata.setManagedFields(null);
+            return metadata;
         } catch (final KubernetesClientException e) {
             if (KubernetesUtils.isBadRequestException(e)) {
                 throw new BadRequestException(e);
