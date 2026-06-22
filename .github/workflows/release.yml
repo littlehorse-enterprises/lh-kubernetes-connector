@@ -3,31 +3,54 @@ run-name: Release ${{ github.ref_name }}
 on:
   push:
     tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+*"
 
 permissions:
   contents: write
   packages: write
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.set_tag.outputs.tag }}
+      pre-release: ${{ steps.is_prerelease.outputs.pre-release }}
+    steps:
+      - name: Set Tag
+        id: set_tag
+        run: echo "tag=$(echo $GITHUB_REF | sed -n 's/refs\/tags\/v//p')" >> $GITHUB_OUTPUT
+      - name: Is prerelease
+        id: is_prerelease
+        run: |
+          if [[ "${{ steps.set_tag.outputs.tag }}" == *"-RC"* ]]; then
+            echo "pre-release=true" >> $GITHUB_OUTPUT
+          else
+            echo "pre-release=false" >> $GITHUB_OUTPUT
+          fi
+
   tests:
+    needs:
+      - prepare
     uses: ./.github/workflows/shared-tests.yaml
     with:
       upload-artifacts: true
-      version: ${{ github.ref_name }}
+      version: ${{ needs.prepare.outputs.tag }}
 
   publish:
     needs:
       - tests
+      - prepare
     uses: ./.github/workflows/shared-publish.yaml
     secrets: inherit
     with:
-      version: ${{ github.ref_name }}
+      version: ${{ needs.prepare.outputs.tag }}
 
   release:
     needs:
+      - prepare
       - publish
     uses: ./.github/workflows/shared-release.yml
     secrets: inherit
     with:
-      version: ${{ github.ref_name }}
+      version: ${{ needs.prepare.outputs.tag }}
+      pre-release: ${{ needs.prepare.outputs.pre-release == 'true' }}
