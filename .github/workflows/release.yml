@@ -53,4 +53,4 @@ jobs:
     secrets: inherit
     with:
       version: ${{ needs.prepare.outputs.tag }}
-      pre-release: ${{ needs.prepare.outputs.pre-release }}
+      pre-release: ${{ needs.prepare.outputs.pre-release == 'true' }}
