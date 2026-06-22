@@ -182,6 +182,22 @@ Enables task secret.
 * Default: false
 * Importance: medium
 
+### Task Status
+
+``littlehorse.connector.kubernetes.task.status.name``
+Defines the name of the task status in LittleHorse.
+
+* Type: string
+* Default: lh-kubernetes-connector-status
+* Importance: high
+
+``littlehorse.connector.kubernetes.task.status.enabled``
+Enables task status.
+
+* Type: boolean
+* Default: true
+* Importance: medium
+
 ## Quarkus Configurations
 
 This connector uses [Quarkus](https://quarkus.io/) as a framework.

@@ -43,6 +43,8 @@ public void define(WorkflowThread wf) {
 |------------|----------|--------|----------|--------|-------------------|
 | Input yaml | 1        | String | True     | False  | Resource manifest |
 
+**Returns:** the applied resource's metadata (`ObjectMeta`) as a Json object, including fields such as `name`, `namespace`, `uid`, `resourceVersion`, `labels`, `generation`, and `annotations`.
+
 ### Task Delete
 
 This task allows you to delete any resource in Kubernetes.
@@ -119,6 +121,8 @@ public void define(WorkflowThread wf) {
 | King        | 2        | String | True     | False  | Resource king       |
 | Namespace   | 3        | String | False    | False  | Namespace           |
 | Name        | 4        | String | True     | False  | Resource name       |
+
+**Returns:** the resource's `status` field as a Json object. Fails with a not found error if the resource does not exist, and with an unavailable status error if the resource has no `status` field.
 
 ## Installation
 

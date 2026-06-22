@@ -52,6 +52,7 @@ Port forward:
 
 ```shell
 kubectl port-forward service/littlehorse 2023:external
+kubectl port-forward service/littlehorse 8080:dashboard
 ```
 
 Run connector in `dev` profile:
